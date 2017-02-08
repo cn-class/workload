@@ -1,0 +1,11 @@
+
+	<div class='messages'>
+
+
+	<ul class="message">
+		{% for message in messages%}
+		<li{% if message.tag %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+	</ul>
+
+	</div>

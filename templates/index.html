@@ -1,0 +1,26 @@
+<!--DOCTYPE html-->
+<html>
+
+<body>
+
+<h1>List</h1>
+
+{% for obj in object_list %}	
+{% url "workload:detail" id=obj.id %}
+<a href='{{ obj.get_absolute_url }}'>{{ obj.id }}</a>
+<!-- {{ obj.user_ID}} -->
+{{ obj.subject}}
+{{ obj.ratio}}
+{{ obj.num_of_lecture}}
+{{ obj.num_of_lab}}
+{{ obj.program_ID}}
+{{ obj.num_of_student}}
+{{ obj.ratio_of_score}}
+{{ obj.comment}}
+<a href="{% url 'posts:delete' id=obj.id %}">Delete</a><br/>
+
+{% endfor%}
+
+</body>
+
+</html>

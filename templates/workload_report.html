@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+
+<h1>Report</h1>
+
+<h2>งานสอน</h2>
+
+<p>จำนวนหน่วยกิตที่บรรยายต่อสัปดาห์</p>
+
+
+<script>
+	
+
+	d3.csv("{% static 'mydata.csv' %}", function (error,data) {
+
+		var canvas = d3.select(".container").append("svg")
+			.attr("width",500)
+			.attr("height",500)
+
+
+
+		canvas.selectAll("rect")
+			.data(data)
+			.enter()
+				.append("rect")
+
+				.attr("width",function (d) { return d.age * 10 ; })
+				.attr("height",45)
+				.attr("y",function(d,i) {return i * 50 ; })
+				.attr("fill","blue")
+		
+
+		canvas.selectAll("text")
+			.data(data)
+			.enter()
+				.append("text")
+				.attr("fill","white")
+				.attr("y",function (d,i) { return i * 50 + 24; })
+				.text(function(d) { return d.name ; })
+
+
+	})
+
+</script>
+
+<a href="{% url 'workload:detail' %}">teacher1</a>
+<a href="{% url 'workload:detail' %}">teacher2</a>
+<a href="{% url 'workload:detail' %}">teacher3</a>
+ 
+
+{% endblock content%}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+{{ instance.title }} | {{ block.super }}
+{% endblock head_title%}
+
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+<table class="table">
+	<tr>
+
+		<th>ชื่อวิชา</th>
+		<th>สัดส่วนการสอน</th>
+		<th>จำนวนหน่วยกิตการบรรยาย</th>
+		<th>จำนวนหน่วยกิตการปฏิบัติการ</th>
+		<th>ภาค</th>
+		<th>จำนวนนักศึกษา</th>
+		<th>สัดส่วนคะแนน</th>
+		<th>หมายเหตุ</th>
+		<th>แก้ไข</th>
+	</tr>
+
+	<tr>
+		<td>{{ instance.subject}}</td>
+		<td>{{ instance.ratio}}</td>
+		<td>{{ instance.num_of_lecture}}</td>
+		<td>{{ instance.num_of_lab}}</td>
+		<td>{{ instance.program_ID}}</td>
+		<td>{{ instance.num_of_student}}</td>
+		<td>{{ instance.ratio_of_score}}</td>
+		<td>{{ instance.comment}}</td>
+		<td><a href="{% url 'workload:update' id=instance.id %}">Edit</a><br/></td>
+
+	</tr>
+
+
+
+{% endblock content%}

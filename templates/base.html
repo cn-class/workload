@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>{% block head_title %}Workload{% endblock head_title%}</title>
+
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" type="text/css" >
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css" >
+
+	<!-- <link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css"> -->
+
+	<!-- <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v0.3.js"></script>
+	<script src="https://d3js.org/d3-selection.v1.js"></script> -->
+	
+	<script src="{% static 'd3/d3.js' %}"></script>
+	<style>
+	{% block style%}
+	{% endblock style %}
+	
+
+		.bar {
+		  fill: steelblue;
+		}
+
+		.bar:hover {
+		  fill: brown;
+		}
+
+		.axis--x path {
+		  display: none;
+		}
+
+
+	
+	</style>
+
+</head>
+
+<body>
+
+	<!-- {% include "messages_display.html" %} -->
+	<div class="row">
+		<div class="col-md-8 col-md-offset-1">
+			<h2>แบบฟอร์มรายงานผลการปฏิบัติงานของอาจารย์</h2>
+		</div>
+	</div>
+
+	
+	
+	{%  block navbar%}
+	
+	{%  endblock navbar%}
+
+	<div class='container' id='con'>
+
+		{% block content %}
+
+		{% endblock content %}
+	</div>
+
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+  	<script src="{% static 'bootstrap/js/bootstrap.min.js' %} "></script>
+
+</body>
+</html>

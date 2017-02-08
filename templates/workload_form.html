@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+
+<h1>Form</h1>
+
+<div class="col-sm-6">
+<form method='POST' action=''>{% csrf_token %}
+	{{ form|crispy }}
+<!-- 	{{ form.non_field_errors }} -->
+	<!-- <div class="fieldWrapper">
+		{{ form.subject.errors }}
+		<label for="{{ form.subject.id_for_label }}">ชื่อวิชา</label>
+		{{ form.subject }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.ratio.errors }}
+		<label for="{{ form.ratio.id_for_label }}">สัดส่วนการสอน</label>
+		{{ form.ratio }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.num_of_lecture.errors }}
+		<label for="{{ form.num_of_lecture.id_for_label }}">จำนวนหน่วยกิตการบรรยาย</label>
+		{{ form.num_of_lecture }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.num_of_lab.errors }}
+		<label for="{{ form.num_of_lab.id_for_label }}">จำนวนหน่วยกิตการปฏิบัติการ</label>
+		{{ form.num_of_lab }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.program_ID.errors }}
+		<label for="{{ form.program_ID.id_for_label }}">ประเภทโครงการ</label>
+		{{ form.program_ID }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.num_of_student.errors }}
+		<label for="{{ form.num_of_student.id_for_label }}">จำนวนนักศึกษา</label>
+		{{ form.num_of_student }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.ratio_of_score.errors }}
+		<label for="{{ form.ratio_of_score.id_for_label }}">สัดส่วนการให้คะแนน</label>
+		{{ form.ratio_of_score }}
+	</div>
+	<div class="fieldWrapper">
+		{{ form.comment.errors }}
+		<label for="{{ form.comment.id_for_label }}">หมายเหตุ</label>
+		{{ form.comment }}
+	</div> -->
+
+	<input type='submit' value='create'>
+</form>
+</div>
+{% endblock content%}
