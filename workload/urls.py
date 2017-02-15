@@ -4,7 +4,6 @@ from django.contrib import admin
 from .views import (
 	workload_list,
 	workload_create,
-	workload_detail,
 	workload_update,
 	workload_delete,
 	workload_report,
@@ -14,7 +13,6 @@ from .views import (
 urlpatterns = [ 
 
 	url( r'^$', workload_list, name='list'),
-	url( r'^(?P<id>\d+)/$', workload_detail, name='detail'),
 	url( r'^create/$', workload_create,name='create'),
 	url( r'^report/$', workload_report,name='report'),
 	url( r'^detail/$', detail,name='detail'),

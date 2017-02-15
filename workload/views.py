@@ -3,43 +3,47 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import User
+from .excel_utils import WriteToExcel
 
 from .models import Teaching
-from .forms import TeachingForm
+from .forms import TeachingForm,ExportForm
 # Create your views here.
 
 def workload_list(request):
 
 	if not request.user.is_authenticated:
 		return redirect("login")
+
 	current_user = request.user
 	if request.user.is_staff or request.user.is_superuser:
 		#queryset = Teaching.objects.all()
 		return redirect("workload:report")
 	else:
 		queryset = Teaching.objects.filter(user=current_user)
+		if request.method == 'POST':
+			form = ExportForm(data=request.POST)
+	        # if form.is_valid():
+	        #     user_id = form.data['user']
+	        #     # user = Teaching.objects.get(pk=user_id)
+	        #     user = Teaching.objects.filter(user=user_id)
+	        if 'excel' in request.POST:
+	            response = HttpResponse(content_type='application/vnd.ms-excel')
+	            response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+	            xlsx_data = WriteToExcel(queryset,current_user)
+	            response.write(xlsx_data)
+	            return response
 
-	# queryset = Teaching.objects.all()
+		else:
+			form = ExportForm()
+	
 	context = {
+		"form": form,
 		"object_list": queryset,
 		"current_user":current_user,
 	}
 	return render(request,"workload_list.html",context)
 	
 
-
-def workload_detail(request, id=None ):
-
-	if not request.user.is_authenticated:
-		return redirect("login")
-
-	instance = get_object_or_404(Teaching, id=id)
-	context = {
-		"title": instance.id,
-		"instance":instance,
-	}
-	return render(request, "workload_detail.html",context)
-	
 def workload_create(request):
 
 	if not request.user.is_authenticated:
@@ -51,7 +55,7 @@ def workload_create(request):
 		instance = form.save(commit=False)
 		instance.save()
 		messages.success(request,"Successfully Created")
-		return HttpResponseRedirect(instance.get_absolute_url())
+		return redirect("workload:list")
 	else:
 		messages.error(request, "Not Successfully Created")
 	context = {
@@ -71,7 +75,7 @@ def workload_update(request, id=None):
 		instance = form.save(commit=False)
 		instance.save()
 		messages.success(request,"<a href='#'>Saved</a>",extra_tags='html_safe')
-		return HttpResponseRedirect(instance.get_absolute_url())
+		return redirect("workload:list")
 	
 	context = {
 		"form": form,
@@ -98,7 +102,7 @@ def workload_report(request):
 
 	return render(request, "workload_report.html")
 
-	
+
 def detail(request):
 
 	if not request.user.is_authenticated :

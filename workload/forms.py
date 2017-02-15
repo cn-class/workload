@@ -17,3 +17,12 @@ class TeachingForm(forms.ModelForm):
 			"ratio_of_score",
 			"comment",
 		]
+
+class ExportForm(forms.ModelForm):
+	user = forms.ModelChoiceField(
+        queryset=Teaching.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}))
+
+	class Meta:
+		model = Teaching
+		fields = ["user",]

@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'hello',
     'account',
     'workload',
+    'exporting',
 
     'crispy_forms',
 )

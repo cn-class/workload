@@ -26,4 +26,4 @@ class Teaching(models.Model):
 	comment = models.TextField()
 
 	def get_absolute_url(self):
-		return reverse("workload:detail", kwargs={"id": self.id})
+		return reverse("workload:list", kwargs={"id": self.id})
