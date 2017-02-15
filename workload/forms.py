@@ -4,10 +4,15 @@ from django.utils.translation import ugettext_lazy as _
 from .models import Teaching
 
 class TeachingForm(forms.ModelForm):
+
+	user = forms.ModelChoiceField(
+        queryset=Teaching.objects.all(),
+        widget=forms.HiddenInput())
+
 	class Meta:
 		model = Teaching
+		exclude = ['user']
 		fields = [
-			"user",
 			"subject",
 			"ratio",
 			"num_of_lecture",
@@ -26,3 +31,4 @@ class ExportForm(forms.ModelForm):
 	class Meta:
 		model = Teaching
 		fields = ["user",]
+	

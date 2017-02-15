@@ -49,10 +49,12 @@ def workload_create(request):
 	if not request.user.is_authenticated:
 		return redirect("login")
 
-	form = TeachingForm(request.POST or None)
-	
+	current_user = request.user
+	form = TeachingForm(request.POST or None , initial={'user':current_user,})
+
 	if form.is_valid():
 		instance = form.save(commit=False)
+		instance.user = current_user
 		instance.save()
 		messages.success(request,"Successfully Created")
 		return redirect("workload:list")
@@ -60,6 +62,7 @@ def workload_create(request):
 		messages.error(request, "Not Successfully Created")
 	context = {
 		"form": form,
+		"current_user":current_user,
 	}
 	return render(request, "workload_form.html", context)
 
