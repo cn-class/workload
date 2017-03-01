@@ -1,8 +1,10 @@
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import User
+from django.db.models import Count,Sum
 from .excel_utils import WriteToExcel
 
 from .models import Teaching
@@ -103,8 +105,15 @@ def workload_report(request):
 	if not request.user.is_authenticated :
 		return redirect("login")
 
-	return render(request, "workload_report.html")
+	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+		
 
+   	for instance in data:
+   		print(instance)
+
+    	
+
+	return render(request, "workload_report.html")
 
 def detail(request):
 
@@ -112,3 +121,18 @@ def detail(request):
 		return redirect("login")
 
 	return render(request, "detail.html")
+
+def sum_report(request):
+
+	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+
+    
+	return JsonResponse(list(data), safe=False)
+
+
+def get_username(request,id=None):
+
+	instance = get_object_or_404(Teaching,id=id)
+
+
+	return instance.username

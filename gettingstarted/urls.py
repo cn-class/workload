@@ -7,6 +7,7 @@ from django.contrib import admin
 
 from account.views import (login_view,register_view,logout_view)
 from exporting.views import (all_towns,today_weather,weather_history,details)
+from d3ex.views import (graph,play_count_by_month)
 
 
 from django.contrib import admin
@@ -21,8 +22,10 @@ import hello.views
 urlpatterns = [
     url(r'^$', hello.views.index, name='index'),
     url(r'^db', hello.views.db, name='db'),
-    url(r'^workload/', include('workload.urls', namespace='workload')),
     url(r'^admin/', include(admin.site.urls)),
+
+    #workload
+    url(r'^workload/', include('workload.urls', namespace='workload')),
 
     #account
     url(r'^login/', login_view, name='login'),
@@ -34,4 +37,7 @@ urlpatterns = [
     url(r'^weather/history/$', weather_history, name='weather_history'),
     url(r'^weather/details/(?P<weather_id>\w+)', details, name='details'),
     url(r'^towns/$', all_towns, name='towns'),
+
+    url(r'^d3ex/',graph),
+    url(r'^api/play_count_by_month',play_count_by_month, name='play_count_by_month'),
 ]

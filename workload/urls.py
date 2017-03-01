@@ -8,6 +8,7 @@ from .views import (
 	workload_delete,
 	workload_report,
 	detail,
+	sum_report,
 	)
 
 urlpatterns = [ 
@@ -18,4 +19,7 @@ urlpatterns = [
 	url( r'^detail/$', detail,name='detail'),
 	url( r'^(?P<id>\d+)/edit/$', workload_update, name='update'),
 	url( r'^(?P<id>\d+)/delete/$', workload_delete, name='delete'),
+
+	url( r'^api/report/$',sum_report,name='sum_report'),
+
 ]
