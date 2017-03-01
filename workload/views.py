@@ -74,14 +74,17 @@ def workload_update(request, id=None):
 		return redirect("login")
 
 	instance = get_object_or_404(Teaching,id=id)
-	form = TeachingForm(request.POST or None, instance=instance)
+	form = TeachingForm(request.POST or None, instance=instance ,initial={'user':instance.user,})
 	
 	if form.is_valid():
 		instance = form.save(commit=False)
+		print("1")
+		instance.user = instance.user
 		instance.save()
 		messages.success(request,"<a href='#'>Saved</a>",extra_tags='html_safe')
 		return redirect("workload:list")
 	
+	print("2")
 	context = {
 		"form": form,
 		"instance" : instance,

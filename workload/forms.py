@@ -11,7 +11,7 @@ class TeachingForm(forms.ModelForm):
 
 	class Meta:
 		model = Teaching
-		exclude = ['user']
+		# exclude = ['user']
 		fields = [
 			"subject",
 			"ratio",
