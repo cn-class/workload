@@ -67,7 +67,7 @@
 				.attr("fill","dark")
 				.attr("y",function (d,i) { return i * 50 + 35; })
 				.attr("x",function (d) {return widthScale(d.sum_items) ; })
-				.text(function(d) { return d.user__username + " sum: " + d.sum_items + " หน่วย"; })
+				.text(function(d) { return d.user__username + " sum: " + d.sum_items + " หน่วยกิต"; })
 
 		canvas.append("svg")
 			.attr("tranform","translate(0,"+ height +")")
