@@ -7,42 +7,45 @@
 
 {% block content %}
 
-<h1>งานสอน</h1>
 
-<table class="table">
+<h2 class="text-center">งานสอน</h2>
+<br/>
+
+
+<table class="table text-center">
 	<tr>
-
-		<!-- <th>ลำดับ</th> -->
-		<th>ชื่อวิชา</th>
-		<th>สัดส่วนการสอน</th>
-		<th>จำนวนหน่วยกิตการบรรยาย</th>
-		<th>จำนวนหน่วยกิตการปฏิบัติการ</th>
-		<th>ภาค</th>
-		<th>จำนวนนักศึกษา</th>
-		<th>สัดส่วนคะแนน</th>
+		<th >รหัสวิชา</th>
+		<th class="col-sm-2 text-center">ชื่อวิชา</th>
+		<th class="col-sm-1 text-center">สัดส่วนการสอน</th>
+		<th class="col-sm-1 text-center">จำนวนหน่วยกิตการบรรยาย</th>
+		<th class="col-sm-1 text-center">จำนวนหน่วยกิตการปฏิบัติการ</th>
+		<th class="col-sm-2 text-center">ภาค</th>
+		<th class="col-sm-1 text-center">จำนวนนักศึกษา</th>
+		<th class="col-sm-1 text-center">สัดส่วนคะแนน</th>
 		<th>หมายเหตุ</th>
 		{% if request.user.is_staff  %}
-		<th>User</th>
+		<th class="col-sm-1 text-center">User</th>
 		{% endif %}
-		<th>แก้ไข</th>
-		<th>ลบ</th>
+		<th class="col-sm-1 text-center">แก้ไข</th>
+		<th class="col-sm-1 text-center">ลบ</th>
 	</tr>
 
 {% for obj in object_list %}	
 	<tr>
-		<td>{{ obj.subject}}</td>
-		<td>{{ obj.ratio}}</td>
-		<td>{{ obj.num_of_lecture}}</td>
-		<td>{{ obj.num_of_lab}}</td>
-		<td>{{ obj.program_ID}}</td>
-		<td>{{ obj.num_of_student}}</td>
-		<td>{{ obj.ratio_of_score}}</td>
-		<td>{{ obj.comment}}</td>
+		<td class="text-center">{{ obj.subject_ID }}</td>
+		<td class="text-center">{{ obj.subject }}</td>
+		<td class="text-center">{{ obj.ratio }}</td>
+		<td class="text-center">{{ obj.num_of_lecture }}</td>
+		<td class="text-center">{{ obj.num_of_lab }}</td>
+		<td class="text-center">{{ obj.program_ID }}</td>
+		<td class="text-center">{{ obj.num_of_student }}</td>
+		<td class="text-center">{{ obj.ratio_of_score }}</td>
+		<td >{{ obj.comment }}</td>
 		{% if request.user.is_staff  %}
-		<td>{{ obj.user}}</td>
+		<td class="text-center">{{ obj.user}}</td>
 		{% endif %}
-		<td><a href="{% url 'workload:update' id=obj.id %}">Edit</a><br/></td>
-		<td><a href="{% url 'workload:delete' id=obj.id %}">Delete</a><br/></td>
+		<td class="text-center"><a href="{% url 'workload:update' id=obj.id %}">Edit</a><br/></td>
+		<td class="text-center"><a href="{% url 'workload:delete' id=obj.id %}">Delete</a><br/></td>
 	</tr>
 
 {% endfor%}

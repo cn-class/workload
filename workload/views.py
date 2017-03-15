@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.contrib import messages
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -18,8 +19,8 @@ def workload_list(request):
 
 	current_user = request.user
 	if request.user.is_staff or request.user.is_superuser:
-		#queryset = Teaching.objects.all()
 		return redirect("workload:report")
+
 	else:
 		queryset = Teaching.objects.filter(user=current_user)
 		if request.method == 'POST':
@@ -52,16 +53,25 @@ def workload_create(request):
 		return redirect("login")
 
 	current_user = request.user
-	form = TeachingForm(request.POST or None , initial={'user':current_user,})
 
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.user = current_user
-		instance.save()
-		messages.success(request,"Successfully Created")
-		return redirect("workload:list")
+	if request.method == "POST":
+
+		form = TeachingForm(request.POST or None, initial={'user':current_user,})
+		if form.is_valid():
+			print("success")
+			instance = form.save(commit=False)
+			instance.user = current_user
+			instance.save()
+			messages.success(request,"Successfully Created")
+			return redirect("workload:list")
+		else:
+			print(form)
+			messages.error(request, "Not Successfully Created")
+
 	else:
-		messages.error(request, "Not Successfully Created")
+		print(current_user)
+		form = TeachingForm()
+
 	context = {
 		"form": form,
 		"current_user":current_user,
@@ -74,17 +84,20 @@ def workload_update(request, id=None):
 		return redirect("login")
 
 	instance = get_object_or_404(Teaching,id=id)
+	print(instance.user)
+	print(instance.program_ID)
 	form = TeachingForm(request.POST or None, instance=instance ,initial={'user':instance.user,})
 	
 	if form.is_valid():
 		instance = form.save(commit=False)
-		print("1")
 		instance.user = instance.user
 		instance.save()
 		messages.success(request,"<a href='#'>Saved</a>",extra_tags='html_safe')
 		return redirect("workload:list")
 	
-	print("2")
+	else:
+		print("2")
+
 	context = {
 		"form": form,
 		"instance" : instance,
@@ -114,8 +127,6 @@ def workload_report(request):
    	for instance in data:
    		print(instance)
 
-    	
-
 	return render(request, "workload_report.html")
 
 def detail(request):
@@ -132,10 +143,3 @@ def sum_report(request):
     
 	return JsonResponse(list(data), safe=False)
 
-
-def get_username(request,id=None):
-
-	instance = get_object_or_404(Teaching,id=id)
-
-
-	return instance.username

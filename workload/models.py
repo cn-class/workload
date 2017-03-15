@@ -7,22 +7,14 @@ from django.core.urlresolvers import reverse
 
 class Teaching(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL,default=1)
+	subject_ID = models.CharField(max_length=10)
 	subject = models.CharField(max_length=120)
 	ratio = models.IntegerField()
 	num_of_lecture = models.IntegerField()
 	num_of_lab = models.IntegerField()
-
-	program_choice = (
-			('1','ภาคปกติ'),
-			('2','TEP/TEPE'),
-			('3','AUTO'),
-		)
-
-	program_ID = models.CharField(max_length=120,choices=program_choice,default='1')
-
-
+	program_ID = models.CharField(max_length=120)
 	num_of_student = models.IntegerField()
-	ratio_of_score = models.IntegerField() 
+	ratio_of_score = models.CharField(max_length=10) 
 	comment = models.TextField()
 
 	def get_absolute_url(self):
