@@ -84,10 +84,9 @@ def workload_update(request, id=None):
 		return redirect("login")
 
 	instance = get_object_or_404(Teaching,id=id)
-	print(instance.user)
-	print(instance.program_ID)
-	form = TeachingForm(request.POST or None, instance=instance ,initial={'user':instance.user,})
-	
+	form = TeachingForm(request.POST or None, instance=instance)
+	print(form.errors)
+
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.user = instance.user

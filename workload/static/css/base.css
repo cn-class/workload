@@ -2,10 +2,7 @@
 	display: none;
 }
 
-th {
-	font-size: x-small;
-}
 
-form {
+th ,form {
 	font-size: small;
 }
