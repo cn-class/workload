@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
+
 {% block navbar %}
 {% include 'navbar.html' %}
 {% endblock navbar %}
@@ -8,59 +9,74 @@
 {% block content %}
 
 
-<h2 class="text-center">งานสอน</h2>
-<br/>
 
-
-<table class="table text-center">
-	<tr>
-		<th >รหัสวิชา</th>
-		<th class="col-sm-2 text-center">ชื่อวิชา</th>
-		<th class="col-sm-1 text-center">สัดส่วนการสอน</th>
-		<th class="col-sm-1 text-center">จำนวนหน่วยกิตการบรรยาย</th>
-		<th class="col-sm-1 text-center">จำนวนหน่วยกิตการปฏิบัติการ</th>
-		<th class="col-sm-2 text-center">ภาค</th>
-		<th class="col-sm-1 text-center">จำนวนนักศึกษา</th>
-		<th class="col-sm-1 text-center">สัดส่วนคะแนน</th>
-		<th>หมายเหตุ</th>
-		{% if request.user.is_staff  %}
-		<th class="col-sm-1 text-center">User</th>
-		{% endif %}
-		<th class="col-sm-1 text-center">แก้ไข</th>
-		<th class="col-sm-1 text-center">ลบ</th>
-	</tr>
-
-{% for obj in object_list %}	
-	<tr>
-		<td class="text-center">{{ obj.subject_ID }}</td>
-		<td class="text-center">{{ obj.subject }}</td>
-		<td class="text-center">{{ obj.ratio }}</td>
-		<td class="text-center">{{ obj.num_of_lecture }}</td>
-		<td class="text-center">{{ obj.num_of_lab }}</td>
-		<td class="text-center">{{ obj.program_ID }}</td>
-		<td class="text-center">{{ obj.num_of_student }}</td>
-		<td class="text-center">{{ obj.ratio_of_score }}</td>
-		<td >{{ obj.comment }}</td>
-		{% if request.user.is_staff  %}
-		<td class="text-center">{{ obj.user}}</td>
-		{% endif %}
-		<td class="text-center"><a href="{% url 'workload:update' id=obj.id %}">Edit</a><br/></td>
-		<td class="text-center"><a href="{% url 'workload:delete' id=obj.id %}">Delete</a><br/></td>
-	</tr>
-
-{% endfor%}
-
+<div id="wrapper">
+  <h1>งานสอน</h1>
+  
+<table id="keywords" class="table table-header-rotated" cellspacing="0" cellpadding="0">
+	<thead>
+		<tr>
+			<th >รหัสวิชา</th>
+			<th class="col-sm-2 text-center rotate">ชื่อวิชา</th>
+			<th class="col-sm-1 text-center rotate">สัดส่วนการสอน</th>
+			<th class="col-sm-1 text-center rotate"><div><span>จำนวนหน่วยกิตการบรรยาย</div></span></th>
+			<th class="col-sm-1 text-center">จำนวนหน่วยกิตการปฏิบัติการ</th>
+			<th class="col-sm-2 text-center">ภาค</th>
+			<th class="col-sm-1 text-center">จำนวนนักศึกษา</th>
+			<th class="col-sm-1 text-center">สัดส่วนคะแนน</th>
+			<th class="col-sm-1 text-center">หมายเหตุ</th>
+			{% if request.user.is_staff  %}
+			<th class="col-sm-1 text-center">User</th>
+			{% endif %}
+			<th class="col-sm-1 text-center">แก้ไข</th>
+			<th class="col-sm-1 text-center">ลบ</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for obj in object_list %}	
+		<tr>
+			<td class="text-center">{{ obj.subject_ID }}</td>
+			<td class="text-center">{{ obj.subject }}</td>
+			<td class="text-center">{{ obj.ratio }}</td>
+			<td class="text-center">{{ obj.num_of_lecture }}</td>
+			<td class="text-center">{{ obj.num_of_lab }}</td>
+			<td class="text-center"><small>{{ obj.program_ID }}</small></td>
+			<td class="text-center">{{ obj.num_of_student }}</td>
+			<td class="text-center">{{ obj.ratio_of_score }}</td>
+			<td >
+					{% if obj.comment %}
+					<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{{obj.comment}}"><small>show comment</small></button>
+					{% else %}
+					<p><small>no comment</p>
+					{% endif %}
+			</td>
+			{% if request.user.is_staff  %}
+			<td class="text-center">{{ obj.user}}</td>
+			{% endif %}
+			<td class="text-center"><a href="{% url 'workload:update' id=obj.id %}">Edit</a><br/></td>
+			<td class="text-center"><a href="{% url 'workload:delete' id=obj.id %}">Delete</a><br/></td>
+		</tr>
+	{% endfor%}
+	</tbody>
 </table>
-
-<a href="{% url 'workload:create' %}"><button type="button" class="btn btn-default .btn-lg">เพิ่ม</button></a>
-<a href="{% url 'workload:report' %}"><button type="button" class="btn btn-default .btn-lg">Report</button></a>
-
 
 <form method="POST">
 	{% csrf_token %}
+		<a href="{% url 'workload:create' %}">
+			<button type="button" class="btn btn-default .btn-lg">เพิ่ม</button></a>
+		<a href="{% url 'workload:report' %}">
+			<button type="button" class="btn btn-default .btn-lg">Report</button></a>
 		<button type="submit" class="btn btn-default pull-right" name="excel">Excel Report</button>
-	
-
 </form>
+
+</div>
+
+<!-- <script type="text/javascript">
+
+
+
+ </script> -->
+
+
 
 {% endblock content%}

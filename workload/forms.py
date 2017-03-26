@@ -6,11 +6,13 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
-from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions
+from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
 
 from .models import Teaching
 
 class TeachingForm(forms.ModelForm):
+
+
 
 	user = forms.ModelChoiceField(
 	        queryset=Teaching.objects.all(),
@@ -45,14 +47,14 @@ class TeachingForm(forms.ModelForm):
 
 	program_ID = forms.ChoiceField(
 			choices = ( 
-				('option1','โครงการปกติ'),
-				('option2','โครงการพิเศษได้ค่าตอบแทน'),
-				('option3','โครงการพิเศษไม่ได้ค่าตอบแทน'),
-				('option4','งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน'),
+				(u'โครงการปกติ','โครงการปกติ'),
+				(u'โครงการพิเศษได้ค่าตอบแทน','โครงการพิเศษได้ค่าตอบแทน'),
+				(u'โครงการพิเศษไม่ได้ค่าตอบแทน','โครงการพิเศษไม่ได้ค่าตอบแทน'),
+				(u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน','งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน'),
 				),
 			label = "ประเภทโครงการ",
 			widget = forms.RadioSelect,
-			initial = 'option1',
+			initial = u'โครงการปกติ',
 			required = True,
 		)
 
@@ -72,44 +74,53 @@ class TeachingForm(forms.ModelForm):
 			required = False,
 		)
 
-	helper = FormHelper()
-	helper.form_class = 'form-horizontal'
-	helper.layout = Layout(
+	def __init__(self, *args, **kwargs):
 
-			Field('subject_ID'),
-			Field('subject', css_class='input-xlarge', style='width: 300px;'),
-			Field('ratio',),
-			Field('num_of_lecture',),
-			Field('num_of_lab',),
-			Field('program_ID',),
-			Field('num_of_student',),
-			Field('ratio_of_score',),
-			Field('comment',),
+		super(TeachingForm,self).__init__(*args,**kwargs)
+		self.helper = FormHelper()
+		self.helper.form_class = 'form-horizontal'
+		self.helper.label_class = 'col-md-3 col-md-offset-1'
+		self.helper.field_class = 'col-md-5'
+		
+		self.helper.layout = Layout(
 
+				Field('subject_ID'),
+				Field('subject'),
+				Field('ratio',),
+				Field('num_of_lecture',),
+				Field('num_of_lab',),
+				Field('program_ID',),
+				Field('num_of_student',),
+				Field('ratio_of_score',),
+				Field('comment',),
+				Div(
+					Submit('submit','Submit'),
+					style='text-align:center;'
+					)
 		)
 
 	class Meta:
-			model = Teaching
-			fields = [
-					"subject_ID",
-					"subject",
-					"ratio",
-					"num_of_lecture",
-					"num_of_lab",
-					"program_ID",
-					"num_of_student",
-					"ratio_of_score",
-					"comment",
-		]
+		model = Teaching
+		fields = [
+						"subject_ID",
+						"subject",
+						"ratio",
+						"num_of_lecture",
+						"num_of_lab",
+						"program_ID",
+						"num_of_student",
+						"ratio_of_score",
+						"comment",
+			]
 
-	
+		
 
 class ExportForm(forms.ModelForm):
-	user = forms.ModelChoiceField(
-        queryset=Teaching.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'}))
+		user = forms.ModelChoiceField(
+	        queryset=Teaching.objects.all(),
+	        widget=forms.Select(attrs={'class': 'form-control'}))
 
-	class Meta:
-		model = Teaching
-		fields = ["user",]
-	
+		class Meta:
+			model = Teaching
+			fields = ["user",]
+		
