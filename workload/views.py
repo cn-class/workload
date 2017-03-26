@@ -23,21 +23,20 @@ def workload_list(request):
 
 	else:
 		queryset = Teaching.objects.filter(user=current_user)
-		if request.method == 'POST':
-			form = ExportForm(data=request.POST)
-	        # if form.is_valid():
-	        #     user_id = form.data['user']
-	        #     # user = Teaching.objects.get(pk=user_id)
-	        #     user = Teaching.objects.filter(user=user_id)
-	        if 'excel' in request.POST:
-	            response = HttpResponse(content_type='application/vnd.ms-excel')
-	            response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
-	            xlsx_data = WriteToExcel(queryset,current_user)
-	            response.write(xlsx_data)
-	            return response
-
+		if request.method == "POST":
+			form = TeachingForm(request.POST or None, initial={'user':current_user,})
+			if form.is_valid():
+				print("success")
+				instance = form.save(commit=False)
+				instance.user = current_user
+				instance.save()
+				messages.success(request,"Successfully Created")
+				return redirect("workload:list")
+			else:
+				messages.error(request, "Not Successfully Created")
 		else:
-			form = ExportForm()
+			form = TeachingForm()
+	
 	
 	context = {
 		"form": form,
@@ -69,7 +68,6 @@ def workload_create(request):
 			messages.error(request, "Not Successfully Created")
 
 	else:
-		print(current_user)
 		form = TeachingForm()
 
 	context = {
@@ -77,6 +75,7 @@ def workload_create(request):
 		"current_user":current_user,
 	}
 	return render(request, "workload_form.html", context)
+	
 
 def workload_update(request, id=None):
 
@@ -115,30 +114,33 @@ def workload_delete(request, id=None):
 	return redirect("workload:list")
 
 
-def workload_report(request):
+def workload_export(request, id=None):
+		current_user = request.user
+		queryset = Teaching.objects.filter(user=current_user)
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		xlsx_data = WriteToExcel(queryset,current_user)
+		response.write(xlsx_data)
+		print("excel")
+		return response
 
+def workload_report(request):
 	if not request.user.is_authenticated :
 		return redirect("login")
-
 	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
-		
-
    	for instance in data:
    		print(instance)
-
 	return render(request, "workload_report.html")
 
-def detail(request):
 
+def detail(request):
 	if not request.user.is_authenticated :
 		return redirect("login")
-
 	return render(request, "detail.html")
 
-def sum_report(request):
 
+def sum_report(request):
 	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
 
-    
 	return JsonResponse(list(data), safe=False)
 

@@ -81,7 +81,6 @@ class TeachingForm(forms.ModelForm):
 		self.helper.form_class = 'form-horizontal'
 		self.helper.label_class = 'col-md-3 col-md-offset-1'
 		self.helper.field_class = 'col-md-5'
-		
 		self.helper.layout = Layout(
 
 				Field('subject_ID'),
