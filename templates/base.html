@@ -11,19 +11,12 @@
 
 	{% load staticfiles %}
 	<!-- Bootstarp -->
-	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" >
 	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" >
-	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/js/bootstrap.min.js' %}">
+	<link rel="stylesheet" href="{% static 'css/dist/css/sb-admin-2.css' %}" >
+	<link rel="stylesheet" href="{% static 'css/metisMenu/metisMenu.min.css' %}" >
 
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css" >
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-	<!-- <script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="https://d3js.org/d3-scale-chromatic.v0.3.js"></script>
-	<script src="https://d3js.org/d3-selection.v1.js"></script> -->
-	
-	<script src="{% static 'd3/d3.js' %}"></script>
 	<style>
 	{% block style%}
 	{% endblock style %}
@@ -49,31 +42,36 @@
 
 <body>
 
-	<!-- {% include "messages_display.html" %} -->
-	<div class="row">
-		<div class="col-md-8 col-md-offset-1">
-			<h2>แบบฟอร์มรายงานผลการปฏิบัติงานของอาจารย์</h2>
+	<div id="warpper">
+		{%  block navbar%}
+		
+		{%  endblock navbar%}
+		<!-- {% include "messages_display.html" %} -->
+
+		
+		<div id='page-wrapper'>
+			{% block content %}
+
+			{% endblock content %}
 		</div>
 	</div>
 
-	
-	
-	{%  block navbar%}
-	
-	{%  endblock navbar%}
-
-	<div class='container' id='con'>
-
-		{% block content %}
-
-		{% endblock content %}
-	</div>
-
-
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
     <!-- Include all compiled plugins (below), or include individual files as needed -->
   	<script src="{% static 'bootstrap/js/bootstrap.min.js' %} "></script>
+  	<script src="{% static 'css/metisMenu/metisMenu.min.js' %} "></script>
+  	<script src="{% static 'css/dist/js/sb-admin-2.js' %} "></script>
+
+  	<!-- <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v0.3.js"></script>
+	<script src="https://d3js.org/d3-selection.v1.js"></script> -->
+	
+	<script src="{% static 'd3/d3.js' %}"></script>
+
 
 </body>
 </html>

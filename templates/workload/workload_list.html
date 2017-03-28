@@ -18,17 +18,17 @@
 	<table class="table table-condensed" >
 		<thead>
 			<tr>
-				<th >รหัสวิชา</th>
-				<th class="col-sm-2 text-center">ชื่อวิชา</th>
-				<th class="col-sm-1 text-center">สัดส่วนการสอน</th>
-				<th class="col-sm-1 text-center"><div><span>จำนวนหน่วยกิตการบรรยาย</div></span></th>
-				<th class="col-sm-1 text-center">จำนวนหน่วยกิตการปฏิบัติการ</th>
-				<th class="col-sm-2 text-center">ประเภทโครงการ</th>
-				<th class="col-sm-1 text-center">จำนวนนักศึกษา</th>
-				<th class="col-sm-1 text-center">สัดส่วนคะแนน</th>
+				<th class="text-center">รหัสวิชา</th>
+				<th class="text-center">ชื่อวิชา</th>
+				<th class="text-center">สัดส่วนการสอน</th>
+				<th class="text-center"><div><span>จำนวนหน่วยกิตการบรรยาย</div></span></th>
+				<th class="text-center">จำนวนหน่วยกิตการปฏิบัติการ</th>
+				<th class="text-center">ประเภทโครงการ</th>
+				<th class="text-center">จำนวนนักศึกษา</th>
+				<th class="text-center">สัดส่วนคะแนน</th>
 				<!-- <th class="col-sm-1 text-center">หมายเหตุ</th> -->
 				{% if request.user.is_staff  %}
-				<th class="col-sm-1 text-center">User</th>
+				<th class="text-center">User</th>
 				{% endif %}
 				<!-- <th class="col-sm-1 text-center">แก้ไข</th>
 				<th class="col-sm-1 text-center">ลบ</th> -->
@@ -70,13 +70,11 @@
 		</tbody>
 	</table>
 
-	<a href="{% url 'workload:create' %}"><button type="button" class="btn btn-default .btn-lg">เพิ่ม</button>
-	</a>
+	<a href="{% url 'workload:create' %}" class="btn btn-primary">เพิ่ม</a>
 
-	<a href="{% url 'workload:report' %}"><button type="button" class="btn btn-default .btn-lg">Report</button>
-	</a>
+	<a href="{% url 'workload:report' %}" class="btn btn-success">Report</a>
 
-	<a class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >
+	<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >
 	</a>
 
 	<a href="{% url 'workload:export' %}">
