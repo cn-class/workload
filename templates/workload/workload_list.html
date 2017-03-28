@@ -9,12 +9,22 @@
 
 {% block content %}
 
+	<div class="row">
+		<div class="col-lg-12">
+	  		<h1 class="page-header">งานสอน</h2>
 
+	  	</div>
+	</div>
+  	<div class="row">
+	  	<div class="col-lg-12">
+	  		<a href="{% url 'workload:create' %}" class="btn btn-info">เพิ่ม</a>
+	  		<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ></a>
+		</div>
+	</div>
+	<br>
+	<div class="row">
 	<div class="col-lg-12">
-  		<h1 class="page-header">งานสอน</h2>
-  	</div>
-
-	<table class="table table-condensed" >
+	<table class="table table-hover" >
 		<thead>
 			<tr>
 				<th class="text-center">รหัสวิชา</th>
@@ -37,7 +47,7 @@
 			{% for obj in object_list %}	
 			<tr>
 				<td class="text-center">{{ obj.subject_ID }}</td>
-				<td class="text-center">{{ obj.subject }}</td>
+				<td class="col-lg-2 text-center">{{ obj.subject }}</td>
 				<td class="text-center">{{ obj.ratio }}</td>
 				<td class="text-center">{{ obj.num_of_lecture }}</td>
 				<td class="text-center">{{ obj.num_of_lab }}</td>
@@ -68,43 +78,27 @@
 			{% endfor%}
 		</tbody>
 	</table>
-
-	<a href="{% url 'workload:create' %}" class="btn btn-primary">เพิ่ม</a>
-
-	<a href="{% url 'workload:report' %}" class="btn btn-success">Report</a>
-
-	<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >
-	</a>
-
-	<a href="{% url 'workload:export' %}">
-		<button type="button" class="btn btn-default pull-right" name="excel">Excel Report</button>
-	</a>
-
-
-<!-- workload form -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-	<div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="exampleModalLabel">Form</h4>
-	      </div>
-	      <div class="modal-body">
-
-				{% csrf_token %}
-				{% crispy form %}
-
-	      </div>
-	    </div>
 	</div>
-</div>
+	</div>
+	<a href="{% url 'workload:report' %}" class="btn btn-success pull-right"> Report </a>
+	<a href="{% url 'workload:export' %}" class="btn btn-default pull-right"> Excel Report </a>
 
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+	<!-- workload form -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+		<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="exampleModalLabel">Form</h4>
+		      </div>
+		      <div class="modal-body">
 
-</div>
+					{% csrf_token %}
+					{% crispy form %}
 
-
-
-
+		      </div>
+		    </div>
+		</div>
+	</div>
 
 {% endblock content%}
