@@ -18,10 +18,6 @@
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" type="text/css" >
 
 	<style>
-	{% block style%}
-	{% endblock style %}
-	
-
 		.bar {
 		  fill: steelblue;
 		}
@@ -33,9 +29,6 @@
 		.axis--x path {
 		  display: none;
 		}
-
-
-	
 	</style>
 
 </head>
@@ -44,14 +37,12 @@
 
 	<div id="warpper">
 		{%  block navbar%}
-		
 		{%  endblock navbar%}
 		<!-- {% include "messages_display.html" %} -->
 
 		
 		<div id='page-wrapper'>
 			{% block content %}
-
 			{% endblock content %}
 		</div>
 	</div>
