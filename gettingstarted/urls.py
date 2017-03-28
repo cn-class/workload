@@ -20,13 +20,27 @@ import hello.views
 # url(r'^blog/', include('blog.urls')),
 
 urlpatterns = [
-    url(r'^$', hello.views.index, name='index'),
+
+    #Hello
+    url(r'^index/', hello.views.index, name='index'),
     url(r'^db', hello.views.db, name='db'),
     url(r'^admin/', include(admin.site.urls)),
 
     #workload
     url(r'^workload/', include('workload.urls', namespace='workload')),
+    url(r'^thesis/', include('workload2.urls', namespace='workload2')),
+    url(r'^research/', include('workload3.urls', namespace='workload3')),
+    url(r'^document/', include('workload4.urls', namespace='workload4')),
+    url(r'^support/', include('workload5.urls', namespace='workload5')),
+    url(r'^position/', include('workload6.urls', namespace='workload6')),
+    url(r'^benefit/', include('workload7.urls', namespace='workload7')),
 
+
+
+
+
+
+    # TEST
     #account
     url(r'^login/', login_view, name='login'),
     url(r'^register/', register_view, name='register'),

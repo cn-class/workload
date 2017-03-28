@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 from django.db.models import Count,Sum
 from .excel_utils import WriteToExcel
 
-from .models import Teaching
-from .forms import TeachingForm
+from .models import Thesis
+from .forms import ThesisForm
 
 # Create your views here.
 def workload_list(request,id=None):
@@ -22,27 +22,27 @@ def workload_list(request,id=None):
 		return redirect("workload:report")
 
 	else:
-		queryset = Teaching.objects.filter(user=current_user)
+		queryset = Thesis.objects.filter(user=current_user)
 		if request.method == "POST":
-			form = TeachingForm(request.POST or None, initial={'user':current_user,})
+			form = ThesisForm(request.POST or None, initial={'user':current_user,})
 			if form.is_valid():
 				print("success")
 				instance = form.save(commit=False)
 				instance.user = current_user
 				instance.save()
 				messages.success(request,"Successfully Created")
-				return redirect("workload:list")
+				return redirect("workload2:list")
 			else:
 				messages.error(request, "Not Successfully Created")
 		else:
-			form = TeachingForm()
+			form = ThesisForm()
 	
 	context = {
 		"form": form,
 		"object_list": queryset,
 		"current_user":current_user,
 	}
-	return render(request,"workload/workload_list.html",context)
+	return render(request,"workload2/workload_list.html",context)
 
 	
 
@@ -55,20 +55,20 @@ def workload_create(request):
 
 	if request.method == "POST":
 
-		form = TeachingForm(request.POST or None, initial={'user':current_user,})
+		form = ThesisForm(request.POST or None, initial={'user':current_user,})
 		if form.is_valid():
 			print("success")
 			instance = form.save(commit=False)
 			instance.user = current_user
 			instance.save()
 			messages.success(request,"Successfully Created")
-			return redirect("workload:list")
+			return redirect("workload2:list")
 		else:
 			print(form)
 			messages.error(request, "Not Successfully Created")
 
 	else:
-		form = TeachingForm()
+		form = ThesisForm()
 
 	context = {
 		"form": form,
@@ -83,8 +83,9 @@ def workload_update(request, id=None):
 	if not request.user.is_authenticated:
 		return redirect("login")
 
-	instance = get_object_or_404(Teaching,id=id)
-	form = TeachingForm(request.POST or None, instance=instance)
+	print("1")
+	instance = get_object_or_404(Thesis,id=id)
+	form = ThesisForm(request.POST or None, instance=instance)
 	print(form.errors)
 
 	if form.is_valid():
@@ -92,7 +93,7 @@ def workload_update(request, id=None):
 		instance.user = instance.user
 		instance.save()
 		messages.success(request,"<a href='#'>Saved</a>",extra_tags='html_safe')
-		return redirect("workload:list")
+		return redirect("workload2:list")
 	
 	else:
 		print("2")
@@ -110,16 +111,16 @@ def workload_delete(request, id=None):
 	if not request.user.is_authenticated:
 		return redirect("login")
 
-	instance = get_object_or_404(Teaching,id=id)
+	instance = get_object_or_404(Thesis,id=id)
 	instance.delete()
 	messages.success(request,"Successfully Deleted")
-	return redirect("workload:list")
+	return redirect("workload2:list")
 
 
 
 def workload_export(request, id=None):
 		current_user = request.user
-		queryset = Teaching.objects.filter(user=current_user)
+		queryset = Thesis.objects.filter(user=current_user)
 		response = HttpResponse(content_type='application/vnd.ms-excel')
 		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 		xlsx_data = WriteToExcel(queryset,current_user)
@@ -133,7 +134,7 @@ def workload_report(request):
 
 	if not request.user.is_authenticated :
 		return redirect("login")
-	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+	data = Thesis.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
    	for instance in data:
    		print(instance)
 	return render(request, "workload/workload_report.html")
@@ -143,12 +144,12 @@ def workload_report(request):
 def detail(request):
 	if not request.user.is_authenticated :
 		return redirect("login")
-	return render(request, "workload/detail.html")
+	return render(request, "workload2/detail.html")
 
 
 
 def sum_report(request):
-	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+	data = Thesis.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
 
 	return JsonResponse(list(data), safe=False)
 

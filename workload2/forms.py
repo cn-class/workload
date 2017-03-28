@@ -8,23 +8,18 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
 
-from .models import Teaching
+from .models import Thesis
 
-class TeachingForm(forms.ModelForm):
+class ThesisForm(forms.ModelForm):
 
 	user = forms.ModelChoiceField(
-	        queryset=Teaching.objects.all(),
+	        queryset=Thesis.objects.all(),
 	        widget=forms.HiddenInput(),
 	        required = False,
         )
 
-	subject_ID = forms.CharField(
-			label = "รหัสวิชา",
-			required = True,
-		)
-
-	subject = forms.CharField(
-			label = "ชื่อวิชา",
+	thesis_name = forms.CharField(
+			label = "ชื่อโครงงาน/วิทยานิพนธ์",
 			required = True,
 		)
 
@@ -33,13 +28,16 @@ class TeachingForm(forms.ModelForm):
 			required = True,
 		)
 
-	num_of_lecture = forms.IntegerField(
-			label = "จำนวนหน่วยกิตการบรรยาย",
-			required = True,
-		)
-
-	num_of_lab = forms.IntegerField(
-			label = "จำนวนหน่วยกิตการปฏิบัติการ",
+	degree = forms.ChoiceField(
+			choices = ( 
+				(u'โครงงาน','โครงงาน'),
+				(u'สาระนิพนธ์','สาระนิพนธ์'),
+				(u'วิทยานิพนธ์ ป.โทร','วิทยานิพนธ์ ป.โทร'),
+				(u'วิทยานิพนธ์ ป. เอก','วิทยานิพนธ์ ป. เอก'),
+				),
+			label = "ระดับ",
+			widget = forms.RadioSelect,
+			initial = u'โครงงาน',
 			required = True,
 		)
 
@@ -56,16 +54,6 @@ class TeachingForm(forms.ModelForm):
 			required = True,
 		)
 
-	num_of_student = forms.IntegerField(
-			label = "จำนวนนักศึกษา",
-			required = True,
-		)
-
-	ratio_of_score = forms.CharField(
-			label = "อัตราส่วนที่ใช้ในการคำนวณคะแนน",
-			required = True,
-		)
-
 	comment = forms.CharField(
 			label = "หมายเหตุ",
 			widget = forms.Textarea(),
@@ -74,21 +62,17 @@ class TeachingForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
 
-		super(TeachingForm,self).__init__(*args,**kwargs)
+		super(ThesisForm,self).__init__(*args,**kwargs)
 		self.helper = FormHelper()
 		self.helper.form_class = 'form-horizontal'
 		self.helper.label_class = 'col-md-3 col-md-offset-1'
 		self.helper.field_class = 'col-md-5'
 		self.helper.layout = Layout(
 
-				Field('subject_ID'),
-				Field('subject'),
+				Field('thesis_name'),
 				Field('ratio',),
-				Field('num_of_lecture',),
-				Field('num_of_lab',),
+				Field('degree',),
 				Field('program_ID',),
-				Field('num_of_student',),
-				Field('ratio_of_score',),
 				Field('comment',),
 				Div(
 					Submit('submit','Submit'),
@@ -97,17 +81,12 @@ class TeachingForm(forms.ModelForm):
 		)
 
 	class Meta:
-		model = Teaching
+		model = Thesis
 		fields = [
-						"subject_ID",
-						"subject",
+						"thesis_name",
 						"ratio",
-						"num_of_lecture",
-						"num_of_lab",
+						"degree",
 						"program_ID",
-						"num_of_student",
-						"ratio_of_score",
 						"comment",
-			]
-
-
+			]		
+		

@@ -40,10 +40,15 @@ INSTALLED_APPS = (
     'hello',
     'account',
     'workload',
+    'workload2',
+    'workload3',
+    'workload4',
+    'workload5',
+    'workload6',
+    'workload7',
 
     'd3ex',
     'exporting',
-
 
     'crispy_forms',
 
@@ -127,15 +132,16 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 SESSION_COOKIE_SECURE = False
 SESSION_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 
 SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 
 SECURE_FRAME_DENY = True
 

@@ -1,16 +1,29 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% crispy TeachingForm TeachingForm.helper %}
+{% crispy TeachingForm TeacheingForm.helper %}
 
 {% block navbar %}
 {% include 'navbar.html' %}
 {% endblock navbar %}
 
-{% block content %}
+{% block content %} 
 
-<h1>Form</h1>
+<!-- <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Form</h4>
+      </div>
+      <div class="modal-body">
 
 			{% csrf_token %}
 			{% crispy form %}
 
-{% endblock content%}
+      </div>
+    </div>
+</div> -->
+
+{% csrf_token %}
+{% crispy form %}
+
+{% endblock content %}
