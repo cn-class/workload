@@ -35,7 +35,8 @@ urlpatterns = [
     url(r'^position/', include('workload6.urls', namespace='workload6')),
     url(r'^benefit/', include('workload7.urls', namespace='workload7')),
 
-
+    #home-page
+    url(r'$',RedirectView.as_views(url='login')),
 
 
 
