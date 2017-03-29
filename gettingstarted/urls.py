@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-form django.views.generic import RedirectView
 
 from account.views import (login_view,register_view,logout_view)
 from exporting.views import (all_towns,today_weather,weather_history,details)
@@ -36,15 +35,10 @@ urlpatterns = [
     url(r'^position/', include('workload6.urls', namespace='workload6')),
     url(r'^benefit/', include('workload7.urls', namespace='workload7')),
 
-    #home-page
-    url(r'^$',RedirectView.as_views(url='login')),
-
-
-
 
     # TEST
     #account
-    url(r'^login/', login_view, name='login'),
+    url(r'^', login_view, name='login'),
     url(r'^register/', register_view, name='register'),
     url(r'^logout/', logout_view, name='logout'),
 
