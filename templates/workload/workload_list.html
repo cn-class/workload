@@ -11,8 +11,7 @@
 
 	<div class="row">
 		<div class="col-lg-12">
-	  		<h1 class="page-header">งานสอน</h2>
-
+	  		<h3 class="page-header">งานสอน</h3>
 	  	</div>
 	</div>
   	<div class="row">
@@ -66,11 +65,12 @@
 				<td class="text-center">{{ obj.user}}</td>
 				{% endif %}
 				<td class="text-center">
-					<a class="glyphicon glyphicon-cog" href="{% url 'workload:update' id=obj.id %}">
+					<a href="{% url 'workload:update' id=obj.id %}">
+						<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 					</a>
 				</td>
 				<td class="text-center">
-					<a href="{% url 'workload:delete' id=obj.id %}" >
+					<a href="{% url 'workload:delete' id=obj.id %}">
 						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					</a>
 				</td>

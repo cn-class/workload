@@ -9,29 +9,36 @@
 
 {% block content %}
 
-
-
-
-
-  <h2>งานวิจัยและงานสร้างสรรค์</h2>
-  <br>
-  <div class="container">
-	<table class="table table-condensed" >
-		<thead class="thead-inverse">
+	<div class="row">
+		<div class="col-lg-12">
+		  	<h3 class="page-header">งานวิจัยและงานสร้างสรรค์</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+		  	<a href="{% url 'workload3:create' %}" class="btn btn-info">เพิ่ม</a>
+		  	<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ></a>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+	<div class="col-lg-12">
+	<table class="table table-hover" >
+		<thead>
 			<tr>
-				<th class="col-sm-1 text-center">ชื่อผลงาน</th>
-				<th class="col-sm-1 text-center">ชื่อผู้แต่งร่วม</th>
-				<th class="col-sm-1 text-center">วารสารที่ตีพิมพ์</th>
-				<th class="col-sm-1 text-center">ปีที่ตีพิมพ์</th>
-				<th class="col-sm-1 text-center">สัดส่วนผลงาน</th>
-				<th class="col-sm-1 text-center">ระดับ</th>
-				<th class="col-sm-1 text-center">สิงประดิษฐ์</th>
-				<th class="col-sm-1 text-center">หมายเหตุ</th>
+				<th class="col-lg-2 text-center">ชื่อผลงาน</th>
+				<th class="text-center">ชื่อผู้แต่งร่วม</th>
+				<th class="text-center">วารสารที่ตีพิมพ์</th>
+				<th class="text-center">ปีที่ตีพิมพ์</th>
+				<th class="text-center">สัดส่วนผลงาน</th>
+				<th class="text-center">ระดับ</th>
+				<th class="text-center">สิงประดิษฐ์</th>
+				<th class="text-center"></th>
 				{% if request.user.is_staff  %}
-				<th class="col-sm-1 text-center">User</th>
+				<th class="text-center">User</th>
 				{% endif %}
-				<th class="col-sm-1 text-center">แก้ไข</th>
-				<th class="col-sm-1 text-center">ลบ</th>
+				<th class="text-center"></th>
+				<th class="text-center"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -68,47 +75,27 @@
 			{% endfor%}
 		</tbody>
 	</table>
-</div>
-
-	<a href="{% url 'workload3:create' %}"><button type="button" class="btn btn-default .btn-lg">เพิ่ม</button>
-	</a>
-
-	<a href="{% url 'workload3:report' %}"><button type="button" class="btn btn-default .btn-lg">Report</button>
-	</a>
-
-	<a class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" >
-	</a>
-
-	<a href="{% url 'workload3:export' %}">
-		<button type="button" class="btn btn-default pull-right" name="excel">Excel Report</button>
-	</a>
-
-
-
-<!-- workload form -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
-	<div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="exampleModalLabel">Form</h4>
-	      </div>
-	      <div class="modal-body">
-
-				{% csrf_token %}
-				{% crispy form %}
-
-	      </div>
-	    </div>
 	</div>
-</div>
+	</div>
 
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+	<a href="{% url 'workload3:report' %}" class="btn btn-success pull-right"> Report </a>
+	<a href="{% url 'workload3:export' %}" class="btn btn-default pull-right"> Excel Report </a>
 
-</div>
+	<!-- workload form -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+		<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="exampleModalLabel">Form</h4>
+		      </div>
+		      <div class="modal-body">
 
+					{% csrf_token %}
+					{% crispy form %}
 
-
-
-
+		      </div>
+		    </div>
+		</div>
+	</div>
 {% endblock content%}
