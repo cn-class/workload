@@ -19,7 +19,7 @@ def workload_list(request,id=None):
 
 	current_user = request.user
 	if request.user.is_staff or request.user.is_superuser:
-		return redirect("workload:report")
+		return redirect("workload2:report")
 
 	else:
 		queryset = Thesis.objects.filter(user=current_user)
@@ -119,13 +119,17 @@ def workload_delete(request, id=None):
 
 
 def workload_export(request, id=None):
+
 		current_user = request.user
-		queryset = Thesis.objects.filter(user=current_user)
+		if request.user.is_staff or request.user.is_superuser:
+			queryset = Thesis.objects.all()
+		else:
+			queryset = Thesis.objects.filter(user=current_user)
+
 		response = HttpResponse(content_type='application/vnd.ms-excel')
 		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 		xlsx_data = WriteToExcel(queryset,current_user)
 		response.write(xlsx_data)
-		print("excel")
 		return response
 
 
@@ -134,10 +138,14 @@ def workload_report(request):
 
 	if not request.user.is_authenticated :
 		return redirect("login")
-	data = Thesis.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
-   	for instance in data:
-   		print(instance)
-	return render(request, "workload/workload_report.html")
+
+	if not request.user.is_staff:
+		return render(request,"404.html")
+	current_user = request.user
+	context ={
+		"current_user":current_user,
+	}
+	return render(request, "workload2/workload_report.html",context)
 
 
 
@@ -149,7 +157,10 @@ def detail(request):
 
 
 def sum_report(request):
-	data = Thesis.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+	# data = Research.objects.all().values('user__username').annotate(total=Count('user'))
+	data = Thesis.objects.all().values('user__username').annotate(total=Sum('user'))
+	for instance in data:
+		print(instance)
 
 	return JsonResponse(list(data), safe=False)
 

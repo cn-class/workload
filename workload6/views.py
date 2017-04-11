@@ -119,8 +119,13 @@ def workload_delete(request, id=None):
 
 
 def workload_export(request, id=None):
+		
 		current_user = request.user
-		queryset = Position.objects.filter(user=current_user)
+		if request.user.is_staff or request.user.is_superuser:
+			queryset = Position.objects.all()
+		else:
+			queryset = Position.objects.filter(user=current_user)
+
 		response = HttpResponse(content_type='application/vnd.ms-excel')
 		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 		xlsx_data = WriteToExcel(queryset,current_user)
@@ -134,10 +139,14 @@ def workload_report(request):
 
 	if not request.user.is_authenticated :
 		return redirect("login")
-	data = Position.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
-   	for instance in data:
-   		print(instance)
-	return render(request, "workload6/workload_report.html")
+
+	if not request.user.is_staff:
+		return render(request,"404.html")
+	current_user = request.user
+	context ={
+		"current_user":current_user,
+	}
+	return render(request, "workload6/workload_report.html",context)
 
 
 
@@ -149,7 +158,9 @@ def detail(request):
 
 
 def sum_report(request):
-	data = Position.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+	data = Position.objects.all().values('user__username').annotate(total=Sum('user'))
+	for instance in data:
+		print(instance)
 
 	return JsonResponse(list(data), safe=False)
 

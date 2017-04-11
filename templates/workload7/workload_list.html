@@ -18,6 +18,7 @@
 	  	<div class="col-lg-12">
 	  		<a href="{% url 'workload7:create' %}" class="btn btn-info">เพิ่ม</a>
 	  		<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ></a>
+	  		<a href="{% url 'workload7:export' %}" class="btn btn-default pull-right"> Excel Report </a>
 		</div>
 	</div>
 	<br>
@@ -67,8 +68,7 @@
 	</table>
 	</div>
 	</div>
-	<a href="{% url 'workload:report' %}" class="btn btn-success pull-right"> Report </a>
-	<a href="{% url 'workload:export' %}" class="btn btn-default pull-right"> Excel Report </a>
+	
 
 	<!-- workload form -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >

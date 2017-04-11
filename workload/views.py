@@ -2,6 +2,7 @@
 from django.contrib import messages
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import User
@@ -118,8 +119,13 @@ def workload_delete(request, id=None):
 
 
 def workload_export(request, id=None):
+
 		current_user = request.user
-		queryset = Teaching.objects.filter(user=current_user)
+		if request.user.is_staff or request.user.is_superuser:
+			queryset = Teaching.objects.all()
+		else:
+			queryset = Teaching.objects.filter(user=current_user)
+
 		response = HttpResponse(content_type='application/vnd.ms-excel')
 		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 		xlsx_data = WriteToExcel(queryset,current_user)
@@ -128,27 +134,39 @@ def workload_export(request, id=None):
 		return response
 
 
+def detail(request):
+	if not request.user.is_authenticated :
+		return redirect("login")
+
+	return render(request, "workload/detail.html")
+
+
+def sum_detail(request):
+	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+	return JsonResponse(list(data), safe=False)
+
 
 def workload_report(request):
 
 	if not request.user.is_authenticated :
 		return redirect("login")
-	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
-   	for instance in data:
-   		print(instance)
-	return render(request, "workload/workload_report.html")
 
-
-
-def detail(request):
-	if not request.user.is_authenticated :
-		return redirect("login")
-	return render(request, "workload/detail.html")
-
+	if not request.user.is_staff:
+		return redirect("404.html")
+	current_user = request.user
+	context ={
+		"current_user":current_user,
+	}
+	return render(request, "workload/workload_report.html",context)
 
 
 def sum_report(request):
 	data = Teaching.objects.all().values('user__username').annotate(sum_items=Sum('num_of_lecture'))
+	# data = Teaching.objects.all().values('user__username','num_of_lecture','subject')
+	for instance in data:
+   		print(instance)
+
+   	# data = serializers.serialize("json",data)
 
 	return JsonResponse(list(data), safe=False)
 

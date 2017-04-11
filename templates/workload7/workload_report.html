@@ -7,81 +7,156 @@
 
 {% block content %}
 
-<h1>Report</h1>
+<div class="row">
+	<div class="col-lg-12">
+		<h3 class="page-header">รายงานของรางวัลต่างๆ</h3>
+	</div>
+</div>
 
-<h2>งานสอน</h2>
+<p>จำนวนรางวัลของอาจารย์แต่ละท่าน</p>
 
-<p>จำนวนหน่วยกิตที่บรรยายต่อสัปดาห์</p>
+<div class="row">
+	<div class="col-lg-12">
+		<div id="svg"></div>
+	</div>
+</div>
+<!-- <script src="{% static 'd3/d3.min.js' %}"></script>
+ --><script src="http://d3js.org/d3.v3.min.js"></script>
 
-<svg width="500" height="500"></svg>
 <script>
 
-	
-	var svg = d3.select("svg"),
-	    margin = {top: 20, right: 10, bottom: 30, left: 50},
-	    width = +svg.attr("width") - margin.left - margin.right,
-	    height = +svg.attr("height") - margin.top - margin.bottom;
-
-	var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-	    y = d3.scaleLinear().rangeRound([height, 0]);
-	
-
-	var widthScale = d3.scaleLinear()
-						.domain([0,50])
-						.range([0,width]);
-
-	var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
-
-	// var color = d3.scale.linear()
-	// 				.domain([0,60])
-	// 				.range(["red","blue"]);
-
-	var canvas = svg.append("svg")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
-
-	d3.json("{% url 'workload:sum_report' %}", function (error,data) 
-	{
-
-		// var canvas = d3.select(".container").append("svg")
-		// 			.attr("width",width)
-		// 			.attr("height",height)
 		
-		y.domain(data.map(function(d) { return d.user__username; }));
+		var url = "{% url 'workload7:sum_report' %}";
+		d3.json(url, function (error, data) {
 
-		
-	
-		canvas.selectAll("rect")
-				.data(data)
-				.enter()
-					.append("rect")
-					.attr("width",function (d) { return widthScale(d.sum_items) ; })
-					.attr("height", 45)
-					.attr("y",function(d,i) {return i * 50 ; })
-					.attr("fill","blue")
+			var benefit = data.map(function(d) {
+						return d.total;
+				});
 
-		canvas.selectAll("text")
-			.data(data)
-			.enter()
-				.append("text")
-				.attr("fill","dark")
-				.attr("y",function (d,i) { return i * 50 + 35; })
-				.attr("x",function (d) {return widthScale(d.sum_items) ; })
-				.text(function(d) { return d.user__username + " sum: " + d.sum_items + " หน่วยกิต"; })
+			console.log(benefit)
 
-		canvas.append("svg")
-			.attr("tranform","translate(0,"+ height +")")
-			.call(d3.axisBottom(widthScale))
+			var maxLecture = d3.max(benefit);
+
+		    var margin = { top: 10, right: 10, bottom: 260, left: 85 };
+
+		    var graphWidth = 400, graphHeight = 300;
+
+		    var totalWidth = graphWidth + margin.left + margin.right;
+		    var totalHeight = graphHeight + margin.top + margin.bottom;
+
+		    var axisPadding = 3;
 
 
-	});
-	      
+		    var svg = d3.select('#svg')
+		                .append('svg')
+		                .attr({ width: totalWidth, height: totalHeight });
+
+            var mainGroup = svg
+                        .append('g')
+                        .attr('transform', 'translate(' + margin.left + ',' +
+                        margin.top + ")");
+
+            var bands = d3.scale.ordinal()
+                .domain(benefit)
+                .rangeBands([0, graphWidth], 0.05);
+
+            var yScale = d3.scale
+                .linear()
+                .domain([0, maxLecture])
+                .range([0, graphHeight]);
+
+            function translator(d, i) {
+                console.log(bands.range()[i])
+                return "translate(" + bands.range()[i] + "," +
+                                        (graphHeight - yScale(d)) + ")";
+            }
+
+            var barGroup = mainGroup.selectAll('g')
+                .data(benefit)
+                .enter()
+                .append('g')
+                .attr('transform', translator);
+
+            barGroup.append('rect')
+                .attr({
+                    fill: 'steelblue',
+                    width: bands.rangeBand(),
+                    height: function(d) { return yScale(d); }
+                });
+
+            barGroup.append('text')
+                .text(function(d) { return d; })
+                .style('text-anchor', 'start')
+                .attr({
+                    dx: 10,
+                    dy: -10,
+                    transform: 'rotate(90)',
+                    fill: 'white'
+                });
+
+            var leftAxisGroup = svg.append('g');
+            leftAxisGroup.attr({
+                transform: 'translate(' + (margin.left - axisPadding) + ',' +
+                                            margin.top + ')'
+            });
+
+            var yAxisScale = d3.scale
+                .linear()
+                .domain([maxLecture, 0])
+                .range([0, graphHeight]);
+
+            var leftAxis = d3.svg.axis()
+                .orient('left')
+                .scale(yAxisScale);
+
+            var leftAxisNodes = leftAxisGroup.call(leftAxis);
+            styleAxisNodes(leftAxisNodes);
+
+            var titles = data.map(function(d) { return d.user__username; });
+            var bottomAxisScale = d3.scale.ordinal()
+                .domain(titles)
+                .rangeBands([axisPadding, graphWidth + axisPadding]);
+
+            var bottomAxis = d3.svg
+                .axis()
+                .scale(bottomAxisScale)
+                .orient("bottom");
+
+            var bottomAxisX = margin.left - axisPadding;
+            var bottomAxisY = totalHeight - margin.bottom + axisPadding;
+
+            var bottomAxisGroup = svg.append("g")
+                .attr({ transform: 'translate(' + bottomAxisX + ',' + bottomAxisY + ')' });
+
+            var bottomAxisNodes = bottomAxisGroup.call(bottomAxis);
+            styleAxisNodes(bottomAxisNodes);
+
+            bottomAxisNodes.selectAll("text")
+                .style('text-anchor', 'start')
+                .attr({
+                    dx: 10,
+                    dy: -5,
+                    transform: 'rotate(60)'
+                });
+
+            function styleAxisNodes(axisNodes) {
+                axisNodes.selectAll('.domain')
+                    .attr({
+                        fill: 'none',
+                        'stroke-width': 1,
+                        stroke: 'black'
+                    });
+                axisNodes.selectAll('.tick line')
+                    .attr({
+                        fill: 'none',
+                        'stroke-width': 1,
+                        stroke: 'black'
+                    });
+            }
+        });
+
 
 </script>
-
-<a href="{% url 'workload:detail' %}">teacher1</a>
-<a href="{% url 'workload:detail' %}">teacher2</a>
-<a href="{% url 'workload:detail' %}">teacher3</a>
  
 
 {% endblock content%}

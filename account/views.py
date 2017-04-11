@@ -1,7 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
-# Create your views here.
+from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import (
 	authenticate,
 	get_user_model,
@@ -11,13 +9,29 @@ from django.contrib.auth import (
 	)
 
 from django.shortcuts import render,redirect
-
 from .forms import UserLoginForm , UserRegisterForm
 
-# Create your views here.
+
+# class MaintenanceModeMiddleware(object):
+#     """
+#     Maintenance mode for django
+
+#     If an anonymous user requests a page, he/she is redirected to the
+#     maintenance page.
+#     """
+#     def process_request(self, request):
+
+#         is_login = request.path in (
+#             settings.LOGIN_REDIRECT_URL,
+#             settings.LOGIN_URL,
+#             settings.LOGOUT_URL,
+#             settings.MAINTENANCE_PATH,
+#         )
+#         if (not is_login) and settings.MAINTENANCE and (not request.user.is_authenticated()):
+#             return HttpResponseRedirect(settings.MAINTENANCE_PATH)
+#         return None
 
 def login_view(request):
-
 
 	if request.user.is_authenticated:
 		return redirect("workload:list")

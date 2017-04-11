@@ -43,14 +43,16 @@ def WriteToExcel(query_data,current_user):
     
     title_text = u"{0} {1}".format(ugettext("Report"), current_user)
     # merge cells
-    worksheet_s.merge_range('B2:I2', title_text, title)
+    worksheet_s.merge_range('A2:I2', title_text, title)
 
     # write header
-    worksheet_s.write(4, 0, ugettext("No"), header)
+    worksheet_s.merge_range('A3:I3',ugettext(u"งานสอน"))
+    worksheet_s.merge_range('D4:E4',ugettext(u"จำนวนหนว่ยกิตการ"),header)
+    worksheet_s.write(4, 0, ugettext(u"รหัสวิชา"), header)
     worksheet_s.write(4, 1, ugettext(u"ชื่อวิชา"), header)
     worksheet_s.write(4, 2, ugettext(u"สัดส่วนการสอน"), header)
-    worksheet_s.write(4, 3, ugettext(u"จำนวนหน่วยกิตการบรรยาย"), header)
-    worksheet_s.write(4, 4, ugettext(u"จำนวนหน่วยกิตการปฏิบัติการ"), header)
+    worksheet_s.write(4, 3, ugettext(u"บรรยาย"), header)
+    worksheet_s.write(4, 4, ugettext(u"ปฏิบัติการ"), header)
     worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
     worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
     worksheet_s.write(4, 7, ugettext(u"สัดส่วนคะแนน"), header)
@@ -58,41 +60,45 @@ def WriteToExcel(query_data,current_user):
     
 
     # column widths
-    town_col_width = 10
+    subject_col_width = 15
     description_col_width = 10
-    observations_col_width = 25
+    comment_col_width = 25
 
     # add data to the table
     for idx, data in enumerate(query_data):
         row = 5 + idx
-        worksheet_s.write_number(row, 0, idx + 1, cell_center)
+        worksheet_s.write_string(row, 0, data.subject_ID, cell_center)
 
-        worksheet_s.write_string(row, 1, data.subject, cell)
-        # if len(data.town.name) > town_col_width:
-        #     town_col_width = len(data.town.name)
+        subject = data.subject.replace('\r','')
+        worksheet_s.write_string(row, 1, subject, cell_center)
+        subject_rows = compute_row(subject,subject_col_width)
+        worksheet_s.set_row(row,15 * subject_rows)
 
         worksheet_s.write_number(row, 2, data.ratio, cell_center)
         worksheet_s.write_number(row, 3, data.num_of_lecture, cell_center)
-        # if len(data.description) > description_col_width:
-        #     description_col_width = len(data.description)
 
         worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
         worksheet_s.write_string(row, 5, data.program_ID, cell_center)
         worksheet_s.write_number(row, 6, data.num_of_student, cell_center)
-        worksheet_s.write_number(row, 7, data.ratio_of_score, cell_center)
-        worksheet_s.write_string(row, 8, data.comment, cell_center)
+        worksheet_s.write_string(row, 7, data.ratio_of_score, cell_center)
+
+        comment = data.comment.replace('\r','')
+        worksheet_s.write_string(row, 8, comment, cell)
+        comment_rows = compute_row(comment,comment_col_width)
+        print(comment_rows)
+        worksheet_s.set_row(row,15 * comment_rows)
 
         
 
     # change column widths
-    worksheet_s.set_column('B:B', town_col_width)  # subject column
+    worksheet_s.set_column('B:B', subject_col_width)  # subject column
     worksheet_s.set_column('C:C', 11)  # ratio column
-    worksheet_s.set_column('D:D', 17)  # num_of_lecture column
-    worksheet_s.set_column('E:E', 18)  # num_of_lab column
-    worksheet_s.set_column('F:F', 10)  # program column
+    worksheet_s.set_column('D:D', 9)  # num_of_lecture column
+    worksheet_s.set_column('E:E', 9)  # num_of_lab column
+    worksheet_s.set_column('F:F', 20)  # program column
     worksheet_s.set_column('G:G', 15)  # num_of_student column
     worksheet_s.set_column('H:H', 10)  # comment column
-    worksheet_s.set_column('I:I', observations_col_width)  # comment column
+    worksheet_s.set_column('I:I', comment_col_width)  # comment column
 
 
     row = row + 1
@@ -115,4 +121,27 @@ def WriteToExcel(query_data,current_user):
     return xlsx_data
 
 
-    
+def compute_row(text,width):
+    if len(text) < width:
+        return 1
+
+    pharses = text.replace('\r','').split('\n')
+
+    rows = 0
+    for pharse in pharses:
+        if len(pharse) < width:
+            rows = rows + 1
+        else:
+            words = pharse.split(' ')
+            temp = ''
+            for idx,word in enumerate(words):
+                temp = temp + word + ' '
+                # check if column width exceeded
+                if len(temp) > width:
+                    rows = rows + 1
+                    temp = '' + word + ' '
+                # check if it is not the lastword
+                if idx == len(words) - 1 and len(temp) > 0:
+                    rows = rows + 1
+
+    return rows
