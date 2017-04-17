@@ -46,6 +46,7 @@ def login_view(request):
 		return redirect("workload:list")
 	return render(request, "form.html", {"form":form , "title":title})
 
+
 def register_view(request):
 	title = "Register"
 	form = UserRegisterForm(request.POST or None)
@@ -64,6 +65,7 @@ def register_view(request):
 	}
 
 	return render(request, "form.html", context)
+	
 
 def logout_view(request):
 	logout(request)
