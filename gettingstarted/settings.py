@@ -179,18 +179,20 @@ STATICFILES_DIRS = (
 )
 
 # Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-# CRISPY_TEMPLATE_PACK = 'uni_form'
 
-# SOCIAL_AUTH_STORAGE = 'social_django_mongoengine.models.DjangoStorage'
-# SOCIAL_AUTH_USER_MODEL = 'mongoengine.django.auth.User'
 
+
+# SOCIAL AUTH
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'workload:list'
+
+# SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 
 SOCIAL_AUTH_GITHUB_KEY = '9901e684d73704cb1ce7'

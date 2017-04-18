@@ -7,7 +7,7 @@ from django.contrib import admin
 
 from django.contrib.auth import views as auth_views
 
-from account.views import (login_view,register_view,logout_view)
+from account.views import (login_view,register_view,logout_view,settings,password)
 from exporting.views import (all_towns,today_weather,weather_history,details)
 from d3ex.views import (graph,play_count_by_month)
 
@@ -37,11 +37,14 @@ urlpatterns = [
     url(r'^position/', include('workload6.urls', namespace='workload6')),
     url(r'^benefit/', include('workload7.urls', namespace='workload7')),
 
-    #account
+    #account social auth
     url(r'^login/', login_view, name='login'),
     url(r'^register/', register_view, name='register'),
     url(r'^logout/', logout_view, name='logout'),
+    
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
+    url(r'^settings/$', settings, name='settings'),
+    url(r'^settings/password/$', password, name='password'),
 
 
     #weather
