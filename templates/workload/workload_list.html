@@ -14,10 +14,10 @@
 	</div>
   	<div class="row">
 	  	<div class="col-lg-12">
-	  		<a href="{% url 'workload:create' %}" class="btn btn-info">เพิ่ม</a>
+	  		<!-- <a href="{% url 'workload:create' %}" class="btn btn-info">เพิ่ม</a> -->
 	  		<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ></a>
 	  		<!-- <a href="{% url 'workload:detail' %}" class="btn btn-success pull-right"> Report </a> -->
-			<a href="{% url 'workload:export' %}" class="btn btn-default pull-right"> Excel Report </a>
+			<a href="{% url 'workload:export' %}" class="btn btn-success pull-right"> Excel Report </a>
 		</div>
 	</div>
 	<br>
@@ -53,7 +53,7 @@
 				<td class="text-center"><small>{{ obj.program_ID }}</small></td>
 				<td class="text-center">{{ obj.num_of_student }}</td>
 				<td class="text-center">{{ obj.ratio_of_score }}</td>
-				<td >
+				<td class="text-center">
 						{% if obj.comment %}
 						<a href="">
 							<span class="glyphicon glyphicon-comment" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="{{obj.comment}}"></span></a>
