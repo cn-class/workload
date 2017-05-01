@@ -7,6 +7,7 @@ from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
+from bootstrap3_datetime.widgets import DateTimePicker
 
 from .models import Teaching
 
@@ -17,6 +18,10 @@ class TeachingForm(forms.ModelForm):
 	        widget=forms.HiddenInput(),
 	        required = False,
         )
+
+	date = forms.DateTimeField(
+		widget=DateTimePicker(options={"format":"YYYY-MM-DD",
+										"pickTime":False}))
 
 	subject_ID = forms.CharField(
 			label = "รหัสวิชา",
@@ -81,6 +86,7 @@ class TeachingForm(forms.ModelForm):
 		self.helper.field_class = 'col-md-5'
 		self.helper.layout = Layout(
 
+				Field('date'),
 				Field('subject_ID'),
 				Field('subject'),
 				Field('ratio',),
@@ -99,6 +105,7 @@ class TeachingForm(forms.ModelForm):
 	class Meta:
 		model = Teaching
 		fields = [
+						"date",
 						"subject_ID",
 						"subject",
 						"ratio",

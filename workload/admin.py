@@ -14,7 +14,8 @@ class TeachingModelAdmin(admin.ModelAdmin):
 					"program_ID",
 					"num_of_student",
 					"ratio_of_score",
-					"comment"
+					"comment",
+					"date"
 					]
 	class meta:
 		model = Teaching
