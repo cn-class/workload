@@ -7,7 +7,7 @@ from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
-from bootstrap3_datetime.widgets import DateTimePicker
+from bootstrap_datepicker.widgets import DatePicker
 
 from .models import Teaching
 
@@ -19,9 +19,11 @@ class TeachingForm(forms.ModelForm):
 	        required = False,
         )
 
-	date = forms.DateTimeField(
-		widget=DateTimePicker(options={"format":"YYYY-MM-DD",
-										"pickTime":False}))
+	date = forms.DateField(
+			label = "วันที",
+			widget=DatePicker(options={"format":"mm/dd/yyyy","autoclose":True})
+
+		)
 
 	subject_ID = forms.CharField(
 			label = "รหัสวิชา",

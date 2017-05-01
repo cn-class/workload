@@ -56,7 +56,7 @@ INSTALLED_APPS = (
     'exporting',
 
     'crispy_forms',
-    'bootstrap3_datetime',
+    # 'bootstrap3_datetime',
 
     'djangosecure',
     'sslserver',
