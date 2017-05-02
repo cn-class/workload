@@ -17,7 +17,12 @@ class Teaching(models.Model):
 	num_of_student = models.IntegerField()
 	ratio_of_score = models.CharField(max_length=10) 
 	comment = models.TextField()
-	date = models.DateTimeField()
+	date = models.DateTimeField(auto_now_add=True,blank=True)
+
+	@property
+	def get_year(self):
+		return self.date.strftime('%Y')
+
 
 
 

@@ -9,7 +9,8 @@ class SupportModelAdmin(admin.ModelAdmin):
 					"degree",
 					"kind",
 					"committee",
-					"comment"
+					"comment",
+					"date",
 					]
 	class meta:
 		model = Support

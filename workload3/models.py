@@ -16,3 +16,4 @@ class Research(models.Model):
 	degree = models.CharField(max_length=120)
 	degree2 = models.CharField(max_length=120)
 	comment = models.TextField()
+	date = models.DateTimeField(auto_now_add=True)

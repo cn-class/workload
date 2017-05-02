@@ -10,3 +10,4 @@ class Benefit(models.Model):
 	benefit_list = models.CharField(max_length=120)
 	benefit_name = models.CharField(max_length=120)
 	comment = models.TextField()
+	date = models.DateTimeField(auto_now_add=True)

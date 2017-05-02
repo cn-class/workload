@@ -8,8 +8,10 @@ from django.contrib.auth.models import User
 from django.db.models import Count,Sum
 from .excel_utils import WriteToExcel
 
+import datetime
+
 from .models import Benefit
-from .forms import BenefitForm
+from .forms import BenefitForm,ChosenForm
 
 # Create your views here.
 def workload_list(request,id=None):
@@ -24,18 +26,12 @@ def workload_list(request,id=None):
 	else:
 		queryset = Benefit.objects.filter(user=current_user)
 		if request.method == "POST":
-			form = BenefitForm(request.POST or None, initial={'user':current_user,})
-			if form.is_valid():
-				print("success")
-				instance = form.save(commit=False)
-				instance.user = current_user
-				instance.save()
-				messages.success(request,"Successfully Created")
-				return redirect("workload7:list")
-			else:
-				messages.error(request, "Not Successfully Created")
+			form = ChosenForm(request.POST or None)
+			year = request.POST.get("year")
+			print(year)
+			queryset = Benefit.objects.filter(date=year)
 		else:
-			form = BenefitForm()
+			form = ChosenForm()
 	
 	context = {
 		"form": form,

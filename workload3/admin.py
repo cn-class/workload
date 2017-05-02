@@ -12,7 +12,8 @@ class ResearchModelAdmin(admin.ModelAdmin):
 					"ratio",
 					"degree",
 					"degree2",
-					"comment"
+					"comment",
+					"date",
 					]
 	class meta:
 		model = Research

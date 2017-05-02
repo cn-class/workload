@@ -8,6 +8,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
 
+import datetime
+
 from .models import Position
 
 class PositionForm(forms.ModelForm):
@@ -68,3 +70,37 @@ class PositionForm(forms.ModelForm):
 						"comment",
 			]		
 		
+
+class ChosenForm(forms.ModelForm):
+
+
+
+	year = forms.ModelChoiceField(
+	        queryset=Position.objects.dates('date','year'),
+	        # queryset=Position.objects.extra(select={"year":"EXTRACT(year FROM date)"})
+	        # 							.distinct().values_list("year",flat=True),
+	        # queryset=Position.objects.values('date'),
+
+	        initial = datetime.date.year,
+	        label = None,
+
+        )
+
+	def __init__(self, *args, **kwargs):
+
+		super(ChosenForm,self).__init__(*args,**kwargs)
+		self.helper = FormHelper()
+		self.helper.field_template = 'bootstrap3/layout/inline_field.html' 
+		self.helper.form_class = 'form-inline'
+		self.helper.form_id = 'chosen_sub'
+		self.helper.layout = Layout(
+
+				'year',
+					Submit('submit','Submit'),
+		)
+
+	class Meta:
+		model = Position
+		fields = [
+					"year",
+				]

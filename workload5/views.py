@@ -8,8 +8,10 @@ from django.contrib.auth.models import User
 from django.db.models import Count,Sum
 from .excel_utils import WriteToExcel
 
+import datetime
+
 from .models import Support
-from .forms import SupportForm
+from .forms import SupportForm,ChosenForm
 
 # Create your views here.
 def workload_list(request,id=None):
@@ -24,18 +26,12 @@ def workload_list(request,id=None):
 	else:
 		queryset = Support.objects.filter(user=current_user)
 		if request.method == "POST":
-			form = SupportForm(request.POST or None, initial={'user':current_user,})
-			if form.is_valid():
-				print("success")
-				instance = form.save(commit=False)
-				instance.user = current_user
-				instance.save()
-				messages.success(request,"Successfully Created")
-				return redirect("workload5:list")
-			else:
-				messages.error(request, "Not Successfully Created")
+			form = ChosenForm(request.POST or None)
+			year = request.POST.get("year")
+			print(year)
+			queryset = Support.objects.filter(date=year)
 		else:
-			form = SupportForm()
+			form = ChosenForm()
 	
 	context = {
 		"form": form,

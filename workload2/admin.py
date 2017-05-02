@@ -9,7 +9,8 @@ class ThesisModelAdmin(admin.ModelAdmin):
 					"ratio",
 					"degree",
 					"program_ID",
-					"comment"
+					"comment",
+					"date",
 					]
 	class meta:
 		model = Thesis

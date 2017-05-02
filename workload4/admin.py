@@ -11,7 +11,8 @@ class DocumentModelAdmin(admin.ModelAdmin):
 					"page",
 					"ratio",
 					"degree",
-					"comment"
+					"comment",
+					"date",
 					]
 	class meta:
 		model = Document

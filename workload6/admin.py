@@ -8,7 +8,8 @@ class PositionModelAdmin(admin.ModelAdmin):
 					"position_name",
 					"time_start",
 					"time_end",
-					"comment"
+					"comment",
+					"date",
 					]
 	class meta:
 		model = Position

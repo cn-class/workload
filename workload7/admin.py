@@ -7,6 +7,7 @@ class BenefitModelAdmin(admin.ModelAdmin):
 					"user",
 					"benefit_list",
 					"benefit_name",
+					"date",
 					]
 	class meta:
 		model = Benefit

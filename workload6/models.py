@@ -11,3 +11,4 @@ class Position(models.Model):
 	time_start = models.CharField(max_length=120)
 	time_end = models.CharField(max_length=120)
 	comment = models.TextField()
+	date = models.DateTimeField(auto_now_add=True)

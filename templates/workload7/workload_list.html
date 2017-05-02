@@ -15,10 +15,14 @@
 	  	</div>
 	</div>
   	<div class="row">
-	  	<div class="col-lg-12">
-	  		<a href="{% url 'workload7:create' %}" class="btn btn-info">เพิ่ม</a>
-	  		<a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ></a>
-	  		<a href="{% url 'workload7:export' %}" class="btn btn-default pull-right"> Excel Report </a>
+	  	<div class="col-lg-6">
+			{% csrf_token %}
+			{% crispy form %}
+		</div>
+	  	<div class="col-lg-6 ">
+	  		<a href="{% url 'workload7:export' %}" class="btn btn-success pull-right"> Excel Report </a>
+	  		<a href="{% url 'workload7:create' %}" class="btn btn-default pull-right">เพิ่ม</a>
+	  		<!-- <a class="glyphicon glyphicon-plus btn btn-info" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ></a> -->
 		</div>
 	</div>
 	<br>
@@ -71,7 +75,7 @@
 	
 
 	<!-- workload form -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+	<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
 		<div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -80,12 +84,9 @@
 		      </div>
 		      <div class="modal-body">
 
-					{% csrf_token %}
-					{% crispy form %}
-
 		      </div>
 		    </div>
 		</div>
-	</div>
+	</div> -->
 
 {% endblock content%}

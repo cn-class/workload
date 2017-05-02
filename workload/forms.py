@@ -7,9 +7,14 @@ from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
-from bootstrap_datepicker.widgets import DatePicker
+from django.db.models.functions import  TruncDate
+
+import datetime
 
 from .models import Teaching
+
+YEARS = ('2560','2561','2562')
+SEMESTER = ('1','2')
 
 class TeachingForm(forms.ModelForm):
 
@@ -19,11 +24,13 @@ class TeachingForm(forms.ModelForm):
 	        required = False,
         )
 
-	date = forms.DateField(
-			label = "วันที",
-			widget=DatePicker(options={"format":"mm/dd/yyyy","autoclose":True})
+	# date = forms.DateField(
+	# 		label = "วันที่",
+	# 		widget=forms.SelectDateWidget,
+	# 		initial = datetime.date.today,
+	# 		required = False,
 
-		)
+	# 	)
 
 	subject_ID = forms.CharField(
 			label = "รหัสวิชา",
@@ -86,9 +93,9 @@ class TeachingForm(forms.ModelForm):
 		self.helper.form_class = 'form-horizontal'
 		self.helper.label_class = 'col-md-3 col-md-offset-1'
 		self.helper.field_class = 'col-md-5'
+		self.helper.form_id = 'teaching_sub'
 		self.helper.layout = Layout(
 
-				Field('date'),
 				Field('subject_ID'),
 				Field('subject'),
 				Field('ratio',),
@@ -107,7 +114,6 @@ class TeachingForm(forms.ModelForm):
 	class Meta:
 		model = Teaching
 		fields = [
-						"date",
 						"subject_ID",
 						"subject",
 						"ratio",
@@ -120,3 +126,36 @@ class TeachingForm(forms.ModelForm):
 			]
 
 
+class ChosenForm(forms.ModelForm):
+
+
+
+	year = forms.ModelChoiceField(
+	        queryset=Teaching.objects.dates('date','year'),
+	        # queryset=Teaching.objects.extra(select={"year":"EXTRACT(year FROM date)"})
+	        # 							.distinct().values_list("year",flat=True),
+	        # queryset=Teaching.objects.values('date'),
+
+	        initial = datetime.date.year,
+	        label = None,
+
+        )
+
+	def __init__(self, *args, **kwargs):
+
+		super(ChosenForm,self).__init__(*args,**kwargs)
+		self.helper = FormHelper()
+		self.helper.field_template = 'bootstrap3/layout/inline_field.html' 
+		self.helper.form_class = 'form-inline'
+		self.helper.form_id = 'chosen_sub'
+		self.helper.layout = Layout(
+
+				'year',
+					Submit('submit','Submit'),
+		)
+
+	class Meta:
+		model = Teaching
+		fields = [
+					"year",
+				]
