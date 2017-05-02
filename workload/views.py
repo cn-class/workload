@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count,Sum
 from .excel_utils import WriteToExcel
 
-import datetime
+from django.utils.timezone import datetime
 
 from .models import Teaching
 from .forms import TeachingForm ,ChosenForm
@@ -24,45 +24,21 @@ def workload_list(request,id=None):
 		return redirect("workload:report")
 
 	else:
-		queryset = Teaching.objects.filter(user=current_user)
+		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
+		print(datetime.today().day)
 
 		if request.method == "POST":
-			# if 'teaching_sub' in request.POST :
-			# 	form = TeachingForm(request.POST or None, initial={'user':current_user,})
-			# 	if form.is_valid():
-			# 		print("success")
-			# 		instance = form.save(commit=False)
-			# 		instance.user = current_user
-			# 		instance.save()
-			# 		messages.success(request,"Successfully Created")
-			# 		return redirect("workload:list")
-			# 	else:
-			# 		print("false")
-			# 		messages.error(request, "Not Successfully Created")
-			# 	form = TeachingForm()
-
-			# if 'chosen_sub' in request.POST :
-				form2 = ChosenForm(request.POST or None)
-				year = request.POST.get("year")
-				print(year)
-				queryset = Teaching.objects.filter(date=year)
-				# if form2.is_valid():
-				# 	instance2 = form2.save(commit=False)
-				# 	instance2.save()
-				# 	messages.success(request,"Successfully Created")
-				# 	return redirect("workload:list")
-				# else:
-				# 	messages.error(request, "Not Successfully Created")
-				# form2 = ChosenForm()
-			
+			form = ChosenForm(request.POST or None)
+			date = request.POST.get("year")
+			d = datetime.strptime(date,"%Y-%m-%d")
+			print(d.year)
+			queryset = Teaching.objects.filter(user=current_user,date__year=d.year)
 		else:
-			print("else")
-			# form = TeachingForm()
-			form2 = ChosenForm()
+			form = ChosenForm()
 	
 	context = {
 		# "form": form,
-		"form2" : form2,
+		"form" : form,
 		"object_list": queryset,
 		"current_user":current_user,
 	}
