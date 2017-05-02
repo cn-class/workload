@@ -7,14 +7,10 @@ from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
-from django.db.models.functions import  TruncDate
 
-import datetime
+from django.utils.timezone import datetime
 
 from .models import Teaching
-
-YEARS = ('2560','2561','2562')
-SEMESTER = ('1','2')
 
 class TeachingForm(forms.ModelForm):
 
@@ -130,8 +126,7 @@ class ChosenForm(forms.ModelForm):
 
 	year = forms.ModelChoiceField(
 	        queryset=Teaching.objects.dates('date','year'),
-	        initial = datetime.date.year,
-	        label = None,
+	        initial = datetime.today().year,
 
         )
  	

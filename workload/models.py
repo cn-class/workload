@@ -20,8 +20,7 @@ class Teaching(models.Model):
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)
 
-	def get_year(self):
-		return self.date.strftime('date','%Y-%m-%d %H:%M:%S+%M:%S')
+	
 
 
 
