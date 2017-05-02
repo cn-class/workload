@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import User
@@ -25,13 +24,10 @@ def workload_list(request,id=None):
 
 	else:
 		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
-		print(datetime.today().day)
-
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
 			d = datetime.strptime(date,"%Y-%m-%d")
-			print(d.year)
 			queryset = Teaching.objects.filter(user=current_user,date__year=d.year)
 		else:
 			form = ChosenForm()

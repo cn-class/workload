@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -8,28 +9,26 @@ from django.contrib.auth.models import User
 from django.db.models import Count,Sum
 from .excel_utils import WriteToExcel
 
-import datetime
+from django.utils.timezone import datetime
 
 from .models import Benefit
 from .forms import BenefitForm,ChosenForm
 
 # Create your views here.
+@login_required
 def workload_list(request,id=None):
-
-	if not request.user.is_authenticated:
-		return redirect("login")
 
 	current_user = request.user
 	if request.user.is_staff or request.user.is_superuser:
 		return redirect("workload7:report")
 
 	else:
-		queryset = Benefit.objects.filter(user=current_user)
+		queryset = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
-			year = request.POST.get("year")
-			print(year)
-			queryset = Benefit.objects.filter(date=year)
+			date = request.POST.get("year")
+			d = datetime.strptime(date,"%Y-%m-%d")
+			queryset = Benefit.objects.filter(user=current_user,date__year=d.year)
 		else:
 			form = ChosenForm()
 	

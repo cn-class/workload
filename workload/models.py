@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.utils.timezone import now
+from django.utils.timezone import now,datetime
 
 
 class Teaching(models.Model):
@@ -20,9 +20,8 @@ class Teaching(models.Model):
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)
 
-	@property
 	def get_year(self):
-		return self.date.strftime('%Y')
+		return self.date.strftime('date','%Y-%m-%d %H:%M:%S+%M:%S')
 
 
 

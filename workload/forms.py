@@ -128,19 +128,13 @@ class TeachingForm(forms.ModelForm):
 
 class ChosenForm(forms.ModelForm):
 
-
-
 	year = forms.ModelChoiceField(
 	        queryset=Teaching.objects.dates('date','year'),
-	        # queryset=Teaching.objects.extra(select={"year":"EXTRACT(year FROM date)"})
-	        # 							.distinct().values_list("year",flat=True),
-	        # queryset=Teaching.objects.values('date'),
-
 	        initial = datetime.date.year,
 	        label = None,
 
         )
-
+ 	
 	def __init__(self, *args, **kwargs):
 
 		super(ChosenForm,self).__init__(*args,**kwargs)
