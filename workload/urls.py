@@ -8,6 +8,7 @@ from .views import (
 	workload_delete,
 	workload_report,
 	workload_export,
+	workload_export_score,
 	detail,
 	sum_report,
 	)
@@ -19,6 +20,7 @@ urlpatterns = [
 	url( r'^report/$', workload_report,name='report'),
 	url( r'^detail/$', detail,name='detail'),
 	url( r'^export/$', workload_export,name='export'),
+	url( r'^exportscore/$', workload_export_score,name='exportscore'),
 	url( r'^(?P<id>\d+)/edit/$', workload_update, name='update'),
 	url( r'^(?P<id>\d+)/delete/$', workload_delete, name='delete'),
 

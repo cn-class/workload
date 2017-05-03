@@ -101,11 +101,28 @@ def workload_export(request, id=None):
 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 	if request.user.is_staff or request.user.is_superuser:
 		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
-		xlsx_data = WriteToExcelManager(queryset,current_user)
+		xlsx_data = WriteToExcelManager(queryset,current_user,0)
 		response.write(xlsx_data)
 	else:
 		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
-		xlsx_data = WriteToExcel(queryset,current_user)
+		xlsx_data = WriteToExcel(queryset,current_user,0)
+		response.write(xlsx_data)
+
+	return response
+
+
+@login_required
+def workload_export_score(request, id=None):
+	current_user = request.user
+	response = HttpResponse(content_type='application/vnd.ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+	if request.user.is_staff or request.user.is_superuser:
+		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
+		xlsx_data = WriteToExcelManager(queryset,current_user,1)
+		response.write(xlsx_data)
+	else:
+		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
+		xlsx_data = WriteToExcel(queryset,current_user,1)
 		response.write(xlsx_data)
 
 	return response

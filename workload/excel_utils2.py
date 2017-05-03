@@ -8,7 +8,7 @@ from django.db.models import Avg, Sum, Max, Min
 from .models import Teaching
 
 
-def WriteToExcel(query_data,current_user,score):
+def WriteToExcel(query_data,current_user):
     output = StringIO.StringIO()
     workbook = xlsxwriter.Workbook(output)
     worksheet_s = workbook.add_worksheet("Summary")
@@ -57,10 +57,8 @@ def WriteToExcel(query_data,current_user,score):
     worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
     worksheet_s.write(4, 7, ugettext(u"สัดส่วนคะแนน"), header)
     worksheet_s.write(4, 8, ugettext(u"หมายเหตุ"), header)
-    if score:
-        worksheet_s.write(4, 9, ugettext(u"คะแนน"), header)
-
     
+
     # column widths
     subject_col_width = 15
     description_col_width = 10
@@ -89,9 +87,7 @@ def WriteToExcel(query_data,current_user,score):
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
-        if score:
-            worksheet_s.write_string(row, 9, " ", cell_center)
-
+        
 
     # change column widths
     worksheet_s.set_column('B:B', subject_col_width)  # subject column
@@ -102,8 +98,6 @@ def WriteToExcel(query_data,current_user,score):
     worksheet_s.set_column('G:G', 15)  # num_of_student column
     worksheet_s.set_column('H:H', 10)  # comment column
     worksheet_s.set_column('I:I', comment_col_width)  # comment column
-    if score:
-         worksheet_s.set_column('J:J', 10)  # comment column
 
 
     row = row + 1
@@ -126,7 +120,7 @@ def WriteToExcel(query_data,current_user,score):
     return xlsx_data
 
 
-def WriteToExcelManager(query_data,current_user,score):
+def WriteToExcelManager(query_data,current_user):
     output = StringIO.StringIO()
     workbook = xlsxwriter.Workbook(output)
     worksheet_s = workbook.add_worksheet("Summary")
@@ -176,8 +170,6 @@ def WriteToExcelManager(query_data,current_user,score):
     worksheet_s.write(4, 7, ugettext(u"สัดส่วนคะแนน"), header)
     worksheet_s.write(4, 8, ugettext(u"หมายเหตุ"), header)
     worksheet_s.write(4, 9, ugettext(u"user"), header)
-    if score:
-        worksheet_s.write(4, 10, ugettext(u"คะแนน"), header)
     
 
     # column widths
@@ -210,9 +202,6 @@ def WriteToExcelManager(query_data,current_user,score):
 
         worksheet_s.write_string(row, 9, data.user.username, cell_center)
 
-        if score:
-            worksheet_s.write_string(row, 10, "", cell_center)
-
         
 
     # change column widths
@@ -225,8 +214,6 @@ def WriteToExcelManager(query_data,current_user,score):
     worksheet_s.set_column('H:H', 10+5)  # comment column
     worksheet_s.set_column('I:I', comment_col_width+5)  # comment column
     worksheet_s.set_column('J:J', 15+5)
-    if score:
-        worksheet_s.set_column('K:L', 10+5)
 
     row = row + 1
     #Adding some function
