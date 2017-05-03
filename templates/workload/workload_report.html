@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% crispy ChosenForm ChosenForm.helper %}
 
 {% block navbar %}
 {% include 'navbar.html' %}
@@ -12,17 +15,29 @@
 	</div>
 </div>
 
-<p>จำนวนหน่วยกิตที่บรรยายต่อสัปดาห์</p>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-6">
+            {% csrf_token %}
+            {% crispy form %}
+        </div>
+        <a href="{% url 'workload:export' %}" class="btn btn-success pull-right"> Excel Report </a>
+    </div>
+</div>
+<br>
+<p>จำนวนหน่วยกิตที่บรรยายต่อสัปดาห์ ปี {{year}}</p>
 
 <div class="row">
 	<div class="col-lg-12">
 		<div id="svg"></div>
 	</div>
 </div>
+
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
 
 		var url = "{% url 'workload:sum_report' %}";
+
 		d3.json(url, function (error, data) {
 
 			var lecture = data.map(function(d) {

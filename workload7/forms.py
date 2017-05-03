@@ -82,10 +82,6 @@ class ChosenForm(forms.ModelForm):
 
 	year = forms.ModelChoiceField(
 	        queryset=Benefit.objects.dates('date','year'),
-	        # queryset=Benefit.objects.extra(select={"year":"EXTRACT(year FROM date)"})
-	        # 							.distinct().values_list("year",flat=True),
-	        # queryset=Benefit.objects.values('date'),
-
 	        initial = datetime.date.year,
 	        label = None,
 
