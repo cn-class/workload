@@ -26,8 +26,7 @@ def workload_list(request,id=None):
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
-			d = datetime.strptime(date,"%Y-%m-%d")
-			queryset = Thesis.objects.filter(user=current_user,date__year=d.year)
+			queryset = Thesis.objects.filter(user=current_user,date__year=date)
 		else:
 			form = ChosenForm()
 	

@@ -117,12 +117,14 @@ class TeachingForm(forms.ModelForm):
 
 class ChosenForm(forms.ModelForm):
 
-	year = forms.ModelChoiceField(
-	        queryset=Teaching.objects.dates('date','year'),
-	        initial = datetime.today().year,
-	        widget=forms.Select(attrs={'onchange':'actionform.submit();'})
+ 	YEAR_CHOICES = []
+ 	for r  in range(2016,(datetime.today().year)+1):
+ 		YEAR_CHOICES.append((r,r))
 
-        )
+ 	year = forms.ChoiceField(
+			choices = YEAR_CHOICES,
+			initial=datetime.today().year,
+			)
  	
 	def __init__(self, *args, **kwargs):
 

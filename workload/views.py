@@ -27,8 +27,7 @@ def workload_list(request,id=None):
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
-			d = datetime.strptime(date,"%Y-%m-%d")
-			queryset = Teaching.objects.filter(user=current_user,date__year=d.year)
+			queryset = Teaching.objects.filter(user=current_user,date__year=date)
 		else:
 			form = ChosenForm()
 	
@@ -151,8 +150,6 @@ def workload_report(request):
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
-			d = datetime.strptime(date,"%Y-%m-%d")
-			year = d.year
 			# queryset = Teaching.objects.filter(user=current_user,date__year=d.year)
 		else:
 			form = ChosenForm()

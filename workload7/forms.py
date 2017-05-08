@@ -8,7 +8,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
 
-import datetime
+from django.utils.timezone import datetime
 
 from .models import Benefit
 
@@ -86,13 +86,14 @@ class BenefitForm(forms.ModelForm):
 		
 
 class ChosenForm(forms.ModelForm):
+	YEAR_CHOICES = []
+ 	for r  in range(2016,(datetime.today().year)+1):
+ 		YEAR_CHOICES.append((r,r))
 
-	year = forms.ModelChoiceField(
-	        queryset=Benefit.objects.dates('date','year'),
-	        initial = datetime.date.year,
-	        label = None,
-
-        )
+ 	year = forms.ChoiceField(
+			choices = YEAR_CHOICES,
+			initial=datetime.today().year,
+			)
 
 	def __init__(self, *args, **kwargs):
 
