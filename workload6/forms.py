@@ -10,6 +10,7 @@ from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,Inline
 
 from django.utils.timezone import datetime
 from django.contrib.admin.widgets import AdminDateWidget
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
 from .models import Position
@@ -33,9 +34,8 @@ class PositionForm(forms.ModelForm):
 	# 	)
 
 	time_start = forms.DateField(
-				label = "วันที่เริ่มรับตำแหน่ง",
-				widget=forms.TextInput(attrs={'class':'datepicker'})
-		)
+          widget=DateTimePicker(options={"format": "YYYY-MM-DD"}))
+		
 
 	time_end = forms.CharField(
 			label = "วันที่สิ้นสุดตำแหน่ง",
