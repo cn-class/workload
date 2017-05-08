@@ -59,7 +59,7 @@ def workload_create(request):
 		"form": form,
 		"current_user":current_user,
 	}
-	return render(request, "workload_form.html", context)
+	return render(request, "workload6/workload_form_test.html", context)
 
 
 @login_required
