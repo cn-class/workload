@@ -9,6 +9,8 @@ from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
 
 from django.utils.timezone import datetime
+from django.contrib.admin.widgets import AdminDateWidget
+
 
 from .models import Position
 
@@ -25,9 +27,14 @@ class PositionForm(forms.ModelForm):
 			required = True,
 		)
 
-	time_start = forms.CharField(
-			label = "วันที่เริ่มรับตำแหน่ง",
-			required = True,
+	# time_start = forms.CharField(
+	# 		label = "วันที่เริ่มรับตำแหน่ง",
+	# 		required = True,
+	# 	)
+
+	time_start = forms.DateField(
+				label = "วันที่เริ่มรับตำแหน่ง",
+				widget=forms.TextInput(attrs={'class':'datepicker'})
 		)
 
 	time_end = forms.CharField(

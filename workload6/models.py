@@ -9,7 +9,7 @@ from django.utils.timezone import now
 class Position(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL,default=1)
 	position_name = models.CharField(max_length=120)
-	time_start = models.CharField(max_length=120)
-	time_end = models.CharField(max_length=120)
+	time_start = models.DateTimeField(max_length=120)
+	time_end = models.DateTimeField(max_length=120)
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)
