@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # from uni_form.helper import FormHelper
 from crispy_forms.helper import FormHelper
 
-from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
+from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field,Fieldset
 from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
 
 import datetime
@@ -49,24 +49,16 @@ class ResearchForm(forms.ModelForm):
 	degree = forms.ChoiceField(
 			choices = ( 
 				(u'นานาชาติมี impact factor','นานาชาติมี impact factor'),
-				(u'นานาชาติไม่มี impact factor','านาชาติไม่มี impact factor'),
-				(u'ระดับชาติ มธ.','ระดับชาติ มธ.'),
-				(u'วารสารนานาชาติที่อยู่ในข้อมูลสากร','วารสารนานาชาติที่อยู่ในข้อมูลสากร'),
+				(u'นานาชาติไม่มี impact factor','นานาชาติไม่มี impact factor'),
+				(u'ระดับชาติหรือ มธ.','ระดับชาติหรือ มธ.'),
+				(u'วารสารนานาชาติที่อยู่ในข้อมูลสากร','วารสารนานาชาติที่อยู่ในข้อมูลสากล'),
+				(u'สิ่งประดิษฐ์ได้รับการจดสิทธิบัตร','สิ่งประดิษฐ์ได้รับการจดสิทธิบัตร'),
+				(u'สิทธิบัตรที่ถูกนำไปใช้ประโยชน์','สิทธิบัตรที่ถูกนำไปใช้ประโยชน์'),
 				(u'ผลงานวิชาการอื่นๆ','ผลงานวิชาการอื่นๆ'),
 				),
 			label = "ระดับ",
 			widget = forms.RadioSelect,
 			initial = u'นานาชาติมี impact factor',
-			required = False,
-		)
-
-	degree2 = forms.ChoiceField(
-			choices = ( 
-				(u'สิ่งประดิษฐ์ได้รับการจดสิทธิบัตร','สิ่งประดิษฐ์ได้รับการจดสิทธิบัตร'),
-				(u'สิทธิบัตรที่ถูกนำไปใช้ประโยชน์','สิทธิบัตรที่ถูกนำไปใช้ประโยชน์'),
-				),
-			label = "สิงประเดิษฐ์",
-			widget = forms.RadioSelect,
 			required = False,
 		)
 
@@ -90,8 +82,7 @@ class ResearchForm(forms.ModelForm):
 				Field('journal_name'),
 				Field('year'),
 				Field('ratio',),
-				Field('degree',),
-				Field('degree2',),
+				Field('degree'),
 				Field('comment',),
 				Div(
 					Submit('submit','Submit'),
@@ -108,7 +99,6 @@ class ResearchForm(forms.ModelForm):
 						"year",
 						"ratio",
 						"degree",
-						"degree2",
 						"comment",
 			]		
 		

@@ -15,6 +15,5 @@ class Research(models.Model):
 	year = models.IntegerField()
 	ratio = models.IntegerField()
 	degree = models.CharField(max_length=120)
-	degree2 = models.CharField(max_length=120)
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)

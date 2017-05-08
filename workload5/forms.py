@@ -28,6 +28,8 @@ class SupportForm(forms.ModelForm):
 				(u'ผู้ดูแลห้องปฏิบัติการ','ผู้ดูแลห้องปฏิบัติการ'),
 				(u'ผู้ประสานงานวิชาฝึกงาน','ผู้ประสานงานวิชาฝึกงาน'),
 				(u'ประธาน/กรรมการ/เลขานุการร่างหลักสูตร','ประธาน/กรรมการ/เลขานุการร่างหลักสูตร'),
+				(u'เปิดซอง','เปิดซอง'),
+				(u'ตรวจรับ','ตรวจรับ'),
 				),
 			label = "รายการ",
 			widget = forms.RadioSelect,
@@ -39,6 +41,7 @@ class SupportForm(forms.ModelForm):
 			choices = ( 
 				(u'ประธาน','ประธาน'),
 				(u'กรรมการ','กรรมการ'),
+				(u'อื่นๆ','อื่นๆ'),
 				),
 			label = "ระดับ",
 			widget = forms.RadioSelect,
@@ -57,16 +60,6 @@ class SupportForm(forms.ModelForm):
 			required = True,
 		)
 
-	committee = forms.ChoiceField(
-			choices = ( 
-				(u'เปิดซอง','เปิดซอง'),
-				(u'ตรวจรับ','ตรวจรับ'),
-				),
-			label = "ประเภทโครงการ",
-			widget = forms.RadioSelect,
-			initial = u'เปิดซอง',
-			required = True,
-		)
 
 	comment = forms.CharField(
 			label = "หมายเหตุ",
@@ -86,7 +79,6 @@ class SupportForm(forms.ModelForm):
 				Field('support_list'),
 				Field('degree',),
 				Field('kind',),
-				Field('committee',),
 				Field('comment',),
 				Div(
 					Submit('submit','Submit'),
@@ -100,7 +92,6 @@ class SupportForm(forms.ModelForm):
 						"support_list",
 						"degree",
 						"kind",
-						"committee",
 						"comment",
 			]		
 		

@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 
 from crispy_forms.layout import Layout,Div,Submit,HTML,Button,Row,Field
-from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton
+from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,InlineField,StrictButton,FieldWithButtons
 
 from django.utils.timezone import datetime
 
@@ -71,11 +71,6 @@ class TeachingForm(forms.ModelForm):
 			required = True,
 		)
 
-	ratio_of_score = forms.CharField(
-			label = "อัตราส่วนที่ใช้ในการคำนวณคะแนน",
-			required = True,
-		)
-
 	comment = forms.CharField(
 			label = "หมายเหตุ",
 			widget = forms.Textarea(),
@@ -99,7 +94,6 @@ class TeachingForm(forms.ModelForm):
 				Field('num_of_lab',),
 				Field('program_ID',),
 				Field('num_of_student',),
-				Field('ratio_of_score',),
 				Field('comment',),
 				Div(
 					Submit('submit','Submit'),
@@ -117,7 +111,6 @@ class TeachingForm(forms.ModelForm):
 						"num_of_lab",
 						"program_ID",
 						"num_of_student",
-						"ratio_of_score",
 						"comment",
 			]
 
@@ -127,6 +120,7 @@ class ChosenForm(forms.ModelForm):
 	year = forms.ModelChoiceField(
 	        queryset=Teaching.objects.dates('date','year'),
 	        initial = datetime.today().year,
+	        widget=forms.Select(attrs={'onchange':'actionform.submit();'})
 
         )
  	
@@ -140,7 +134,7 @@ class ChosenForm(forms.ModelForm):
 		self.helper.layout = Layout(
 
 				'year',
-					Submit('submit','Submit'),
+				Submit('submit','Submit'),
 		)
 
 	class Meta:

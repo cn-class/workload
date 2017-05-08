@@ -56,6 +56,7 @@ def workload_create(request):
 		form = PositionForm()
 
 	context = {
+		"head" : u"แบบฟอร์มงานบริหาร",
 		"form": form,
 		"current_user":current_user,
 	}
@@ -77,6 +78,7 @@ def workload_update(request, id=None):
 		print("2")
 
 	context = {
+		"head" : u"แก้ไขแบบฟอร์มงานบริหาร",
 		"form": form,
 		"instance" : instance,
 	}

@@ -40,7 +40,6 @@
 				<th class="text-center">จำนวนหน่วยกิตการปฏิบัติการ</th>
 				<th class="text-center">ประเภทโครงการ</th>
 				<th class="text-center">จำนวนนักศึกษา</th>
-				<th class="text-center">สัดส่วนคะแนน</th>
 				<!-- <th class="col-sm-1 text-center">หมายเหตุ</th> -->
 				{% if request.user.is_staff  %}
 				<th class="text-center">User</th>
@@ -59,7 +58,6 @@
 				<td class="text-center">{{ obj.num_of_lab }}</td>
 				<td class="text-center"><small>{{ obj.program_ID }}</small></td>
 				<td class="text-center">{{ obj.num_of_student }}</td>
-				<td class="text-center">{{ obj.ratio_of_score }}</td>
 				<td class="text-center">
 						{% if obj.comment %}
 						<a href="">

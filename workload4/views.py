@@ -57,6 +57,7 @@ def workload_create(request):
 		form = DocumentForm()
 
 	context = {
+		"head" : u"แบบฟอร์มงานเขียนเอกสาร",
 		"form": form,
 		"current_user":current_user,
 	}
@@ -77,6 +78,7 @@ def workload_update(request, id=None):
 	else:
 		print("2")
 	context = {
+		"head" : u"แก้ไขแบบฟอร์มงานเขียนเอกสาร",
 		"form": form,
 		"instance" : instance,
 	}

@@ -25,6 +25,11 @@ class ThesisForm(forms.ModelForm):
 			required = True,
 		)
 
+	student_name = forms.CharField(
+			label = "ชื่อนักศึกษา",
+			required = True,
+		)
+
 	ratio = forms.IntegerField(
 			label = "สัดส่วนการสอน(คิดเป็นร้อยละ)",
 			required = True,
@@ -72,6 +77,7 @@ class ThesisForm(forms.ModelForm):
 		self.helper.layout = Layout(
 
 				Field('thesis_name'),
+				Field('student_name'),
 				Field('ratio',),
 				Field('degree',),
 				Field('program_ID',),
@@ -86,6 +92,7 @@ class ThesisForm(forms.ModelForm):
 		model = Thesis
 		fields = [
 						"thesis_name",
+						"student_name",
 						"ratio",
 						"degree",
 						"program_ID",

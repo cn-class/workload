@@ -8,7 +8,6 @@ class SupportModelAdmin(admin.ModelAdmin):
 					"support_list",
 					"degree",
 					"kind",
-					"committee",
 					"comment",
 					"date",
 					]

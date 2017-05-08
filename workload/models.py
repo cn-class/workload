@@ -16,7 +16,6 @@ class Teaching(models.Model):
 	num_of_lab = models.IntegerField()
 	program_ID = models.CharField(max_length=120)
 	num_of_student = models.IntegerField()
-	ratio_of_score = models.CharField(max_length=10) 
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)
 

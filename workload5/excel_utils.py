@@ -50,8 +50,7 @@ def WriteToExcel(query_data,current_user):
     worksheet_s.write(4, 0, ugettext(u"รายการ"), header)
     worksheet_s.write(4, 1, ugettext(u"ระดับ"), header)
     worksheet_s.write(4, 2, ugettext(u"ประเภท"), header)
-    worksheet_s.write(4, 3, ugettext(u"กรรมการครุภัณฑ์"), header)
-    worksheet_s.write(4, 4, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 3, ugettext(u"หมายเหตุ"), header)
 
     # column widths
     support_list_col_width = 40
@@ -69,19 +68,17 @@ def WriteToExcel(query_data,current_user):
 
         worksheet_s.write_string(row, 1, data.degree, cell_center)
         worksheet_s.write_string(row, 2, data.kind, cell_center)
-        worksheet_s.write_string(row, 3, data.committee, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 4, comment, cell)
+        worksheet_s.write_string(row, 3, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
     # change column widths
-    worksheet_s.set_column('A:A', support_list_col_width)  # subject column
-    worksheet_s.set_column('B:B', 15)  # subject column
-    worksheet_s.set_column('C:C', 15)  # ratio column
-    worksheet_s.set_column('D:D', 15)  # num_of_lecture column
-    worksheet_s.set_column('E:E', comment_col_width)  # comment column
+    worksheet_s.set_column('A:A', support_list_col_width+5)  # subject column
+    worksheet_s.set_column('B:B', 15+5)  # subject column
+    worksheet_s.set_column('C:C', 15+5)  # ratio column
+    worksheet_s.set_column('D:D', comment_col_width+5)  # comment column
 
     row = row + 1
 
@@ -132,9 +129,8 @@ def WriteToExcelManager(query_data,current_user):
     worksheet_s.write(4, 0, ugettext(u"รายการ"), header)
     worksheet_s.write(4, 1, ugettext(u"ระดับ"), header)
     worksheet_s.write(4, 2, ugettext(u"ประเภท"), header)
-    worksheet_s.write(4, 3, ugettext(u"กรรมการครุภัณฑ์"), header)
-    worksheet_s.write(4, 4, ugettext(u"หมายเหตุ"), header)
-    worksheet_s.write(4, 5, ugettext(u"user"), header)
+    worksheet_s.write(4, 3, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 4, ugettext(u"user"), header)
 
     # column widths
     support_list_col_width = 40
@@ -152,23 +148,21 @@ def WriteToExcelManager(query_data,current_user):
 
         worksheet_s.write_string(row, 1, data.degree, cell_center)
         worksheet_s.write_string(row, 2, data.kind, cell_center)
-        worksheet_s.write_string(row, 3, data.committee, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 4, comment, cell)
+        worksheet_s.write_string(row, 3, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
-        worksheet_s.write_string(row, 5, data.user.username, cell_center)
+        worksheet_s.write_string(row, 4, data.user.username, cell_center)
 
         
     # change column widths
     worksheet_s.set_column('A:A', support_list_col_width+5)  # subject column
     worksheet_s.set_column('B:B', 15+5)  # subject column
     worksheet_s.set_column('C:C', 15+5)  # ratio column
-    worksheet_s.set_column('D:D', 15+5)  # num_of_lecture column
-    worksheet_s.set_column('E:E', comment_col_width+5)  # comment column
-    worksheet_s.set_column('F:F', 15+5)
+    worksheet_s.set_column('D:D', comment_col_width+5)  # comment column
+    worksheet_s.set_column('E:E', 15+5)
 
     row = row + 1
 

@@ -6,6 +6,7 @@ class ThesisModelAdmin(admin.ModelAdmin):
 	list_display = [
 					"user",
 					"thesis_name",
+					"student_name",
 					"ratio",
 					"degree",
 					"program_ID",

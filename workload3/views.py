@@ -58,6 +58,7 @@ def workload_create(request):
 		form = ResearchForm()
 
 	context = {
+		"head" : u"แบบฟอร์มงานวิจัย",
 		"form": form,
 		"current_user":current_user,
 	}
@@ -78,6 +79,7 @@ def workload_update(request, id=None):
 	else:
 		print("2")
 	context = {
+		"head" : u"แก้ไขแบบฟอร์มงานวิจัย",
 		"form": form,
 		"instance" : instance,
 	}

@@ -55,10 +55,9 @@ def WriteToExcel(query_data,current_user,score):
     worksheet_s.write(4, 4, ugettext(u"ปฏิบัติการ"), header)
     worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
     worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
-    worksheet_s.write(4, 7, ugettext(u"สัดส่วนคะแนน"), header)
-    worksheet_s.write(4, 8, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
     if score:
-        worksheet_s.write(4, 9, ugettext(u"คะแนน"), header)
+        worksheet_s.write(4, 8, ugettext(u"คะแนน"), header)
 
     
     # column widths
@@ -82,15 +81,14 @@ def WriteToExcel(query_data,current_user,score):
         worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
         worksheet_s.write_string(row, 5, data.program_ID, cell_center)
         worksheet_s.write_number(row, 6, data.num_of_student, cell_center)
-        worksheet_s.write_string(row, 7, data.ratio_of_score, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 8, comment, cell)
+        worksheet_s.write_string(row, 7, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
         if score:
-            worksheet_s.write_string(row, 9, " ", cell_center)
+            worksheet_s.write_string(row, 8, " ", cell_center)
 
 
     # change column widths
@@ -100,10 +98,9 @@ def WriteToExcel(query_data,current_user,score):
     worksheet_s.set_column('E:E', 9)  # num_of_lab column
     worksheet_s.set_column('F:F', 20)  # program column
     worksheet_s.set_column('G:G', 15)  # num_of_student column
-    worksheet_s.set_column('H:H', 10)  # comment column
-    worksheet_s.set_column('I:I', comment_col_width)  # comment column
+    worksheet_s.set_column('H:H', comment_col_width)  # comment column
     if score:
-         worksheet_s.set_column('J:J', 10)  # comment column
+         worksheet_s.set_column('I:I', 10)  # comment column
 
 
     row = row + 1
@@ -173,11 +170,10 @@ def WriteToExcelManager(query_data,current_user,score):
     worksheet_s.write(4, 4, ugettext(u"ปฏิบัติการ"), header)
     worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
     worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
-    worksheet_s.write(4, 7, ugettext(u"สัดส่วนคะแนน"), header)
-    worksheet_s.write(4, 8, ugettext(u"หมายเหตุ"), header)
-    worksheet_s.write(4, 9, ugettext(u"user"), header)
+    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 8, ugettext(u"user"), header)
     if score:
-        worksheet_s.write(4, 10, ugettext(u"คะแนน"), header)
+        worksheet_s.write(4, 9, ugettext(u"คะแนน"), header)
     
 
     # column widths
@@ -201,17 +197,16 @@ def WriteToExcelManager(query_data,current_user,score):
         worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
         worksheet_s.write_string(row, 5, data.program_ID, cell_center)
         worksheet_s.write_number(row, 6, data.num_of_student, cell_center)
-        worksheet_s.write_string(row, 7, data.ratio_of_score, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 8, comment, cell)
+        worksheet_s.write_string(row, 7, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
-        worksheet_s.write_string(row, 9, data.user.username, cell_center)
+        worksheet_s.write_string(row, 8, data.user.username, cell_center)
 
         if score:
-            worksheet_s.write_string(row, 10, "", cell_center)
+            worksheet_s.write_string(row, 9, "", cell_center)
 
         
 
@@ -222,11 +217,10 @@ def WriteToExcelManager(query_data,current_user,score):
     worksheet_s.set_column('E:E', 9+5)  # num_of_lab column
     worksheet_s.set_column('F:F', 20+5)  # program column
     worksheet_s.set_column('G:G', 15+5)  # num_of_student column
-    worksheet_s.set_column('H:H', 10+5)  # comment column
-    worksheet_s.set_column('I:I', comment_col_width+5)  # comment column
-    worksheet_s.set_column('J:J', 15+5)
+    worksheet_s.set_column('H:H', comment_col_width+5)  # comment column
+    worksheet_s.set_column('I:I', 15+5)
     if score:
-        worksheet_s.set_column('K:L', 10+5)
+        worksheet_s.set_column('J:J', 10+5)
 
     row = row + 1
     #Adding some function

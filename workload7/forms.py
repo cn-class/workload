@@ -35,12 +35,17 @@ class BenefitForm(forms.ModelForm):
 				),
 			label = "รายการ",
 			widget = forms.RadioSelect,
-			# initial = u'โครงงาน',
+			initial = u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับหน่วยงานภายนอกมหาวิทยาลัย',
 			required = True,
 		)
 
 	benefit_name = forms.CharField(
 			label = "ชื่อผลงาน",
+			required = True,
+		)
+
+	person_name = forms.CharField(
+			label = "ชื่อผู้เข้าร่วมการแข่งขัน",
 			required = True,
 		)
 
@@ -61,6 +66,7 @@ class BenefitForm(forms.ModelForm):
 
 				Field('benefit_list'),
 				Field('benefit_name',),
+				Field('person_name'),
 				Field('comment',),
 				Div(
 					Submit('submit','Submit'),
@@ -73,6 +79,7 @@ class BenefitForm(forms.ModelForm):
 		fields = [
 						"benefit_list",
 						"benefit_name",
+						"person_name",
 						"comment",
 			]	
 

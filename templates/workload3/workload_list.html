@@ -36,8 +36,7 @@
 				<th class="text-center">วารสารที่ตีพิมพ์</th>
 				<th class="text-center">ปีที่ตีพิมพ์</th>
 				<th class="text-center">สัดส่วนผลงาน</th>
-				<th class="text-center">ระดับ</th>
-				<th class="text-center">สิงประดิษฐ์</th>
+				<th class="col-lg-3 text-center">ประเภท</th>
 				<th class="text-center"></th>
 				{% if request.user.is_staff  %}
 				<th class="text-center">User</th>
@@ -55,7 +54,6 @@
 				<td class="text-center">{{ obj.year }}</td>
 				<td class="text-center">{{ obj.ratio }}</td>
 				<td class="text-center">{{ obj.degree }}</td>
-				<td class="text-center">{{ obj.degree2 }}</td>
 				<td class="text-center">
 						{% if obj.comment %}
 						<a href="">

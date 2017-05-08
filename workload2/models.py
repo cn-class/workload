@@ -10,6 +10,7 @@ from django.utils.timezone import now
 class Thesis(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL,default=1)
 	thesis_name = models.CharField(max_length=120)
+	student_name = models.CharField(max_length=120)
 	ratio = models.IntegerField()
 	degree = models.CharField(max_length=120)
 	program_ID = models.CharField(max_length=120)

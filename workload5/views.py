@@ -57,6 +57,7 @@ def workload_create(request):
 		form = SupportForm()
 
 	context = {
+		"head" : u"แบบฟอร์มงานสนับสนุนการจัดการศึกษา",
 		"form": form,
 		"current_user":current_user,
 	}
@@ -78,6 +79,7 @@ def workload_update(request, id=None):
 		print("2")
 
 	context = {
+		"head" : u"แก้ไขแบบฟอร์มงานสนับสนุนการจัดการศึกษา",
 		"form": form,
 		"instance" : instance,
 	}

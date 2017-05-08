@@ -58,6 +58,7 @@ def workload_create(request):
 		form = BenefitForm()
 
 	context = {
+		"head" : u"แบบฟอร์มรางวัลต่างๆ",
 		"form": form,
 		"current_user":current_user,
 	}
@@ -81,6 +82,7 @@ def workload_update(request, id=None):
 		print("2")
 
 	context = {
+		"head" : u"แก้ไขแบบฟอร์มรางวัลต่างๆ",
 		"form": form,
 		"instance" : instance,
 	}

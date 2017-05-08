@@ -49,7 +49,8 @@ def WriteToExcel(query_data,current_user):
     worksheet_s.merge_range('A4:C4',ugettext(u"รางวัลต่างๆ"))
     worksheet_s.write(4, 0, ugettext(u"รายการ"), header)
     worksheet_s.write(4, 1, ugettext(u"ชื่อผลงาน"), header)
-    worksheet_s.write(4, 2, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 2, ugettext(u"ชื่อผู้เข้าร่วมแข่งขัน"), header)
+    worksheet_s.write(4, 3, ugettext(u"หมายเหตุ"), header)
     
 
     # column widths
@@ -67,6 +68,11 @@ def WriteToExcel(query_data,current_user):
         benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
         worksheet_s.set_row(row,15 * benefit_name_rows)
 
+        person_name = data.person_name.replace('\r','')
+        worksheet_s.write_string(row, 1, person_name, cell_center)
+        person_name_rows = compute_row(person_name,person_name_col_width)
+        worksheet_s.set_row(row,15 * person_name_rows)
+
         comment = data.comment.replace('\r','')
         worksheet_s.write_string(row, 2, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
@@ -74,9 +80,10 @@ def WriteToExcel(query_data,current_user):
 
         
     # change column widths
-    worksheet_s.set_column('A:A', benefit_name_col_width)  # benefit_name column
-    worksheet_s.set_column('B:B', benefit_name_col_width)  # benefit_name column
-    worksheet_s.set_column('C:C', comment_col_width)  # ratio column
+    worksheet_s.set_column('A:A', benefit_name_col_width+5)  # benefit_name column
+    worksheet_s.set_column('B:B', benefit_name_col_width+5)  # benefit_name column
+    worksheet_s.set_column('C:C', benefit_name_col_width+5)  # benefit_name column
+    worksheet_s.set_column('D:D', comment_col_width+5)  # ratio column
 
     row = row + 1
 
@@ -126,8 +133,9 @@ def WriteToExcelManager(query_data,current_user):
     worksheet_s.merge_range('A4:C4',ugettext(u"รางวัลต่างๆ"))
     worksheet_s.write(4, 0, ugettext(u"รายการ"), header)
     worksheet_s.write(4, 1, ugettext(u"ชื่อผลงาน"), header)
-    worksheet_s.write(4, 2, ugettext(u"หมายเหตุ"), header)
-    worksheet_s.write(4, 3, ugettext(u"user"), header)
+    worksheet_s.write(4, 2, ugettext(u"ชื่อผู้เข้าร่วมการแข่งขัน"), header)
+    worksheet_s.write(4, 3, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 4, ugettext(u"user"), header)
     
 
     # column widths
@@ -145,6 +153,11 @@ def WriteToExcelManager(query_data,current_user):
         benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
         worksheet_s.set_row(row,15 * benefit_name_rows)
 
+        person_name = data.person_name.replace('\r','')
+        worksheet_s.write_string(row, 1, person_name, cell_center)
+        person_name_rows = compute_row(person_name,person_name_col_width)
+        worksheet_s.set_row(row,15 * person_name_rows)
+
         comment = data.comment.replace('\r','')
         worksheet_s.write_string(row, 2, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
@@ -156,8 +169,9 @@ def WriteToExcelManager(query_data,current_user):
     # change column widths
     worksheet_s.set_column('A:A', benefit_name_col_width+5)  # benefit_name column
     worksheet_s.set_column('B:B', benefit_name_col_width+5)  # benefit_name column
-    worksheet_s.set_column('C:C', comment_col_width+5)  # ratio column
-    worksheet_s.set_column('D:D', 15+5)
+    worksheet_s.set_column('C:C', benefit_name_col_width+5)  # benefit_name column
+    worksheet_s.set_column('D:D', comment_col_width+5)  # ratio column
+    worksheet_s.set_column('E:E', 15+5)
 
     row = row + 1
 

@@ -11,6 +11,5 @@ class Support(models.Model):
 	support_list = models.CharField(max_length=120)
 	degree = models.CharField(max_length=120)
 	kind = models.CharField(max_length=120)
-	committee = models.CharField(max_length=120)
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)

@@ -53,9 +53,8 @@ def WriteToExcel(query_data,current_user):
     worksheet_s.write(4, 2, ugettext(u"ชื่อวารสารที่ตีพิมพ์"), header)
     worksheet_s.write(4, 3, ugettext(u"ปี พ.ศ. ที่ตีพิมพ์"), header)
     worksheet_s.write(4, 4, ugettext(u"สัดส่วน"), header)
-    worksheet_s.write(4, 5, ugettext(u"ระดับผลงานวิชาการ"), header)
-    worksheet_s.write(4, 6, ugettext(u"สิงประดิษฐ์"), header)
-    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 5, ugettext(u"ประเภท"), header)
+    worksheet_s.write(4, 6, ugettext(u"หมายเหตุ"), header)
     
 
     # column widths
@@ -78,10 +77,9 @@ def WriteToExcel(query_data,current_user):
         worksheet_s.write_number(row, 3, data.year, cell_center)
         worksheet_s.write_number(row, 4, data.ratio, cell_center)
         worksheet_s.write_string(row, 5, data.degree, cell_center)
-        worksheet_s.write_string(row, 6, data.degree2, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 7, comment, cell)
+        worksheet_s.write_string(row, 6, comment, cell)
         comment_rows = compute_rows(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
@@ -89,13 +87,12 @@ def WriteToExcel(query_data,current_user):
 
     # change column widths
     worksheet_s.set_column('A:A', research_col_width)  # thesis_name column
-    worksheet_s.set_column('B:B', 10)  # assist column
-    worksheet_s.set_column('C:C', 12)  # journal column
-    worksheet_s.set_column('D:D', 12)  # year column
-    worksheet_s.set_column('E:E', 8)  # ratio column
-    worksheet_s.set_column('F:F', 20)  # degree column
-    worksheet_s.set_column('G:G', 20)  # degree2 column
-    worksheet_s.set_column('H:H', comment_col_width)  # comment column
+    worksheet_s.set_column('B:B', 10+5)  # assist column
+    worksheet_s.set_column('C:C', 12+5)  # journal column
+    worksheet_s.set_column('D:D', 12+5)  # year column
+    worksheet_s.set_column('E:E', 8+5)  # ratio column
+    worksheet_s.set_column('F:F', 20+5)  # degree column
+    worksheet_s.set_column('G:G', comment_col_width+5)  # comment column
 
     row = row + 1
 
@@ -148,10 +145,9 @@ def WriteToExcelManager(query_data,current_user):
     worksheet_s.write(4, 2, ugettext(u"ชื่อวารสารที่ตีพิมพ์"), header)
     worksheet_s.write(4, 3, ugettext(u"ปี พ.ศ. ที่ตีพิมพ์"), header)
     worksheet_s.write(4, 4, ugettext(u"สัดส่วน"), header)
-    worksheet_s.write(4, 5, ugettext(u"ระดับผลงานวิชาการ"), header)
-    worksheet_s.write(4, 6, ugettext(u"สิงประดิษฐ์"), header)
-    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
-    worksheet_s.write(4, 8, ugettext(u"user"), header)
+    worksheet_s.write(4, 5, ugettext(u"ประเภท"), header)
+    worksheet_s.write(4, 6, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.write(4, 7, ugettext(u"user"), header)
     
 
     # column widths
@@ -174,27 +170,25 @@ def WriteToExcelManager(query_data,current_user):
         worksheet_s.write_number(row, 3, data.year, cell_center)
         worksheet_s.write_number(row, 4, data.ratio, cell_center)
         worksheet_s.write_string(row, 5, data.degree, cell_center)
-        worksheet_s.write_string(row, 6, data.degree2, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 7, comment, cell)
+        worksheet_s.write_string(row, 6, comment, cell)
         comment_rows = compute_rows(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
-        worksheet_s.write_string(row, 8, data.user.username, cell_center)
+        worksheet_s.write_string(row, 7, data.user.username, cell_center)
 
         
 
     # change column widths
     worksheet_s.set_column('A:A', research_col_width)  # thesis_name column
-    worksheet_s.set_column('B:B', 10)  # assist column
-    worksheet_s.set_column('C:C', 12)  # journal column
-    worksheet_s.set_column('D:D', 12)  # year column
-    worksheet_s.set_column('E:E', 8)  # ratio column
-    worksheet_s.set_column('F:F', 20)  # degree column
-    worksheet_s.set_column('G:G', 20)  # degree2 column
-    worksheet_s.set_column('H:H', comment_col_width)  # comment column
-    worksheet_s.set_column('I:I', 15+5)
+    worksheet_s.set_column('B:B', 10+5)  # assist column
+    worksheet_s.set_column('C:C', 12+5)  # journal column
+    worksheet_s.set_column('D:D', 12+5)  # year column
+    worksheet_s.set_column('E:E', 8+5)  # ratio column
+    worksheet_s.set_column('F:F', 20+5)  # degree column
+    worksheet_s.set_column('G:G', comment_col_width+5)  # comment column
+    worksheet_s.set_column('H:H', 15+5)
 
     row = row + 1
 

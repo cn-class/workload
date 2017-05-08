@@ -11,7 +11,6 @@ class ResearchModelAdmin(admin.ModelAdmin):
 					"year",
 					"ratio",
 					"degree",
-					"degree2",
 					"comment",
 					"date",
 					]

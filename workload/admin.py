@@ -13,7 +13,6 @@ class TeachingModelAdmin(admin.ModelAdmin):
 					"num_of_lab",
 					"program_ID",
 					"num_of_student",
-					"ratio_of_score",
 					"comment",
 					"date",
 					]
