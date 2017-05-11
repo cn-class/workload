@@ -123,124 +123,6 @@ def WriteToExcel(query_data,current_user,score):
     return xlsx_data
 
 
-def WriteToExcelManager(query_data,current_user,score):
-    output = StringIO.StringIO()
-    workbook = xlsxwriter.Workbook(output)
-    worksheet_s = workbook.add_worksheet("Summary")
-
-    # excel styles
-    title = workbook.add_format({
-        'bold': True,
-        'font_size': 14,
-        'align': 'center',
-        'valign': 'vcenter'
-    })
-    header = workbook.add_format({
-        'bg_color': '#F7F7F7',
-        'color': 'black',
-        'align': 'center',
-        'valign': 'top',
-        'border': 1
-    })
-    cell = workbook.add_format({
-        'align': 'left',
-        'valign': 'top',
-        'text_wrap': True,
-        'border': 1
-    })
-    cell_center = workbook.add_format({
-        'align': 'center',
-        'valign': 'top',
-        'border': 1
-    })
-
-    # write title
-    
-    title_text = u"{0} {1}".format(ugettext("Report"), current_user)
-    # merge cells
-    worksheet_s.merge_range('A2:I2', title_text, title)
-
-    # write header
-    worksheet_s.merge_range('A3:I3',ugettext(u"งานสอน"))
-    worksheet_s.merge_range('D4:E4',ugettext(u"จำนวนหนว่ยกิตการ"),header)
-    worksheet_s.write(4, 0, ugettext(u"รหัสวิชา"), header)
-    worksheet_s.write(4, 1, ugettext(u"ชื่อวิชา"), header)
-    worksheet_s.write(4, 2, ugettext(u"สัดส่วนการสอน"), header)
-    worksheet_s.write(4, 3, ugettext(u"บรรยาย"), header)
-    worksheet_s.write(4, 4, ugettext(u"ปฏิบัติการ"), header)
-    worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
-    worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
-    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
-    worksheet_s.write(4, 8, ugettext(u"user"), header)
-    if score:
-        worksheet_s.write(4, 9, ugettext(u"คะแนน"), header)
-    
-
-    # column widths
-    subject_col_width = 15
-    description_col_width = 10
-    comment_col_width = 25
-
-    # add data to the table
-    for idx, data in enumerate(query_data):
-        row = 5 + idx
-        worksheet_s.write_string(row, 0, data.subject_ID, cell_center)
-
-        subject = data.subject.replace('\r','')
-        worksheet_s.write_string(row, 1, subject, cell_center)
-        subject_rows = compute_row(subject,subject_col_width)
-        worksheet_s.set_row(row,15 * subject_rows)
-
-        worksheet_s.write_number(row, 2, data.ratio, cell_center)
-        worksheet_s.write_number(row, 3, data.num_of_lecture, cell_center)
-
-        worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
-        worksheet_s.write_string(row, 5, data.program_ID, cell_center)
-        worksheet_s.write_number(row, 6, data.num_of_student, cell_center)
-
-        comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 7, comment, cell)
-        comment_rows = compute_row(comment,comment_col_width)
-        worksheet_s.set_row(row,15 * comment_rows)
-
-        worksheet_s.write_string(row, 8, data.user.username, cell_center)
-
-        if score:
-            worksheet_s.write_string(row, 9, "", cell_center)
-
-        
-
-    # change column widths
-    worksheet_s.set_column('B:B', subject_col_width)  # subject column
-    worksheet_s.set_column('C:C', 11+5)  # ratio column
-    worksheet_s.set_column('D:D', 9+5)  # num_of_lecture column
-    worksheet_s.set_column('E:E', 9+5)  # num_of_lab column
-    worksheet_s.set_column('F:F', 20+5)  # program column
-    worksheet_s.set_column('G:G', 15+5)  # num_of_student column
-    worksheet_s.set_column('H:H', comment_col_width+5)  # comment column
-    worksheet_s.set_column('I:I', 15+5)
-    if score:
-        worksheet_s.set_column('J:J', 10+5)
-
-    row = row + 1
-    #Adding some function
-
-    lecture_sum = Teaching.objects.filter(user=current_user).aggregate(Sum('num_of_lecture'))
-    worksheet_s.write_formula(row, 3,
-                              '=sum({0}{1}:{0}{2})'.format('D', 6, row),
-                              cell_center,
-                              lecture_sum['num_of_lecture__sum'])
-
-    lab_sum = Teaching.objects.filter(user=current_user).aggregate(Sum('num_of_lab'))
-    worksheet_s.write_formula(row, 4,
-                              '=sum({0}{1}:{0}{2})'.format('E', 6, row),
-                              cell_center,
-                              lab_sum['num_of_lab__sum'])
-
-    workbook.close()
-    xlsx_data = output.getvalue()
-    return xlsx_data
-
 
 def compute_row(text,width):
     if len(text) < width:
@@ -270,7 +152,7 @@ def compute_row(text,width):
 
 
 
-def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,query_data6,query_data7,current_user,score):
+def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,query_data6,query_data7,current_user,score,staff):
     output = StringIO.StringIO()
     workbook = xlsxwriter.Workbook(output)
     worksheet_s = workbook.add_worksheet(u"งานสอน")
@@ -310,6 +192,9 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     # write title
     
     title_text = u"{0} {1}".format(ugettext("Report"), current_user)
+
+    # sheet1 -----------------------------------------------------------------------------
+
     # merge cells
     worksheet_s.merge_range('A2:I2', title_text, title)
 
@@ -324,9 +209,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
     worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
     worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
-    if score:
+    if staff and score:
+        worksheet_s.write(4, 8, ugettext(u"user"),header)
+        worksheet_s.write(4, 9, ugettext(u"คะแนน"), header)
+    elif score:
         worksheet_s.write(4, 8, ugettext(u"คะแนน"), header)
-
+    elif staff:
+        worksheet_s.write(4, 8, ugettext(u"user"),header)
     
     # column widths
     subject_col_width = 15
@@ -355,21 +244,30 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
-        if score:
+        if staff and score:
+            worksheet_s.write_string(row, 8,data.user.username, cell_center)
+            worksheet_s.write_string(row, 9, " ", cell_center)
+        elif score:
             worksheet_s.write_string(row, 8, " ", cell_center)
+        elif staff:
+            worksheet_s.write_string(row, 8,data.user.username, cell_center)
 
 
     # change column widths
-    worksheet_s.set_column('B:B', subject_col_width+10)  # subject column
-    worksheet_s.set_column('C:C', 11+10)  # ratio column
-    worksheet_s.set_column('D:D', 9+10)  # num_of_lecture column
-    worksheet_s.set_column('E:E', 9+10)  # num_of_lab column
-    worksheet_s.set_column('F:F', 20+10)  # program column
-    worksheet_s.set_column('G:G', 15+10)  # num_of_student column
-    worksheet_s.set_column('H:H', comment_col_width+10)  # comment column
-    if score:
-         worksheet_s.set_column('I:I', 10+10)  # comment column
-
+    worksheet_s.set_column('B:B', subject_col_width+7)  # subject column
+    worksheet_s.set_column('C:C', 11+7)  # ratio column
+    worksheet_s.set_column('D:D', 9+7)  # num_of_lecture column
+    worksheet_s.set_column('E:E', 9+7)  # num_of_lab column
+    worksheet_s.set_column('F:F', 20+7)  # program column
+    worksheet_s.set_column('G:G', 15+7)  # num_of_student column
+    worksheet_s.set_column('H:H', comment_col_width+7)  # comment column
+    if staff and score:
+        worksheet_s.set_column('I:I',10+7) #user column
+        worksheet_s.set_column('J:J', 10+7)  # comment column
+    elif score:
+        worksheet_s.set_column('I:I', 10+7)  # comment column
+    elif staff:
+        worksheet_s.set_column('I:I',10+7) #user column
 
     row = row + 1
     #Adding some function
@@ -401,6 +299,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_t.write(4, 3, ugettext(u"ระดับ"), header)
     worksheet_t.write(4, 4, ugettext(u"ประเภทโครงการ"), header)
     worksheet_t.write(4, 5, ugettext(u"หมายเหตุ"), header)
+    if staff and score:
+        worksheet_t.write(4, 6, ugettext(u"user"),header)
+        worksheet_t.write(4, 7, ugettext(u"คะแนน"), header)
+    elif score:
+        worksheet_t.write(4, 6, ugettext(u"คะแนน"), header)
+    elif staff:
+        worksheet_t.write(4, 6, ugettext(u"user"),header)
     
 
     # column widths
@@ -430,16 +335,28 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         worksheet_t.write_string(row, 5, comment, cell_center)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_t.set_row(row,15 * comment_rows)
-
-        
+        if staff and score:
+            worksheet_t.write_string(row, 6, data.user.username, cell_center)
+            worksheet_t.write_string(row, 7, " ", cell_center)
+        elif score:
+            worksheet_t.write_string(row, 6, " ", cell_center)
+        elif staff:
+            worksheet_t.write_string(row, 6, data.user.username, cell_center)
 
     # change column widths
-    worksheet_t.set_column('A:A', thesis_col_width+10)  # thesis_name column
-    worksheet_t.set_column('B:B', thesis_col_width+10)  # thesis_name column
-    worksheet_t.set_column('C:C', 11+10)  # ratio column
-    worksheet_t.set_column('D:D', 15+10)  # degree column
-    worksheet_t.set_column('E:E', 30+10)  # program_ID column
-    worksheet_t.set_column('F:F', comment_col_width+10)  # comment column
+    worksheet_t.set_column('A:A', thesis_col_width+7)  # thesis_name column
+    worksheet_t.set_column('B:B', thesis_col_width+7)  # thesis_name column
+    worksheet_t.set_column('C:C', 11+7)  # ratio column
+    worksheet_t.set_column('D:D', 15+7)  # degree column
+    worksheet_t.set_column('E:E', 25+7)  # program_ID column
+    worksheet_t.set_column('F:F', comment_col_width+7)  # comment column
+    if staff and score:
+        worksheet_t.set_column('G:G',10+7) #user column
+        worksheet_t.set_column('H:H', 10+7)  # comment column
+    elif score:
+        worksheet_t.set_column('G:G', 10+7)  # comment column
+    elif staff:
+        worksheet_t.set_column('G:G',10+7) #user column
 
 
     # sheet3 -----------------------------------------------------------------------------
@@ -456,7 +373,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_u.write(4, 4, ugettext(u"สัดส่วน"), header)
     worksheet_u.write(4, 5, ugettext(u"ประเภท"), header)
     worksheet_u.write(4, 6, ugettext(u"หมายเหตุ"), header)
-    
+    if staff and score:
+        worksheet_u.write(4, 7, ugettext(u"user"),header)
+        worksheet_u.write(4, 8, ugettext(u"คะแนน"), header)
+    elif score:
+        worksheet_u.write(4, 7, ugettext(u"คะแนน"), header)
+    elif staff:
+        worksheet_u.write(4, 7, ugettext(u"user"),header)
 
     # column widths
     research_col_width = 20
@@ -484,16 +407,31 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_u.set_row(row,15 * comment_rows)
 
+        if staff and score:
+            worksheet_u.write_string(row, 7, data.user.username, cell_center)
+            worksheet_u.write_string(row, 8, " ", cell_center)
+        elif score:
+            worksheet_u.write_string(row, 7, " ", cell_center)
+        elif staff:
+            worksheet_u.write_string(row, 7, data.user.username, cell_center)
+
         
 
     # change column widths
-    worksheet_u.set_column('A:A', research_col_width+10)  # thesis_name column
-    worksheet_u.set_column('B:B', 10+10)  # assist column
-    worksheet_u.set_column('C:C', 12+10)  # journal column
-    worksheet_u.set_column('D:D', 12+10)  # year column
-    worksheet_u.set_column('E:E', 8+10)  # ratio column
-    worksheet_u.set_column('F:F', 20+10)  # degree column
-    worksheet_u.set_column('G:G', comment_col_width+10)  # comment column
+    worksheet_u.set_column('A:A', research_col_width+7)  # thesis_name column
+    worksheet_u.set_column('B:B', 10+7)  # assist column
+    worksheet_u.set_column('C:C', 12+7)  # journal column
+    worksheet_u.set_column('D:D', 12+7)  # year column
+    worksheet_u.set_column('E:E', 8+7)  # ratio column
+    worksheet_u.set_column('F:F', 20+7)  # degree column
+    worksheet_u.set_column('G:G', comment_col_width+7)  # comment column
+    if staff and score:
+        worksheet_u.set_column('H:H',10+7) #user column
+        worksheet_u.set_column('I:I', 10+7)  # comment column
+    elif score:
+        worksheet_u.set_column('H:H', 10+7)  # comment column
+    elif staff:
+        worksheet_u.set_column('H:H',10+7) #user column
 
 
     # sheet4 -----------------------------------------------------------------------------
@@ -510,6 +448,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_v.write(4, 4, ugettext(u"สัดส่วผลงาน"), header)
     worksheet_v.write(4, 5, ugettext(u"ประเภทผลงาน"), header)
     worksheet_v.write(4, 6, ugettext(u"หมายเหตุ"), header)
+    if staff and score:
+        worksheet_v.write(4, 7, ugettext(u"user"),header)
+        worksheet_v.write(4, 8, ugettext(u"คะแนน"), header)
+    elif score:
+        worksheet_v.write(4, 7, ugettext(u"คะแนน"), header)
+    elif staff:
+        worksheet_v.write(4, 7, ugettext(u"user"),header)
 
     # column widths
     subject_col_width = 25
@@ -537,16 +482,30 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_v.set_row(row,15 * comment_rows)
 
+        if score and staff:
+            worksheet_v.write_string(row, 7, data.user.username, cell_center)
+            worksheet_v.write_string(row, 8, " ", cell_center)
+        elif score:
+            worksheet_v.write_string(row, 7, " ", cell_center)
+        elif staff:
+            worksheet_v.write_string(row, 7, data.user.username, cell_center)
         
 
     # change column widths
-    worksheet_v.set_column('A:A', 10+10)  #subject_id
-    worksheet_v.set_column('B:B', subject_col_width+10)  # subject column
-    worksheet_v.set_column('C:C', 11+10)  # assist_name column
-    worksheet_v.set_column('D:D', 9+10)  # page column
-    worksheet_v.set_column('E:E', 9+10)  # ratio column
-    worksheet_v.set_column('F:F', 20+10)  # degree column
-    worksheet_v.set_column('H:H', comment_col_width+10)  # comment column
+    worksheet_v.set_column('A:A', 10+7)  #subject_id
+    worksheet_v.set_column('B:B', subject_col_width+7)  # subject column
+    worksheet_v.set_column('C:C', 11+7)  # assist_name column
+    worksheet_v.set_column('D:D', 9+7)  # page column
+    worksheet_v.set_column('E:E', 9+7)  # ratio column
+    worksheet_v.set_column('F:F', 20+7)  # degree column
+    worksheet_v.set_column('G:G', comment_col_width+7)  # comment column
+    if score and staff:
+        worksheet_v.set_column('H:H',10+7) #user column
+        worksheet_v.set_column('I:I',10+7) #user column
+    elif score:
+        worksheet_v.set_column('H:H', 10+7)  # comment column
+    elif staff:
+        worksheet_v.set_column('H:H', 10+7)  # comment column
 
     # sheet5 -----------------------------------------------------------------------------
 
@@ -559,6 +518,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_w.write(4, 1, ugettext(u"ระดับ"), header)
     worksheet_w.write(4, 2, ugettext(u"ประเภท"), header)
     worksheet_w.write(4, 3, ugettext(u"หมายเหตุ"), header)
+    if score and staff:
+        worksheet_w.write(4, 4, ugettext(u"user"),header)
+        worksheet_w.write(4, 5, ugettext(u"คะแนน"), header)
+    elif score:
+        worksheet_w.write(4, 4, ugettext(u"คะแนน"), header)
+    elif staff:
+        worksheet_w.write(4, 4, ugettext(u"user"),header)
 
     # column widths
     support_list_col_width = 40
@@ -582,11 +548,27 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_w.set_row(row,15 * comment_rows)
 
+        if staff and score:
+            worksheet_w.write_string(row, 4, data.user.username, cell_center)
+            worksheet_w.write_string(row, 5, " ", cell_center)
+        elif score:
+            worksheet_w.write_string(row, 4, " ", cell_center)
+        elif staff:
+            worksheet_w.write_string(row, 4, data.user.username, cell_center)
+
     # change column widths
-    worksheet_w.set_column('A:A', support_list_col_width+10)  # subject column
-    worksheet_w.set_column('B:B', 15+10)  # subject column
-    worksheet_w.set_column('C:C', 15+10)  # ratio column
-    worksheet_w.set_column('D:D', comment_col_width+10)  # comment column
+    worksheet_w.set_column('A:A', support_list_col_width+7)  # subject column
+    worksheet_w.set_column('B:B', 15+7)  # subject column
+    worksheet_w.set_column('C:C', 15+7)  # ratio column
+    worksheet_w.set_column('D:D', comment_col_width+7)  # comment column
+    if staff and score:
+        worksheet_w.set_column('E:E',10+7) #user column
+        worksheet_w.set_column('F:F',10+7) #user column
+    elif score:
+        worksheet_w.set_column('E:E', 10+7)  # comment column
+    elif staff:
+        worksheet_w.set_column('E:E', 10+7)  # comment column
+
 
     # sheet6 -----------------------------------------------------------------------------
 
@@ -600,6 +582,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_x.write(4, 2, ugettext(u"วันเวลาที่สิ้นสุดการดำรงตำแหน่ง"), header)
     worksheet_x.write(4, 3, ugettext(u"ระยะเวลาที่ดำรงตำแหน่ง"), header)
     worksheet_x.write(4, 4, ugettext(u"หมายเหตุ"), header)
+    if staff and score:
+        worksheet_x.write(4, 5, ugettext(u"user"),header)
+        worksheet_x.write(4, 6, ugettext(u"คะแนน"), header)
+    elif score:
+        worksheet_x.write(4, 5, ugettext(u"คะแนน"), header)
+    elif staff:
+        worksheet_x.write(4, 5, ugettext(u"user"),header)
     
 
     # column widths
@@ -626,14 +615,28 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_x.set_row(row,15 * comment_rows)
 
-        
+        if staff and score:
+            worksheet_x.write_string(row, 5, data.user.username, cell_center)
+            worksheet_x.write_string(row, 6, " ", cell_center)
+        elif score:
+            worksheet_x.write_string(row, 5, " ", cell_center)
+        elif staff:
+            worksheet_x.write_string(row, 5, data.user.username, cell_center)
+
 
     # change column widths
-    worksheet_x.set_column('A:A', position_name_col_width+10)  # subject column
-    worksheet_x.set_column('B:B', 18+10) 
-    worksheet_x.set_column('C:C', 20+10)  # ratio column
-    worksheet_x.set_column('D:D', 18+10)  # num_of_lecture column
+    worksheet_x.set_column('A:A', position_name_col_width+7)  # subject column
+    worksheet_x.set_column('B:B', 18+7) 
+    worksheet_x.set_column('C:C', 20+7)  # ratio column
+    worksheet_x.set_column('D:D', 18+7)  # num_of_lecture column
     worksheet_x.set_column('E:E', comment_col_width+10)  # comment column
+    if staff and score:
+        worksheet_x.set_column('F:F',10+7) #user column
+        worksheet_x.set_column('G:G', 10+7)  # comment column
+    elif score:
+        worksheet_x.set_column('F:F', 10+7)  # comment column
+    elif staff:
+        worksheet_x.set_column('F:F', 10+7)  # comment column
 
     # sheet7 -----------------------------------------------------------------------------
 
@@ -646,6 +649,13 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_y.write(4, 1, ugettext(u"ชื่อผลงาน"), header)
     worksheet_y.write(4, 2, ugettext(u"ชื่อผู้เข้าร่วมแข่งขัน"), header)
     worksheet_y.write(4, 3, ugettext(u"หมายเหตุ"), header)
+    if staff and score:
+        worksheet_y.write(4, 4, ugettext(u"user"),header)
+        worksheet_y.write(4, 5, ugettext(u"คะแนน"), header)
+    elif score:
+        worksheet_y.write(4, 4, ugettext(u"คะแนน"), header)
+    elif staff:
+        worksheet_y.write(4, 4, ugettext(u"user"),header)
     
 
     # column widths
@@ -673,13 +683,30 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_y.set_row(row,15 * comment_rows)
 
+        if staff and score:
+            worksheet_y.write_string(row, 4, data.user.username, cell_center)
+            worksheet_y.write_string(row, 5, " ", cell_center)
+        elif score:
+            worksheet_y.write_string(row, 4, " ", cell_center)
+        elif staff:
+            worksheet_y.write_string(row, 4, data.user.username, cell_center)
+
         
     # change column widths
-    worksheet_y.set_column('A:A', benefit_name_col_width+10)  # benefit_name column
-    worksheet_y.set_column('B:B', benefit_name_col_width+10)  # benefit_name column
-    worksheet_y.set_column('C:C', benefit_name_col_width+10)  # benefit_name column
-    worksheet_y.set_column('D:D', comment_col_width+10)  # ratio column
+    worksheet_y.set_column('A:A', benefit_name_col_width+7)  # benefit_name column
+    worksheet_y.set_column('B:B', benefit_name_col_width+7)  # benefit_name column
+    worksheet_y.set_column('C:C', benefit_name_col_width+7)  # benefit_name column
+    worksheet_y.set_column('D:D', comment_col_width+7)  # ratio column
+    if staff and score:
+        worksheet_y.set_column('E:E',10+7) #user column
+        worksheet_y.set_column('F:F', 10+7)  # comment column
+    elif score:
+        worksheet_y.set_column('E:E', 10+7)  # comment column
+    elif staff:
+        worksheet_y.set_column('E:E', 10+7)  # comment column
 
     workbook.close()
     xlsx_data = output.getvalue()
     return xlsx_data
+
+

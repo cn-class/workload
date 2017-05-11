@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import User
 from django.db.models import Count,Sum
-from .excel_utils import WriteToExcel,WriteToExcelManager,WriteToExcelAll
+from .excel_utils import WriteToExcel,WriteToExcelAll
 
 from django.utils.timezone import datetime
 
@@ -109,7 +109,13 @@ def workload_export(request, id=None):
 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 	if request.user.is_staff or request.user.is_superuser:
 		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
-		xlsx_data = WriteToExcelManager(queryset,current_user,0)
+		queryset2 = Thesis.objects.all().filter(date__year=datetime.today().year)
+		queryset3 = Research.objects.all().filter(date__year=datetime.today().year)
+		queryset4 = Document.objects.all().filter(date__year=datetime.today().year)
+		queryset5 = Support.objects.all().filter(date__year=datetime.today().year)
+		queryset6 = Position.objects.all().filter(date__year=datetime.today().year)
+		queryset7 = Benefit.objects.all().filter(date__year=datetime.today().year)
+		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,1)
 		response.write(xlsx_data)
 	else:
 		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
@@ -119,7 +125,7 @@ def workload_export(request, id=None):
 		queryset5 = Support.objects.filter(user=current_user,date__year=datetime.today().year)
 		queryset6 = Position.objects.filter(user=current_user,date__year=datetime.today().year)
 		queryset7 = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
-		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0)
+		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,0)
 		response.write(xlsx_data)
 
 	return response
@@ -132,11 +138,23 @@ def workload_export_score(request, id=None):
 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
 	if request.user.is_staff or request.user.is_superuser:
 		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
-		xlsx_data = WriteToExcelManager(queryset,current_user,1)
+		queryset2 = Thesis.objects.all().filter(date__year=datetime.today().year)
+		queryset3 = Research.objects.all().filter(date__year=datetime.today().year)
+		queryset4 = Document.objects.all().filter(date__year=datetime.today().year)
+		queryset5 = Support.objects.all().filter(date__year=datetime.today().year)
+		queryset6 = Position.objects.all().filter(date__year=datetime.today().year)
+		queryset7 = Benefit.objects.all().filter(date__year=datetime.today().year)
+		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,1)
 		response.write(xlsx_data)
 	else:
 		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
-		xlsx_data = WriteToExcel(queryset,current_user,1)
+		queryset2 = Thesis.objects.filter(user=current_user,date__year=datetime.today().year)
+		queryset3 = Research.objects.filter(user=current_user,date__year=datetime.today().year)
+		queryset4 = Document.objects.filter(user=current_user,date__year=datetime.today().year)
+		queryset5 = Support.objects.filter(user=current_user,date__year=datetime.today().year)
+		queryset6 = Position.objects.filter(user=current_user,date__year=datetime.today().year)
+		queryset7 = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
+		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,0)
 		response.write(xlsx_data)
 
 	return response
