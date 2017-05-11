@@ -177,7 +177,6 @@ def workload_report(request):
 	return render(request, "workload/workload_report.html",context)
 
 
-@login_required
 def sum_report(request):
 	data = Teaching.objects.filter(date__year=datetime.today().year).values('user__username').annotate(sum_items=Sum('num_of_lecture'))	
 	# data = Teaching.objects.filter(date__year=y).values('user__username').annotate(sum_items=Sum('num_of_lecture'))
