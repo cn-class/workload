@@ -34,7 +34,7 @@
 	</div>
 </div>
 
-<script src="https://d3js.org/d3.v3.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
 
 		var url = "{% url 'workload:sum_report' %}";
@@ -70,7 +70,7 @@
 
             var bands = d3.scale.ordinal()
                 .domain(lecture)
-                .rangeRoundBands([0, graphWidth], 0.05);
+                .rangeBands([0, graphWidth], 0.05);
 
             var yScale = d3.scale
                 .linear()
