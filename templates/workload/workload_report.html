@@ -70,7 +70,7 @@
 
             var bands = d3.scale.ordinal()
                 .domain(lecture)
-                .rangeBands([0, graphWidth], 0.05);
+                .rangeBands([0, graphWidth+1], 0.05);
 
             var yScale = d3.scale
                 .linear()
