@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import (authenticate,get_user_model,login,logout,)
 
@@ -9,9 +9,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 
 from social_django.models import UserSocialAuth
-
-from django.shortcuts import render,redirect
-from .forms import UserLoginForm , UserRegisterForm
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from .forms import UserLoginForm, RegistationForm, EditProfileForm
 
 
 def login_redirect(request):
@@ -20,43 +19,40 @@ def login_redirect(request):
 
 def login_view(request):
 
-	if request.user.is_authenticated:
-		return redirect("workload:list")
-		
-	title = "Login"
-	form = UserLoginForm(request.POST or None)
-	if form.is_valid():
-		username = form.cleaned_data.get("username")
-		password = form.cleaned_data.get('password')
-		user = authenticate(username=username, password=password)
-		login(request, user)
-		return redirect("workload:list")
-	return render(request, "account/form.html", {"form":form , "title":title})
+    if request.user.is_authenticated:
+        return redirect("workload:list")
+        
+    title = "Login"
+    form = UserLoginForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect("workload:list")
+    return render(request, "account/form.html", {"form":form , "title":title})
 
 
 def register_view(request):
-	title = "Register"
-	form = UserRegisterForm(request.POST or None)
-	if form.is_valid():
-		user = form.save(commit=False)
-		password = form.cleaned_data.get('password')
-		user.set_password(password)
-		user.save()
+    if request.method == "POST":
+        form = RegistationForm(request.POST or None)
+        if form.is_valid:
+            form.save()
+            return redirect("account:login")
 
-		new_user = authenticate(username=user.username,password=password)
-		login(request, new_user)
-		return redirect("workload:list")
-	context = {
-		"form":form,
-		"title":title,
-	}
+    else:
+        form = RegistationForm()
 
-	return render(request, "account/form.html", context)
-	
+    context = {
+        "form":form,
+        "title": "Register",
+    }
+    return render(request,"account/form.html",context)
+    
 
 def logout_view(request):
-	logout(request)
-	return redirect("account:login")
+    logout(request)
+    return redirect("account:login")
 
 
 @login_required
@@ -97,7 +93,7 @@ def settings(request):
 
 
 @login_required
-def password(request):
+def change_password(request):
 
     current_user = request.user
     if request.user.has_usable_password():
@@ -117,3 +113,33 @@ def password(request):
     else:
         form = PasswordForm(request.user)
     return render(request, 'account/password.html', {'form': form,"current_user":current_user})
+
+
+@login_required
+def profile(request):
+    current_user = request.user
+    context = {
+        "current_user":current_user,
+    }
+    return render(request,"account/profile.html",context)
+
+
+@login_required
+def edit_profile(request):
+    current_user = request.user
+    if request.method == "POST":
+        form = EditProfileForm(request.POST,instance=current_user)
+
+        if form.is_valid:
+            form.save()
+            return redirect("account:profile")
+
+    else:
+        form = EditProfileForm(instance=current_user)
+
+    context = {
+        "current_user":current_user,
+        "form":form,
+    }
+    return render(request,"account/edit_profile.html",context)
+

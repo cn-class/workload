@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-lg-12">
+			<h2 class="page-header">Profile</h2>
+		</div>
+	</div>
+	<div class="row">
+		<p class="col-lg-1">Username:</p>
+		<p class="col-lg-offset-2">{{current_user.username}}</p>
+	</div>
+	<div class="row">
+		<p class="col-lg-1">ชื่อ-นามสกุล:</p>
+		<p class="col-lg-offset-2"> {{current_user.first_name}}  {{current_user.last_name}}</p>
+	</div>
+	<div class="row">
+		<p class="col-lg-1">E-mail:</p>
+		<p class="col-lg-offset-2"> {{current_user.email}}</p>
+	</div>
+{% endblock content%}

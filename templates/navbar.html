@@ -1,65 +1,62 @@
+{% load staticfiles %}
 {% block navbar %}
 
 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-			    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-			        <span class="sr-only">Toggle navigation</span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			      </button>
-		      	<a class="navbar-brand" href="{% url 'workload:list' %}">WORKLOAD</a>
-		    </div>
-		     <!-- /.navbar-header -->
-
-		    <ul class="nav navbar-top-links pull-right">
-		        {% if not request.user.is_authenticated %}
-		        <li><a href="{% url 'account:register' %}">Register</a></li>
-		        <li><a href="{% url 'account:login' %}">Login</a></li>
-		        {% else%}
-		        <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
-                        <i class="fa fa-upload fa-fw"></i>Export
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                        	<a href="{% url 'workload:export' %}">
-                        		<i class=""></i> Excel Report
-                        	</a>
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+			    <span class="sr-only">Toggle navigation</span>
+			    <span class="icon-bar"></span>
+			    <span class="icon-bar"></span>
+			    <span class="icon-bar"></span>
+			</button>
+		    <a class="navbar-brand" href="{% url 'workload:list' %}">WORKLOAD</a>
+		</div>
+		<ul class="nav navbar-top-links pull-right">
+		    {% if not request.user.is_authenticated %}
+		    <li><a href="{% url 'account:register' %}">Register</a></li>
+		    <li><a href="{% url 'account:login' %}">Login</a></li>
+		    {% else%}
+		    <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+                    <i class="fa fa-upload fa-fw"></i>Export
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="{% url 'workload:export' %}">
+                        	<i class=""></i> Excel Report
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{% url 'workload:exportscore' %}">
+                        	<i class=""></i> Excel Report<br>แบบมีช่องกรอกคะแนน
+                        </a>
+                    </li>
+                </ul>
+            </li>
+		    <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-user fa-fw"></i>{{current_user.username }}
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <a href="{% url 'account:profile' %}">
+                        	<i class="fa fa-user fa-fw"></i> User Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'account:settings' %}">
+                        	<i class="fa fa-gear fa-fw"></i> Settings
+                        </a>
                         </li>
-                        <li class="divider"></li>
-                        <li>
-                        	<a href="{% url 'workload:exportscore' %}">
-                        		<i class=""></i> Excel Report<br>แบบมีช่องกรอกคะแนน
-                        	</a>
-                        </li>
-                    </ul>
-                </li>
-		        <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>{{current_user.username }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                        	<a href="#">
-                        		<i class="fa fa-user fa-fw"></i> User Profile
-                        	</a>
-                        </li>
-                        <li>
-                        	<a href="{% url 'account:settings' %}">
-                        		<i class="fa fa-gear fa-fw"></i> Settings
-                        	</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                        	<a href="{% url 'account:logout' %}">
-                        		<i class="fa fa-sign-out fa-fw"></i> Logout
-                        	</a>
-                        </li>
-                    </ul>
-                </li>
-            	{% endif %}
+                    <li class="divider"></li>
+                    <li>
+                        <a href="{% url 'account:logout' %}">
+                        	<i class="fa fa-sign-out fa-fw"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </li>	
 		</ul>
 
 		<div class="navbar-default sidebar" role="navigation">
@@ -103,6 +100,7 @@
 	            </ul>
 	        </div>
 	    </div>
+	    {% endif %}
 	</nav>
 
 {% endblock navbar %}

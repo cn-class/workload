@@ -60,7 +60,6 @@ def workload_create(request):
 			messages.success(request,"Successfully Created")
 			return redirect("workload:list")
 		else:
-			print(form)
 			messages.error(request, "Not Successfully Created")
 	else:
 		form = TeachingForm()
