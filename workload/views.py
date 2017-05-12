@@ -103,7 +103,7 @@ def workload_delete(request, id=None):
 
 
 @login_required
-def workload_export(request, id=None):
+def workload_export(request):
 	current_user = request.user
 	response = HttpResponse(content_type='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
@@ -132,7 +132,7 @@ def workload_export(request, id=None):
 
 
 @login_required
-def workload_export_score(request, id=None):
+def workload_export_score(request):
 	current_user = request.user
 	response = HttpResponse(content_type='application/vnd.ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
@@ -177,19 +177,10 @@ def workload_report(request):
 	if not request.user.is_staff:
 		return redirect("404.html")
 	else:
-		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
-		if request.method == "POST":
-			form = ChosenForm(request.POST or None)
-			date = request.POST.get("year")
-			# queryset = Teaching.objects.filter(user=current_user,date__year=d.year)
-		else:
-			form = ChosenForm()
-			year = datetime.today().year
-
-	print(year)
+		queryset = Teaching.objects.filter(date__year=datetime.today().year)
+		
 	context ={
-		"year" : year ,
-		"form" : form,
+		"object_list": queryset,
 		"current_user":current_user,
 	}
 	return render(request, "workload/workload_report.html",context)

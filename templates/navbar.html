@@ -20,19 +20,19 @@
 		        {% else%}
 		        <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
-                        <b class="fa-caret-down">Export</b>
+                        <i class="fa fa-upload fa-fw"></i>Export
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="{% url 'workload:export' %}"><i class="fa fa-gear fa-fw"></i> Excel Report</a>
+                        <li><a href="{% url 'workload:export' %}"><i class=""></i> Excel Report</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="{% url 'workload:exportscore' %}"><i class="fa fa-sign-out fa-fw"></i> Excel Report<br>(score field)</a>
+                        <li><a href="{% url 'workload:exportscore' %}"><i class=""></i> Excel Report<br>แบบมีช่องกรอกคะแนน</a>
                         </li>
                     </ul>
                 </li>
 		        <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <h class="fa fa-caret-down">{{current_user.username }}</h>
+                        <i class="fa fa-user fa-fw"></i>{{current_user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -52,37 +52,37 @@
 	            <ul class="nav" id="side-menu">
 	                <li>
 	                    <a href="{% url 'workload:list' %}">
-	                       	<i class="fa fa-dashboard fa-fw">งานสอน</i>
+	                       	<i class="fa fa-edit fa-fw"></i>งานสอน
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="{% url 'workload2:list' %}">
-	                        <i class="fa fa-dashboard fa-fw">การคุมโครงงาน</i>
+	                       <i class="fa fa-file-text fa-fw"></i>การคุมโครงงาน
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="{% url 'workload3:list' %}">
-	                        <i class="fa fa-dashboard fa-fw">งานวิจัย</i>
+	                        <i class="fa fa-pencil fa-fw"></i>งานวิจัย
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="{% url 'workload4:list' %}">
-	                        <i class="fa fa-dashboard fa-fw">งานเขียนเอกสาร</i>
+	                        <i class="fa fa-book fa-fw"></i>งานเขียนเอกสาร
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="{% url 'workload5:list' %}">
-	                        <i class="fa fa-dashboard fa-fw">งานสนับสนุนการจัดการศึกษา</i>
+	                        <i class="fa fa-university fa-fw"></i>งานสนับสนุนการจัดการศึกษา
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="{% url 'workload6:list' %}">
-	                        <i class="fa fa-dashboard fa-fw">งานบริหาร</i>
+	                        <i class="fa fa-male fa-fw"></i>งานบริหาร
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="{% url 'workload7:list' %}">
-	                        <i class="fa fa-dashboard fa-fw">รางวัลต่างๆ</i>
+	                        <i class="fa fa-trophy fa-fw"></i>รางวัลต่างๆ
 	                    </a>
 	                </li>
 	            </ul>

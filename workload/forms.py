@@ -95,9 +95,10 @@ class TeachingForm(forms.ModelForm):
 				Field('program_ID',),
 				Field('num_of_student',),
 				Field('comment',),
-				Div(
+				FormActions(
 					Submit('submit','Submit'),
-					style='text-align:center;'
+					Button('cancel','Cancel' ,css_class='btn-default')
+					
 					)
 		)
 
