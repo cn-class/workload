@@ -39,7 +39,7 @@
 		<div class="col-sm-4">
 			<form method="POST" action='' enctype='multipart/form-data'>
 				{% csrf_token %}
-				{% crispy form %}
+				{{form|crispy}}
 			<input type="submit" class='btn btn-primary' value='{{title}}' name="">
 			{% if '{{title}}' == 'Register'  %}
 			<a href="{% url 'social:begin' 'github' %}" class='btn btn-default'>Login with GitHub</a>
