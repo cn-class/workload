@@ -40,8 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'hello',
-
     'account',
 
     'workload',
@@ -52,11 +50,7 @@ INSTALLED_APPS = (
     'workload6',
     'workload7',
 
-    'd3ex',
-    'exporting',
-
     'crispy_forms',
-    # 'bootstrap3_datetime',
 
     'djangosecure',
     'sslserver',
