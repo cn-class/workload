@@ -19,20 +19,20 @@
 		        <li><a href="{% url 'login' %}">Login</a></li>
 		        {% else%}
 		        <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down">Export</i>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+                        <b class="fa-caret-down">Export</b>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="{% url 'settings' %}"><i class="fa fa-gear fa-fw"></i> Excel Report</a>
+                        <li><a href="{% url 'workload:export' %}"><i class="fa fa-gear fa-fw"></i> Excel Report</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Excel Report<br>(score field)</a>
+                        <li><a href="{% url 'workload:exportscore' %}"><i class="fa fa-sign-out fa-fw"></i> Excel Report<br>(score field)</a>
                         </li>
                     </ul>
                 </li>
 		        <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down">{{current_user.username }}</i>
+                        <i class="fa fa-user fa-fw"></i> <h class="fa fa-caret-down">{{current_user.username }}</h>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
