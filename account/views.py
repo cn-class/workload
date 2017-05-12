@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import (authenticate,get_user_model,login,logout,)
@@ -56,6 +57,7 @@ def logout_view(request):
 
 @login_required
 def settings(request):
+    current_user = request.user
     user = request.user
 
     try:
@@ -85,11 +87,15 @@ def settings(request):
         'twitter_login': twitter_login,
         'facebook_login': facebook_login,
         'google_login': google_login,
-        'can_disconnect': can_disconnect
+        'can_disconnect': can_disconnect,
+        "current_user":current_user,
     })
+
 
 @login_required
 def password(request):
+
+    current_user = request.user
     if request.user.has_usable_password():
         PasswordForm = PasswordChangeForm
     else:
@@ -101,9 +107,9 @@ def password(request):
             form.save()
             update_session_auth_hash(request, form.user)
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('password')
+            return redirect('settings')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordForm(request.user)
-    return render(request, 'password.html', {'form': form})
+    return render(request, 'password.html', {'form': form,"current_user":current_user})

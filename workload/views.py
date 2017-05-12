@@ -180,6 +180,7 @@ def workload_report(request):
 		queryset = Teaching.objects.filter(date__year=datetime.today().year)
 		
 	context ={
+		"year":datetime.today().year,
 		"object_list": queryset,
 		"current_user":current_user,
 	}

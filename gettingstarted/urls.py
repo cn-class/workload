@@ -44,7 +44,7 @@ urlpatterns = [
     
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
     url(r'^settings/$', settings, name='settings'),
-    url(r'^settings/password/$', password, name='password'),
+    url(r'^password/$', password, name='password'),
 
 
     #weather
