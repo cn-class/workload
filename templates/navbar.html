@@ -15,18 +15,24 @@
 
 		    <ul class="nav navbar-top-links pull-right">
 		        {% if not request.user.is_authenticated %}
-		        <li><a href="{% url 'register' %}">Register</a></li>
-		        <li><a href="{% url 'login' %}">Login</a></li>
+		        <li><a href="{% url 'account:register' %}">Register</a></li>
+		        <li><a href="{% url 'account:login' %}">Login</a></li>
 		        {% else%}
 		        <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
                         <i class="fa fa-upload fa-fw"></i>Export
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="{% url 'workload:export' %}"><i class=""></i> Excel Report</a>
+                        <li>
+                        	<a href="{% url 'workload:export' %}">
+                        		<i class=""></i> Excel Report
+                        	</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="{% url 'workload:exportscore' %}"><i class=""></i> Excel Report<br>แบบมีช่องกรอกคะแนน</a>
+                        <li>
+                        	<a href="{% url 'workload:exportscore' %}">
+                        		<i class=""></i> Excel Report<br>แบบมีช่องกรอกคะแนน
+                        	</a>
                         </li>
                     </ul>
                 </li>
@@ -35,12 +41,21 @@
                         <i class="fa fa-user fa-fw"></i>{{current_user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li>
+                        	<a href="#">
+                        		<i class="fa fa-user fa-fw"></i> User Profile
+                        	</a>
                         </li>
-                        <li><a href="{% url 'settings' %}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li>
+                        	<a href="{% url 'account:settings' %}">
+                        		<i class="fa fa-gear fa-fw"></i> Settings
+                        	</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li>
+                        	<a href="{% url 'account:logout' %}">
+                        		<i class="fa fa-sign-out fa-fw"></i> Logout
+                        	</a>
                         </li>
                     </ul>
                 </li>

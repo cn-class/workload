@@ -5,17 +5,11 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-from django.contrib.auth import views as auth_views
-
-from account.views import (login_view,register_view,logout_view,settings,password)
-from exporting.views import (all_towns,today_weather,weather_history,details)
-from d3ex.views import (graph,play_count_by_month)
-
+from account.views import login_redirect
 
 from django.contrib import admin
 admin.autodiscover()
 
-import hello.views
 
 # Examples:
 # url(r'^$', 'gettingstarted.views.home', name='home'),
@@ -23,9 +17,6 @@ import hello.views
 
 urlpatterns = [
 
-    #Hello
-    url(r'^index/', hello.views.index, name='index'),
-    url(r'^db', hello.views.db, name='db'),
     url(r'^admin/', include(admin.site.urls)),
 
     #workload
@@ -37,22 +28,8 @@ urlpatterns = [
     url(r'^position/', include('workload6.urls', namespace='workload6')),
     url(r'^benefit/', include('workload7.urls', namespace='workload7')),
 
-    #account social auth
-    url(r'^login/', login_view, name='login'),
-    url(r'^register/', register_view, name='register'),
-    url(r'^logout/', logout_view, name='logout'),
-    
-    url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
-    url(r'^settings/$', settings, name='settings'),
-    url(r'^password/$', password, name='password'),
+    #account 
+    url(r'^account/', include('account.urls', namespace='account')),
+    url(r'^$',login_redirect,name='login_redirect'),
 
-
-    #weather
-    url(r'^weather/today/', today_weather, name='today_weather'),
-    url(r'^weather/history/$', weather_history, name='weather_history'),
-    url(r'^weather/details/(?P<weather_id>\w+)', details, name='details'),
-    url(r'^towns/$', all_towns, name='towns'),
-
-    url(r'^d3ex/',graph),
-    url(r'^api/play_count_by_month',play_count_by_month, name='play_count_by_month'),
 ]

@@ -14,6 +14,10 @@ from django.shortcuts import render,redirect
 from .forms import UserLoginForm , UserRegisterForm
 
 
+def login_redirect(request):
+    return redirect('account:login')
+
+
 def login_view(request):
 
 	if request.user.is_authenticated:
@@ -27,7 +31,7 @@ def login_view(request):
 		user = authenticate(username=username, password=password)
 		login(request, user)
 		return redirect("workload:list")
-	return render(request, "form.html", {"form":form , "title":title})
+	return render(request, "account/form.html", {"form":form , "title":title})
 
 
 def register_view(request):
@@ -47,12 +51,12 @@ def register_view(request):
 		"title":title,
 	}
 
-	return render(request, "form.html", context)
+	return render(request, "account/form.html", context)
 	
 
 def logout_view(request):
 	logout(request)
-	return redirect("login")
+	return redirect("account:login")
 
 
 @login_required
@@ -82,7 +86,7 @@ def settings(request):
 
     can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
 
-    return render(request, 'settings.html', {
+    return render(request, 'account/settings.html', {
         'github_login': github_login,
         'twitter_login': twitter_login,
         'facebook_login': facebook_login,
@@ -107,9 +111,9 @@ def password(request):
             form.save()
             update_session_auth_hash(request, form.user)
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('settings')
+            return redirect('account:settings')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordForm(request.user)
-    return render(request, 'password.html', {'form': form,"current_user":current_user})
+    return render(request, 'account/password.html', {'form': form,"current_user":current_user})

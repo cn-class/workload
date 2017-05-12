@@ -42,21 +42,10 @@
 				{{form|crispy}}
 			<input type="submit" class='btn btn-primary' value='{{title}}' name="">
 			{% if '{{title}}' == 'Register'  %}
-			<a href="{% url 'social:begin' 'github' %}" class='btn btn-default'>Login with GitHub</a>
-			<a href="{% url 'register' %}" class='btn btn-default'> Register</a>
+			<a href="{% url 'account:social:begin' 'github' %}" class='btn btn-default'>Login with GitHub</a>
+			<a href="{% url 'account:register' %}" class='btn btn-default'> Register</a>
 			{% endif %}
 		</div>	
-	</div>
-	<div class="row">
-		<br>
-		<div class="col-sm-2">
-			<br>
-			<!-- <a href="{% url 'social:begin' 'facebook' %}">Login with facebook</a><br>
-			<a href="{% url 'social:begin' 'google' %}">Login with google</a><br> -->
-		</div>
-		<div class="col-sm-1">
-			
-		</div>
 	</div>
 </div>
 	
