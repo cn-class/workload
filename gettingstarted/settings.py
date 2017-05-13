@@ -79,6 +79,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+
+    # 'gettingstarted.middleware.LoginRequiredMiddleware',
 )
 
 ROOT_URLCONF = 'gettingstarted.urls'
@@ -181,9 +183,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 # SOCIAL AUTH
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
+LOGIN_URL = 'account:login'
+LOGOUT_URL = 'account:logout'
 LOGIN_REDIRECT_URL = 'workload:list'
+
+LOGIN_EXEMPT_URLS = (
+        r'^account/logout/$',
+        r'^account/register/$',
+
+    )
+
 
 # SOCIAL_AUTH_LOGIN_ERROR_URL = '/settings/'
 # SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/settings/'
