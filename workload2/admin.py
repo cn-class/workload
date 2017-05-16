@@ -12,6 +12,7 @@ class ThesisModelAdmin(admin.ModelAdmin):
 					"program_ID",
 					"comment",
 					"date",
+					"count",
 					]
 	class meta:
 		model = Thesis

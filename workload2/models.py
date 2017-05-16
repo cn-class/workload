@@ -16,3 +16,4 @@ class Thesis(models.Model):
 	program_ID = models.CharField(max_length=120)
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)
+	count = models.IntegerField(default=1)
