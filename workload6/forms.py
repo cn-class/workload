@@ -41,17 +41,18 @@ class PositionForm(forms.ModelForm):
 			required = True,
 		)
 
-	time_start = forms.DateField(
-			label = "วันที่เริ่มรับตำแหน่ง",
-			widget = DateInput(),
-			required = True,
-		)
-
 	# time_start = forms.DateField(
- #        widget=DateTimePicker(options={"format": "YYYY-MM-DD",
- #                                       "pickTime": False}))
+	# 		label = "วันที่เริ่มรับตำแหน่ง",
+	# 		widget = DateInput(),
+	# 		required = True,
+	# 	)
 
-		
+	time_start = forms.DateField(widget=forms.TextInput(attrs=
+                                {
+                                    'class':'datepicker'
+                                })
+
+		)
 
 	time_end = forms.DateField(
 			label = "วันที่สิ้นสุดตำแหน่ง",
