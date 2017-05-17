@@ -10,6 +10,10 @@ from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,Inline
 
 from django.utils.timezone import datetime
 
+from functools import partial
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
+
+
 
 from .models import Position
 
@@ -21,15 +25,32 @@ class PositionForm(forms.ModelForm):
 	        required = False,
         )
 
-	position_name = forms.CharField(
+	position_name = forms.ChoiceField(
+			choices = ( 
+				(u'รองคณบดี ผู้ช่วยคณะบดี หรือ หัวหน้าภาควิชา','รองคณบดี ผู้ช่วยคณะบดี หรือ หัวหน้าภาควิชา'),
+				(u'รองหัวหน้าภาควิชา','รองหัวหน้าภาควิชา'),
+				(u'ผู้อำนวยการบัณฑิตศึกษา','ผู้อำนวยการบัณฑิตศึกษา'),
+				(u'ผู้อำนวยการโครงสร้างหลักสูตรในระดับปริญญาตรี','ผู้อำนวยการโครงสร้างหลักสูตรในระดับปริญญาตรี'),
+				(u'ผู้อำนวยการศูนย์คอมพิวเตอร์และสารสนเทศ','ผู้อำนวยการศูนย์คอมพิวเตอร์และสารสนเทศ'),
+				(u'รองผู้อำนวยการโครงสร้างหลักสูตรในระดับปริญญาตรี','รองผู้อำนวยการโครงสร้างหลักสูตรในระดับปริญญาตรี'),
+				(u'รองผู้อำนวยการบัณฑิตศึกษา','รองผู้อำนวยการบัณฑิตศึกษา'),
+				(u'รองผู้อำนวยการศูนย์คอมพิวเตอร์และสารสนเทศ','รองผู้อำนวยการศูนย์คอมพิวเตอร์และสารสนเทศ'),
+				(u'ผู้อำนวยการ/หัวหน้าโครงการบริการสังคมโครงการปกติ','ผู้อำนวยการ/หัวหน้าโครงการบริการสังคมโครงการปกติ'),
+				),
 			label = "รายการงานบริหาร",
 			required = True,
 		)
 
 	time_start = forms.DateField(
 			label = "วันที่เริ่มรับตำแหน่ง",
+			widget = DateInput(),
 			required = True,
 		)
+
+	# time_start = forms.DateField(
+ #        widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+ #                                       "pickTime": False}))
+
 		
 
 	time_end = forms.DateField(

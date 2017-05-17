@@ -60,6 +60,7 @@ def workload_create(request):
 		"current_user":current_user,
 	}
 	return render(request, "workload_form.html", context)
+	# return render(request, "workload6/datepicker_form.html", context)
 
 
 @login_required

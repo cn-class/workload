@@ -83,7 +83,7 @@ d3.json(url, function(error, data) {
     svg.append("g")
         .call(d3.axisLeft(y)
             .tickFormat(d3.format("d"))
-            .ticks(d3.max(data, function(d) { return d.sum_items; })/2)
+            .ticks(d3.max(data, function(d) { return d.sum_items; }))
             );
 
     svg.append("text")
