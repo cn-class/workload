@@ -144,7 +144,7 @@ def detail(request):
 
 @login_required
 def sum_report(request):
-	data = Thesis.objects.all().values('user__username').annotate(total=Sum('user'))
+	data = Thesis.objects.all().values('user__username').annotate(total=Count('user__username'))
 	for instance in data:
 		print(instance)
 
