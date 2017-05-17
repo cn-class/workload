@@ -22,151 +22,15 @@
 	</div>
 </div>
 
-<!-- <script src="https://d3js.org/d3.v3.min.js"></script>
-<script>
-
-		var url = "{% url 'workload:sum_report' %}";
-
-		d3.json(url, function (error, data) {
-
-			var lecture = data.map(function(d) {
-						return d.sum_items;
-				});
-
-			console.log(lecture)
-
-			var maxLecture = d3.max(lecture);
-
-		    var margin = { top: 10, right: 10, bottom: 260, left: 85 };
-
-		    var graphWidth = 400, graphHeight = 300;
-
-		    var totalWidth = graphWidth + margin.left + margin.right;
-		    var totalHeight = graphHeight + margin.top + margin.bottom;
-
-		    var axisPadding = 3;
-
-
-		    var svg = d3.select('#svg')
-		                .append('svg')
-		                .attr({ width: totalWidth, height: totalHeight });
-
-            var mainGroup = svg
-                        .append('g')
-                        .attr('transform', 'translate(' + margin.left + ',' +
-                        margin.top + ")");
-
-            var bands = d3.scale.ordinal()
-                .domain(lecture)
-                .rangeBands([0, graphWidth], 0.05);
-
-            var yScale = d3.scale
-                .linear()
-                .domain([0, maxLecture])
-                .range([0, graphHeight]);
-
-            function translator(d, i) {
-                console.log(bands.range()[i])
-                return "translate(" + bands.range()[i] + "," +
-                                        (graphHeight - yScale(d)) + ")";
-            }
-
-            var barGroup = mainGroup.selectAll('g')
-                .data(lecture)
-                .enter()
-                .append('g')
-                .attr('transform', translator);
-
-            barGroup.append('rect')
-                .attr({
-                    fill: 'steelblue',
-                    width: bands.rangeBand(),
-                    height: function(d) { return yScale(d); }
-                });
-
-            barGroup.append('text')
-                .text(function(d) { return d; })
-                .style('text-anchor', 'start')
-                .attr({
-                    dx: 10,
-                    dy: -10,
-                    transform: 'rotate(90)',
-                    fill: 'white'
-                });
-
-            var leftAxisGroup = svg.append('g');
-            leftAxisGroup.attr({
-                transform: 'translate(' + (margin.left - axisPadding) + ',' +
-                                            margin.top + ')'
-            });
-
-            var yAxisScale = d3.scale
-                .linear()
-                .domain([maxLecture, 0])
-                .range([0, graphHeight]);
-
-            var leftAxis = d3.svg.axis()
-                .orient('left')
-                .scale(yAxisScale);
-
-            var leftAxisNodes = leftAxisGroup.call(leftAxis);
-            styleAxisNodes(leftAxisNodes);
-
-            var titles = data.map(function(d) { return d.user__username; });
-            var bottomAxisScale = d3.scale.ordinal()
-                .domain(titles)
-                .rangeBands([axisPadding, graphWidth + axisPadding]);
-
-            var bottomAxis = d3.svg
-                .axis()
-                .scale(bottomAxisScale)
-                .orient("bottom");
-
-            var bottomAxisX = margin.left - axisPadding;
-            var bottomAxisY = totalHeight - margin.bottom + axisPadding;
-
-            var bottomAxisGroup = svg.append("g")
-                .attr({ transform: 'translate(' + bottomAxisX + ',' + bottomAxisY + ')' });
-
-            var bottomAxisNodes = bottomAxisGroup.call(bottomAxis);
-            styleAxisNodes(bottomAxisNodes);
-
-            bottomAxisNodes.selectAll("text")
-                .style('text-anchor', 'start')
-                .attr({
-                    dx: 10,
-                    dy: -5,
-                    transform: 'rotate(60)'
-                });
-
-            function styleAxisNodes(axisNodes) {
-                axisNodes.selectAll('.domain')
-                    .attr({
-                        fill: 'none',
-                        'stroke-width': 1,
-                        stroke: 'black'
-                    });
-                axisNodes.selectAll('.tick line')
-                    .attr({
-                        fill: 'none',
-                        'stroke-width': 1,
-                        stroke: 'black'
-                    });
-            }
-        });
-
-
-</script>
-
- -->
-
- <script src="//d3js.org/d3.v4.min.js"></script>
+<script src="//d3js.org/d3.v4.min.js"></script>
 <script>
 
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 560 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
+
+var c10 = d3.scaleOrdinal(d3.schemeCategory10);
 
 // set the ranges
 var x = d3.scaleBand()
@@ -188,37 +52,55 @@ var svg = d3.select("#svg").append("svg")
 // get the data
 var url = "{% url 'workload:sum_report' %}";
 d3.json(url, function(error, data) {
-  if (error) throw error;
+    if (error) throw error;
 
-  // format the data
-  data.forEach(function(d) {
-    d.sum_items = +d.sum_items;
-  });
+    // format the data
+    data.forEach(function(d) {
+      d.sum_items = +d.sum_items;
+    });
 
-  // Scale the range of the data in the domains
-  x.domain(data.map(function(d) { return d.user__username; }));
-  y.domain([0, d3.max(data, function(d) { return d.sum_items; })]);
+    // Scale the range of the data in the domains
+    x.domain(data.map(function(d) { return d.user__username; }));
+    y.domain([0, d3.max(data, function(d) { return d.sum_items; })]);
 
-  // append the rectangles for the bar chart
-  svg.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.user__username); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.sum_items); })
-      .attr("height", function(d) { return height - y(d.sum_items); });
+     // append the rectangles for the bar chart
+     svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) { return x(d.user__username); })
+        .attr("width", x.bandwidth())
+        .attr("y", function(d) { return y(d.sum_items); })
+        .attr("height", function(d) { return height - y(d.sum_items); })
+        .attr("fill",function(d) {return c10(d.user__username);});
 
-  // add the x Axis
-  svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+    // add the x Axis
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
 
-  // add the y Axis
-  svg.append("g")
-      .call(d3.axisLeft(y));
+    // add the y Axis
+    svg.append("g")
+        .call(d3.axisLeft(y)
+            .tickFormat(d3.format("d"))
+            .ticks(d3.max(data, function(d) { return d.sum_items; })/2)
+            );
 
-});
+    svg.append("text")
+        .attr("x",function(d) {return x(d.user__username);})
+        .attr("y",function(d) {return y(d.sum_items);})
+        .attr("dy","20px")
+        .attr("dx",function(d){return x(d.user__username)/2;})
+        .attr("fill","#fff")
+        .attr("text-anchor",middle)
+        .text(function(d) {return d.sum_items;});
+
+
+        
+
+
+
+    });
 
 </script>
 

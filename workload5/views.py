@@ -145,7 +145,7 @@ def detail(request):
 
 @login_required
 def sum_report(request):
-	data = Support.objects.all().values('user__username').annotate(total=Sum('user'))
+	data = Support.objects.all().values('user__username').annotate(total=Count('user'))
 	for instance in data:
 		print(instance)
 

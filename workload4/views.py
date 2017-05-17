@@ -142,7 +142,7 @@ def detail(request):
 
 @login_required
 def sum_report(request):
-	data = Document.objects.all().values('user__username').annotate(total=Sum('user'))
+	data = Document.objects.all().values('user__username').annotate(total=Count('user'))
 	for instance in data:
 		print(instance)
 
