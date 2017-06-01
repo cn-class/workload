@@ -58,7 +58,6 @@ class TeachingForm(forms.ModelForm):
 	        required = True,
 	        label = "ประเภทโครงการ",
 			widget = forms.RadioSelect,
-			initial = u'โครงการปกติ',
 
         )
 

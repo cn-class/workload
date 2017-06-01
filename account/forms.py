@@ -54,6 +54,8 @@ class RegistationForm(UserCreationForm):
 
 
 class EditProfileForm(UserChangeForm):
+
+	password = forms.CharField(widget=forms.HiddenInput())
 	
 	class Meta:
 		model = User
@@ -63,3 +65,4 @@ class EditProfileForm(UserChangeForm):
 			'email',
 			'password'
 		]
+
