@@ -53,26 +53,27 @@ class TeachingForm(forms.ModelForm):
 			required = True,
 		)
 
-	program_ID = forms.ModelChoiceField(
-	        queryset=Program.objects.all(),
-	        required = True,
-	        label = "ประเภทโครงการ",
-			widget = forms.RadioSelect,
-
-        )
-
-	# program_ID = forms.ChoiceField(
-	# 		choices = ( 
-	# 			(u'โครงการปกติ','โครงการปกติ'),
-	# 			(u'โครงการพิเศษได้ค่าตอบแทน','โครงการพิเศษได้ค่าตอบแทน'),
-	# 			(u'โครงการพิเศษไม่ได้ค่าตอบแทน','โครงการพิเศษไม่ได้ค่าตอบแทน'),
-	# 			(u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน','งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน'),
-	# 			),
-	# 		label = "ประเภทโครงการ",
+	# program_ID = forms.ModelChoiceField(
+	#         queryset=Program.objects.all(),
+	#         required = True,
+	#         label = "ประเภทโครงการ",
 	# 		widget = forms.RadioSelect,
 	# 		initial = u'โครงการปกติ',
-	# 		required = True,
-	# 	)
+
+ #        )
+
+	program_ID = forms.ChoiceField(
+			choices = ( 
+				(u'โครงการปกติ','โครงการปกติ'),
+				(u'โครงการพิเศษได้ค่าตอบแทน','โครงการพิเศษได้ค่าตอบแทน'),
+				(u'โครงการพิเศษไม่ได้ค่าตอบแทน','โครงการพิเศษไม่ได้ค่าตอบแทน'),
+				(u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน','งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน'),
+				),
+			label = "ประเภทโครงการ",
+			widget = forms.RadioSelect,
+			initial = u'โครงการปกติ',
+			required = True,
+		)
 
 	num_of_student = forms.IntegerField(
 			label = "จำนวนนักศึกษา",

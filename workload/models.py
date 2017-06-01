@@ -23,13 +23,12 @@ class Teaching(models.Model):
 	ratio = models.IntegerField()
 	num_of_lecture = models.IntegerField()
 	num_of_lab = models.IntegerField()
-	# program_ID = models.CharField(max_length=120)
-	program_ID = models.ForeignKey(Program)
+	program_ID = models.CharField(max_length=120)
+	# program_ID = models.ForeignKey(Program)
 	num_of_student = models.IntegerField()
 	comment = models.TextField(blank=True)
 	date = models.DateTimeField(default=now,editable=True)
 
-	
 
 
 
