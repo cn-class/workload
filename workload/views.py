@@ -86,6 +86,7 @@ def workload_update(request, id=None):
 		print("2")
 
 	context = {
+		"current_user":request.user,
 		"head" : u"แก้ไขแบบฟอร์มงานสอน",
 		"form": form,
 		"instance" : instance,
