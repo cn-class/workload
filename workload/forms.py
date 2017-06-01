@@ -10,7 +10,7 @@ from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,Inline
 
 from django.utils.timezone import datetime
 
-from .models import Teaching
+from .models import Teaching,Program
 
 class TeachingForm(forms.ModelForm):
 
@@ -53,18 +53,27 @@ class TeachingForm(forms.ModelForm):
 			required = True,
 		)
 
-	program_ID = forms.ChoiceField(
-			choices = ( 
-				(u'โครงการปกติ','โครงการปกติ'),
-				(u'โครงการพิเศษได้ค่าตอบแทน','โครงการพิเศษได้ค่าตอบแทน'),
-				(u'โครงการพิเศษไม่ได้ค่าตอบแทน','โครงการพิเศษไม่ได้ค่าตอบแทน'),
-				(u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน','งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน'),
-				),
-			label = "ประเภทโครงการ",
+	program_ID = forms.ModelChoiceField(
+	        queryset=Program.objects.all(),
+	        required = True,
+	        label = "ประเภทโครงการ",
 			widget = forms.RadioSelect,
 			initial = u'โครงการปกติ',
-			required = True,
-		)
+
+        )
+
+	# program_ID = forms.ChoiceField(
+	# 		choices = ( 
+	# 			(u'โครงการปกติ','โครงการปกติ'),
+	# 			(u'โครงการพิเศษได้ค่าตอบแทน','โครงการพิเศษได้ค่าตอบแทน'),
+	# 			(u'โครงการพิเศษไม่ได้ค่าตอบแทน','โครงการพิเศษไม่ได้ค่าตอบแทน'),
+	# 			(u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน','งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน'),
+	# 			),
+	# 		label = "ประเภทโครงการ",
+	# 		widget = forms.RadioSelect,
+	# 		initial = u'โครงการปกติ',
+	# 		required = True,
+	# 	)
 
 	num_of_student = forms.IntegerField(
 			label = "จำนวนนักศึกษา",
@@ -85,6 +94,7 @@ class TeachingForm(forms.ModelForm):
 		self.helper.label_class = 'col-md-3 col-md-offset-1'
 		self.helper.field_class = 'col-md-5'
 		self.helper.form_id = 'teaching_sub'
+		# self.fields['program_ID'].queryset = Program.objects.all()
 		self.helper.layout = Layout(
 
 				Field('subject_ID'),
