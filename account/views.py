@@ -1,5 +1,5 @@
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,render_to_response
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import (authenticate,get_user_model,login,logout,)
 
@@ -36,7 +36,7 @@ def login_view(request):
 def register_view(request):
     if request.method == "POST":
         form = RegistationForm(request.POST or None)
-        if form.is_valid:
+        if form.is_valid():
             form.save()
             return redirect("account:login")
 
@@ -143,3 +143,15 @@ def edit_profile(request):
     }
     return render(request,"account/edit_profile.html",context)
 
+
+
+def page_not_found(request):
+
+    return render(request,"404.html")
+
+
+# def server_error(request):
+#     response = render_to_response('404.html',)
+#     response.status_code = 500
+
+#     return  response
