@@ -7,14 +7,6 @@ from django.core.urlresolvers import reverse
 from django.utils.timezone import now,datetime
 
 
-class Program(models.Model):
-	name = models.CharField(max_length=120)
-
-	def __unicode__(self):
-		return u'%s' % (self.name)
-
-
-
 
 class Teaching(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL,default=1)

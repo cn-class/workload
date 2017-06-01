@@ -11,7 +11,7 @@ from .excel_utils import WriteToExcel,WriteToExcelAll
 
 from django.utils.timezone import datetime
 
-from .models import Teaching, Program
+from .models import Teaching
 from workload2.models import Thesis
 from workload3.models import Research
 from workload4.models import Document

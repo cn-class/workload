@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from .models import Teaching,Program
+from .models import Teaching
 # Register your models here.
 class TeachingModelAdmin(admin.ModelAdmin):
 	list_display = [
@@ -20,14 +20,14 @@ class TeachingModelAdmin(admin.ModelAdmin):
 		model = Teaching
 
 
-class ProgramModelAdmin(admin.ModelAdmin):
-	list_display = [
-					"name",
+# class ProgramModelAdmin(admin.ModelAdmin):
+# 	list_display = [
+# 					"name",
 					
-					]
-	class meta:
-		model = Program
+# 					]
+# 	class meta:
+# 		model = Program
 
 
 admin.site.register(Teaching, TeachingModelAdmin)
-admin.site.register(Program, ProgramModelAdmin)
+# admin.site.register(Program, ProgramModelAdmin)

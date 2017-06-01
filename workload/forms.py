@@ -10,7 +10,7 @@ from crispy_forms.bootstrap import AppendedText,PrependedText,FormActions,Inline
 
 from django.utils.timezone import datetime
 
-from .models import Teaching,Program
+from .models import Teaching
 
 class TeachingForm(forms.ModelForm):
 
