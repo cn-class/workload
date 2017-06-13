@@ -8,122 +8,6 @@ from django.db.models import Avg, Sum, Max, Min
 from .models import Teaching
 
 
-def WriteToExcel(query_data,current_user,score):
-    output = StringIO.StringIO()
-    workbook = xlsxwriter.Workbook(output)
-    worksheet_s = workbook.add_worksheet("Summary")
-
-    # excel styles
-    title = workbook.add_format({
-        'bold': True,
-        'font_size': 14,
-        'align': 'center',
-        'valign': 'vcenter'
-    })
-    header = workbook.add_format({
-        'bg_color': '#F7F7F7',
-        'color': 'black',
-        'align': 'center',
-        'valign': 'top',
-        'border': 1
-    })
-    cell = workbook.add_format({
-        'align': 'left',
-        'valign': 'top',
-        'text_wrap': True,
-        'border': 1
-    })
-    cell_center = workbook.add_format({
-        'align': 'center',
-        'valign': 'top',
-        'border': 1
-    })
-
-    # write title
-    
-    title_text = u"{0} {1}".format(ugettext("Report"), current_user)
-    # merge cells
-    worksheet_s.merge_range('A2:I2', title_text, title)
-
-    # write header
-    worksheet_s.merge_range('A3:I3',ugettext(u"งานสอน"))
-    worksheet_s.merge_range('D4:E4',ugettext(u"จำนวนหนว่ยกิตการ"),header)
-    worksheet_s.write(4, 0, ugettext(u"รหัสวิชา"), header)
-    worksheet_s.write(4, 1, ugettext(u"ชื่อวิชา"), header)
-    worksheet_s.write(4, 2, ugettext(u"สัดส่วนการสอน"), header)
-    worksheet_s.write(4, 3, ugettext(u"บรรยาย"), header)
-    worksheet_s.write(4, 4, ugettext(u"ปฏิบัติการ"), header)
-    worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
-    worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
-    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
-    if score:
-        worksheet_s.write(4, 8, ugettext(u"คะแนน"), header)
-
-    
-    # column widths
-    subject_col_width = 15
-    description_col_width = 10
-    comment_col_width = 25
-
-    # add data to the table
-    for idx, data in enumerate(query_data):
-        row = 5 + idx
-        worksheet_s.write_string(row, 0, data.subject_ID, cell_center)
-
-        subject = data.subject.replace('\r','')
-        worksheet_s.write_string(row, 1, subject, cell_center)
-        subject_rows = compute_row(subject,subject_col_width)
-        worksheet_s.set_row(row,15 * subject_rows)
-
-        worksheet_s.write_number(row, 2, data.ratio, cell_center)
-        worksheet_s.write_number(row, 3, data.num_of_lecture, cell_center)
-
-        worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
-        worksheet_s.write_string(row, 5, data.program_ID, cell_center)
-        worksheet_s.write_number(row, 6, data.num_of_student, cell_center)
-
-        comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 7, comment, cell)
-        comment_rows = compute_row(comment,comment_col_width)
-        worksheet_s.set_row(row,15 * comment_rows)
-
-        if score:
-            worksheet_s.write_string(row, 8, " ", cell_center)
-
-
-    # change column widths
-    worksheet_s.set_column('B:B', subject_col_width)  # subject column
-    worksheet_s.set_column('C:C', 11)  # ratio column
-    worksheet_s.set_column('D:D', 9)  # num_of_lecture column
-    worksheet_s.set_column('E:E', 9)  # num_of_lab column
-    worksheet_s.set_column('F:F', 20)  # program column
-    worksheet_s.set_column('G:G', 15)  # num_of_student column
-    worksheet_s.set_column('H:H', comment_col_width)  # comment column
-    if score:
-         worksheet_s.set_column('I:I', 10)  # comment column
-
-
-    row = row + 1
-    #Adding some function
-
-    lecture_sum = Teaching.objects.filter(user=current_user).aggregate(Sum('num_of_lecture'))
-    worksheet_s.write_formula(row, 3,
-                              '=sum({0}{1}:{0}{2})'.format('D', 6, row),
-                              cell_center,
-                              lecture_sum['num_of_lecture__sum'])
-
-    lab_sum = Teaching.objects.filter(user=current_user).aggregate(Sum('num_of_lab'))
-    worksheet_s.write_formula(row, 4,
-                              '=sum({0}{1}:{0}{2})'.format('E', 6, row),
-                              cell_center,
-                              lab_sum['num_of_lab__sum'])
-
-    workbook.close()
-    xlsx_data = output.getvalue()
-    return xlsx_data
-
-
-
 def compute_row(text,width):
     if len(text) < width:
         return 1
@@ -153,6 +37,7 @@ def compute_row(text,width):
 
 
 def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,query_data6,query_data7,current_user,score,staff):
+    
     output = StringIO.StringIO()
     workbook = xlsxwriter.Workbook(output)
     worksheet_s = workbook.add_worksheet(u"งานสอน")
@@ -174,7 +59,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         'bg_color': '#F7F7F7',
         'color': 'black',
         'align': 'center',
-        'valign': 'top',
+        'valign': 'vcenter',
         'border': 1
     })
     cell = workbook.add_format({
@@ -188,34 +73,59 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         'valign': 'top',
         'border': 1
     })
+    cell_cen = workbook.add_format({
+        'align': 'center',
+        'valign': 'top',
+    })
 
     # write title
     
-    title_text = u"{0} {1}".format(ugettext("Report"), current_user)
+    title_text = u"{0} {1}".format(ugettext(u"ชื่อ"), current_user)
+    # text = u"{0} {1}".format(ugettext("ปีการศึกษา"), u"2560")
 
     # sheet1 -----------------------------------------------------------------------------
 
     # merge cells
-    worksheet_s.merge_range('A2:I2', title_text, title)
+    if staff and score:
+        worksheet_s.merge_range('A1:M1', ugettext(u"แบบฟอร์มรายงานผลการปฏิบัติงานของอาจารย์  คณะวิศวกรรมศาสตร์ มหาวิทยาลัยธรรมศาสตร์"),cell_cen)
+        worksheet_s.merge_range('A2:M2', title_text,cell_cen)
+        worksheet_s.merge_range('A3:M3', ugettext(u"ปีการศึกษา 2560"),cell_cen)
+    elif score:
+        worksheet_s.merge_range('A1:L1', ugettext(u"แบบฟอร์มรายงานผลการปฏิบัติงานของอาจารย์  คณะวิศวกรรมศาสตร์ มหาวิทยาลัยธรรมศาสตร์"),cell_cen)
+        worksheet_s.merge_range('A2:L2', title_text,cell_cen)
+        worksheet_s.merge_range('A3:L3', ugettext(u"ปีการศึกษา 2560"),cell_cen)
+    elif staff:
+        worksheet_s.merge_range('A1:L1', ugettext(u"แบบฟอร์มรายงานผลการปฏิบัติงานของอาจารย์  คณะวิศวกรรมศาสตร์ มหาวิทยาลัยธรรมศาสตร์"),cell_cen)
+        worksheet_s.merge_range('A2:L2', title_text,cell_cen)
+        worksheet_s.merge_range('A3:L3', ugettext(u"ปีการศึกษา 2560"),cell_cen)
+    else:
+        worksheet_s.merge_range('A1:K1', ugettext(u"แบบฟอร์มรายงานผลการปฏิบัติงานของอาจารย์  คณะวิศวกรรมศาสตร์ มหาวิทยาลัยธรรมศาสตร์"),cell_cen)
+        worksheet_s.merge_range('A2:K2', title_text,cell_cen)
+        worksheet_s.merge_range('A3:K3', ugettext(u"ปีการศึกษา 2560"),cell_cen)
 
     # write header
-    worksheet_s.merge_range('A3:I3',ugettext(u"งานสอน"))
-    worksheet_s.merge_range('D4:E4',ugettext(u"จำนวนหนว่ยกิตการ"),header)
-    worksheet_s.write(4, 0, ugettext(u"รหัสวิชา"), header)
-    worksheet_s.write(4, 1, ugettext(u"ชื่อวิชา"), header)
-    worksheet_s.write(4, 2, ugettext(u"สัดส่วนการสอน"), header)
-    worksheet_s.write(4, 3, ugettext(u"บรรยาย"), header)
-    worksheet_s.write(4, 4, ugettext(u"ปฏิบัติการ"), header)
-    worksheet_s.write(4, 5, ugettext(u"ภาค"), header)
-    worksheet_s.write(4, 6, ugettext(u"จำนวนนักศึกษา"), header)
-    worksheet_s.write(4, 7, ugettext(u"หมายเหตุ"), header)
+    worksheet_s.merge_range('A5:I5',ugettext(u"งานสอน"))
+    worksheet_s.merge_range('A6:A9',ugettext(u"รหัสวิชา"),header)
+    worksheet_s.merge_range('B6:B9',ugettext(u"ชื่อวิชา"),header)
+    worksheet_s.merge_range('C6:C9',ugettext(u"สัดส่วน\nการสอน"),header)
+    worksheet_s.merge_range('D6:E7',ugettext(u"จำนวนหนว่ยกิตการ"),header)
+    worksheet_s.merge_range('D8:D9',ugettext(u"บรรยาย"),header)
+    worksheet_s.merge_range('E8:E9',ugettext(u"ปฏิบัติการ"),header)
+    worksheet_s.merge_range('F6:I6',ugettext(u"ประเภทโครงการ"),header)
+    worksheet_s.merge_range('F7:F9',ugettext(u"ปกติ"),header)
+    worksheet_s.merge_range('G7:H7',ugettext(u"พิเศษ"),header)
+    worksheet_s.merge_range('G8:G9',ugettext(u"ได้ค่าตอบแทน"),header)
+    worksheet_s.merge_range('H8:H9',ugettext(u"ไม่ได้ค่าตอบแทน"),header)
+    worksheet_s.merge_range('I7:I9',ugettext(u"งานสอนคณะอื่น\nใน มธ. ที่ไม่ได้\nค่าตอบแทน"),header)
+    worksheet_s.merge_range('J6:J9',ugettext(u"จำนวนนักศึกษา"),header)
+    worksheet_s.merge_range('K6:K9',ugettext(u"หมายเหตุ"),header)
     if staff and score:
-        worksheet_s.write(4, 8, ugettext(u"user"),header)
-        worksheet_s.write(4, 9, ugettext(u"คะแนน"), header)
+        worksheet_s.merge_range('L6:L9',ugettext(u"user"),header)
+        worksheet_s.merge_range('M6:M9',ugettext(u"คะแนน"),header)
     elif score:
-        worksheet_s.write(4, 8, ugettext(u"คะแนน"), header)
+        worksheet_s.merge_range('L6:L9',ugettext(u"คะแนน"),header)
     elif staff:
-        worksheet_s.write(4, 8, ugettext(u"user"),header)
+        worksheet_s.merge_range('L6:L9',ugettext(u"user"),header)
     
     # column widths
     subject_col_width = 15
@@ -224,7 +134,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
 
     # add data to the table
     for idx, data in enumerate(query_data):
-        row = 5 + idx
+        row = 9 + idx
         worksheet_s.write_string(row, 0, data.subject_ID, cell_center)
 
         subject = data.subject.replace('\r','')
@@ -237,37 +147,44 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
 
         worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
         worksheet_s.write_string(row, 5, data.program_ID, cell_center)
-        worksheet_s.write_number(row, 6, data.num_of_student, cell_center)
+        worksheet_s.write_string(row, 6, data.program_ID, cell_center)
+        worksheet_s.write_string(row, 7, data.program_ID, cell_center)
+        worksheet_s.write_string(row, 8, data.program_ID, cell_center)
+        worksheet_s.write_number(row, 9, data.num_of_student, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_s.write_string(row, 7, comment, cell)
+        worksheet_s.write_string(row, 10, comment, cell)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_s.set_row(row,15 * comment_rows)
 
         if staff and score:
-            worksheet_s.write_string(row, 8,data.user.username, cell_center)
-            worksheet_s.write_string(row, 9, " ", cell_center)
+            worksheet_s.write_string(row, 11,data.user.username, cell_center)
+            worksheet_s.write_string(row, 12, " ", cell_center)
         elif score:
-            worksheet_s.write_string(row, 8, " ", cell_center)
+            worksheet_s.write_string(row, 11, " ", cell_center)
         elif staff:
-            worksheet_s.write_string(row, 8,data.user.username, cell_center)
+            worksheet_s.write_string(row, 11,data.user.username, cell_center)
 
 
     # change column widths
     worksheet_s.set_column('B:B', subject_col_width+7)  # subject column
-    worksheet_s.set_column('C:C', 11+7)  # ratio column
-    worksheet_s.set_column('D:D', 9+7)  # num_of_lecture column
-    worksheet_s.set_column('E:E', 9+7)  # num_of_lab column
-    worksheet_s.set_column('F:F', 20+7)  # program column
-    worksheet_s.set_column('G:G', 15+7)  # num_of_student column
-    worksheet_s.set_column('H:H', comment_col_width+7)  # comment column
+    worksheet_s.set_column('C:C', 1+7)  # ratio column
+    worksheet_s.set_column('D:D', 1+7)  # num_of_lecture column
+    worksheet_s.set_column('E:E', 1+7)  # num_of_lab column
+    worksheet_s.set_column('F:F', 1+7)  # program column
+    worksheet_s.set_column('G:G', 1+7)  # num_of_student column
+    worksheet_s.set_column('H:H', 1+7)  # comment column
+    worksheet_s.set_column('I:I', 3+7)  # comment column
+    worksheet_s.set_column('J:J', 1+7)  # program column
+    worksheet_s.set_column('K:K', 15+7)  # num_of_student column
+    worksheet_s.set_column('L:L', comment_col_width+7)  # comment column
     if staff and score:
-        worksheet_s.set_column('I:I',10+7) #user column
-        worksheet_s.set_column('J:J', 10+7)  # comment column
+        worksheet_s.set_column('M:M',10+7) #user column
+        worksheet_s.set_column('N:M', 10+7)  # comment column
     elif score:
-        worksheet_s.set_column('I:I', 10+7)  # comment column
+        worksheet_s.set_column('M:M', 10+7)  # comment column
     elif staff:
-        worksheet_s.set_column('I:I',10+7) #user column
+        worksheet_s.set_column('M:M',10+7) #user column
 
     row = row + 1
     #Adding some function
@@ -288,26 +205,35 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
 
     # sheet2 -----------------------------------------------------------------------------
 
-    # merge cells
-    worksheet_t.merge_range('A2:E2', title_text, title)
 
     # write header
-    worksheet_t.merge_range('A4:E4',ugettext(u"การคุมโครงงาน/วิทยานิพนธ์"))
-    worksheet_t.write(4, 0, ugettext(u"ชื่อโครงงาน/วิทยานิพนธ์"), header)
-    worksheet_t.write(4, 1, ugettext(u"ชื่อนักศึกษา"), header)
-    worksheet_t.write(4, 2, ugettext(u"สัดส่วนการสอน"), header)
-    worksheet_t.write(4, 3, ugettext(u"ระดับ"), header)
-    worksheet_t.write(4, 4, ugettext(u"ประเภทโครงการ"), header)
-    worksheet_t.write(4, 5, ugettext(u"หมายเหตุ"), header)
-    if staff and score:
-        worksheet_t.write(4, 6, ugettext(u"user"),header)
-        worksheet_t.write(4, 7, ugettext(u"คะแนน"), header)
-    elif score:
-        worksheet_t.write(4, 6, ugettext(u"คะแนน"), header)
-    elif staff:
-        worksheet_t.write(4, 6, ugettext(u"user"),header)
-    
+    worksheet_t.merge_range('A1:K1',ugettext(u"การคุมโครงงาน/วิทยานิพนธ์"))
 
+    worksheet_t.merge_range('A2:A5',ugettext(u"ชื่อโครงงาน/วิทยานิพนธ์"),header)
+    worksheet_t.merge_range('B2:B5',ugettext(u"ชื่อนักศึกษา"),header)
+    worksheet_t.merge_range('C2:C5',ugettext(u"สัดส่วน\nการสอน"),header)
+    worksheet_t.merge_range('D2:G2',ugettext(u"ระดับ"),header)
+    worksheet_t.merge_range('D3:D5',ugettext(u"โครงงาน"),header)
+    worksheet_t.merge_range('E3:E5',ugettext(u"สาระนิพนธ์"),header)
+    worksheet_t.merge_range('F3:G3',ugettext(u"วิทยานิพนธ์ "),header)
+    worksheet_t.merge_range('F4:F5',ugettext(u"ป. โทร"),header)
+    worksheet_t.merge_range('G4:G5',ugettext(u"ป. เอก"),header)
+    worksheet_t.merge_range('H2:K2',ugettext(u"ประเภทโครงการ"),header)
+    worksheet_t.merge_range('H3:H5',ugettext(u"ปกติ"),header)
+    worksheet_t.merge_range('I3:J3',ugettext(u"พิเศษ"),header)
+    worksheet_t.merge_range('I4:I5',ugettext(u"ได้ค่าตอบแทน"),header)
+    worksheet_t.merge_range('J4:J5',ugettext(u"ไม่ได้ค่าตอบแทน"),header)
+    worksheet_t.merge_range('K3:K5',ugettext(u"งานสอนคณะอื่น\nใน มธ. ที่ไม่ได้\nค่าตอบแทน"),header)
+    worksheet_t.merge_range('L2:L5',ugettext(u"หมายเหตุ"),header)
+    if staff and score:
+        worksheet_t.merge_range('M2:M5',ugettext(u"user"),header)
+        worksheet_t.merge_range('N2:N5',ugettext(u"คะแนน"),header)
+    elif score:
+        worksheet_t.merge_range('M2:M5',ugettext(u"คะแนน"),header)
+    elif staff:
+        worksheet_t.merge_range('M2:M5',ugettext(u"user"),header)
+
+    
     # column widths
     thesis_col_width = 35
     description_col_width = 10
@@ -329,44 +255,77 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
 
         worksheet_t.write_number(row, 2, data.ratio, cell_center)
         worksheet_t.write_string(row, 3, data.degree, cell_center)
-        worksheet_t.write_string(row, 4, data.program_ID, cell_center)
+        worksheet_t.write_string(row, 4, data.degree, cell_center)
+        worksheet_t.write_string(row, 5, data.degree, cell_center)
+        worksheet_t.write_string(row, 6, data.degree, cell_center)
+        worksheet_t.write_string(row, 7, data.program_ID, cell_center)
+        worksheet_t.write_string(row, 8, data.program_ID, cell_center)
+        worksheet_t.write_string(row, 9, data.program_ID, cell_center)
+        worksheet_t.write_string(row, 10, data.program_ID, cell_center)
 
         comment = data.comment.replace('\r','')
-        worksheet_t.write_string(row, 5, comment, cell_center)
+        worksheet_t.write_string(row, 11, comment, cell_center)
         comment_rows = compute_row(comment,comment_col_width)
         worksheet_t.set_row(row,15 * comment_rows)
         if staff and score:
-            worksheet_t.write_string(row, 6, data.user.username, cell_center)
-            worksheet_t.write_string(row, 7, " ", cell_center)
+            worksheet_t.write_string(row, 12, data.user.username, cell_center)
+            worksheet_t.write_string(row, 13, " ", cell_center)
         elif score:
-            worksheet_t.write_string(row, 6, " ", cell_center)
+            worksheet_t.write_string(row, 12, " ", cell_center)
         elif staff:
-            worksheet_t.write_string(row, 6, data.user.username, cell_center)
+            worksheet_t.write_string(row, 12, data.user.username, cell_center)
 
     # change column widths
-    worksheet_t.set_column('A:A', thesis_col_width+7)  # thesis_name column
-    worksheet_t.set_column('B:B', thesis_col_width+7)  # thesis_name column
-    worksheet_t.set_column('C:C', 11+7)  # ratio column
-    worksheet_t.set_column('D:D', 15+7)  # degree column
-    worksheet_t.set_column('E:E', 25+7)  # program_ID column
-    worksheet_t.set_column('F:F', comment_col_width+7)  # comment column
+    worksheet_t.set_column('A:A', 20+7)  # thesis_name column
+    worksheet_t.set_column('B:B', 20+7)  # student_name column
+    worksheet_t.set_column('C:C', 2+7)  # ratio column
+    worksheet_t.set_column('D:D', 2+7)  # degree column
+    worksheet_t.set_column('E:E', 2+7)  # degree column
+    worksheet_t.set_column('F:F', 2+7)  # degree column
+    worksheet_t.set_column('G:G', 2+7)  # degree column
+    worksheet_t.set_column('H:H', 2+7)  # program_ID column
+    worksheet_t.set_column('I:I', 2+7)  # program_ID column
+    worksheet_t.set_column('J:J', 2+7)  # program_ID column
+    worksheet_t.set_column('K:K', 2+7)  # program_ID column
+    worksheet_t.set_column('L:L', comment_col_width+7)  # comment column
     if staff and score:
-        worksheet_t.set_column('G:G',10+7) #user column
-        worksheet_t.set_column('H:H', 10+7)  # comment column
+        worksheet_t.set_column('M:M',10+7) #user column
+        worksheet_t.set_column('N:N', 10+7)  # comment column
     elif score:
-        worksheet_t.set_column('G:G', 10+7)  # comment column
+        worksheet_t.set_column('M:M', 10+7)  # comment column
     elif staff:
-        worksheet_t.set_column('G:G',10+7) #user column
+        worksheet_t.set_column('M:M',10+7) #user column
 
 
     # sheet3 -----------------------------------------------------------------------------
 
-    # merge cells
-    worksheet_u.merge_range('A2:G2', title_text, title)
-
     # write header
-    worksheet_u.merge_range('A4:H4',ugettext(u"งานวิจัยและงานสร้างสรรค์"))
-    worksheet_u.write(4, 0, ugettext(u"ชื่อผลงาน"), header)
+    worksheet_u.merge_range('A1:L1',ugettext(u"งานวิจัยและงานสร้างสรรค์"))
+
+    worksheet_u.merge_range('A2:A8',ugettext(u"ชื่อผลงาน"),header)
+    worksheet_u.merge_range('B2:B5',ugettext(u"ชื่อนักศึกษา"),header)
+    worksheet_u.merge_range('C2:C5',ugettext(u"สัดส่วน\nการสอน"),header)
+    worksheet_u.merge_range('D2:G2',ugettext(u"ระดับ"),header)
+    worksheet_u.merge_range('D3:D5',ugettext(u"โครงงาน"),header)
+    worksheet_u.merge_range('E3:E5',ugettext(u"สาระนิพนธ์"),header)
+    worksheet_u.merge_range('F3:G3',ugettext(u"วิทยานิพนธ์ "),header)
+    worksheet_u.merge_range('F4:F5',ugettext(u"ป. โทร"),header)
+    worksheet_u.merge_range('G4:G5',ugettext(u"ป. เอก"),header)
+    worksheet_u.merge_range('H2:K2',ugettext(u"ประเภทโครงการ"),header)
+    worksheet_u.merge_range('H3:H5',ugettext(u"ปกติ"),header)
+    worksheet_u.merge_range('I3:J3',ugettext(u"พิเศษ"),header)
+    worksheet_u.merge_range('I4:I5',ugettext(u"ได้ค่าตอบแทน"),header)
+    worksheet_u.merge_range('J4:J5',ugettext(u"ไม่ได้ค่าตอบแทน"),header)
+    worksheet_u.merge_range('K3:K5',ugettext(u"งานสอนคณะอื่น\nใน มธ. ที่ไม่ได้\nค่าตอบแทน"),header)
+    worksheet_u.merge_range('L2:L5',ugettext(u"หมายเหตุ"),header)
+    if staff and score:
+        worksheet_u.merge_range('M2:M5',ugettext(u"user"),header)
+        worksheet_u.merge_range('N2:N5',ugettext(u"คะแนน"),header)
+    elif score:
+        worksheet_u.merge_range('M2:M5',ugettext(u"คะแนน"),header)
+    elif staff:
+        worksheet_u.merge_range('M2:M5',ugettext(u"user"),header)
+        
     worksheet_u.write(4, 1, ugettext(u"ชื่อผู้แต่งร่วม"), header)
     worksheet_u.write(4, 2, ugettext(u"ชื่อวารสารที่ตีพิมพ์"), header)
     worksheet_u.write(4, 3, ugettext(u"ปี พ.ศ. ที่ตีพิมพ์"), header)

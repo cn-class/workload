@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.models import User
 from django.db.models import Count,Sum
-from .excel_utils import WriteToExcel,WriteToExcelAll
+from .excel_utils import WriteToExcelAll
 
 from django.utils.timezone import datetime
 
