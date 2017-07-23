@@ -116,19 +116,14 @@ def workload_report(request):
 	if not request.user.is_staff:
 		return redirect("404.html")
 	else:
-		queryset = Research.objects.filter(user=current_user,date__year=datetime.today().year)
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
-			d = datetime.strptime(date,"%Y-%m-%d")
-			year = d.year
-			# queryset = Teaching.objects.filter(user=current_user,date__year=d.year)
 		else:
 			form = ChosenForm()
-			year = datetime.today().year
 
 	context ={
-		"year" : year ,
+		# "year" : year ,
 		"form" : form,
 		"current_user":current_user,
 	}

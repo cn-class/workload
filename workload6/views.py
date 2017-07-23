@@ -21,13 +21,12 @@ def workload_list(request,id=None):
 	if request.user.is_staff or request.user.is_superuser:
 		return redirect("workload6:report")
 	else:
-		queryset = Position.objects.filter(user=current_user,date__year=datetime.today().year)
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
-			queryset = Position.objects.filter(user=current_user,date__year=date)
 		else:
 			form = ChosenForm()
+			
 	context = {
 		"form": form,
 		"object_list": queryset,
@@ -116,20 +115,14 @@ def workload_report(request):
 	if not request.user.is_staff:
 		return redirect("404.html")
 	else:
-		queryset = Position.objects.filter(user=current_user,date__year=datetime.today().year)
 		if request.method == "POST":
 			form = ChosenForm(request.POST or None)
 			date = request.POST.get("year")
-			d = datetime.strptime(date,"%Y-%m-%d")
-			year = d.year
-			# queryset = Position.objects.filter(user=current_user,date__year=d.year)
 		else:
 			form = ChosenForm()
-			year = datetime.today().year
 
-	print(year)
 	context ={
-		"year" : year ,
+		# "year" : year ,
 		"form" : form,
 		"current_user":current_user,
 	}

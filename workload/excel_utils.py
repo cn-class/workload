@@ -146,10 +146,27 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         worksheet_s.write_number(row, 3, data.num_of_lecture, cell_center)
 
         worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
-        worksheet_s.write_string(row, 5, data.program_ID, cell_center)
-        worksheet_s.write_string(row, 6, data.program_ID, cell_center)
-        worksheet_s.write_string(row, 7, data.program_ID, cell_center)
-        worksheet_s.write_string(row, 8, data.program_ID, cell_center)
+        if data.program_ID == u'โครงการปกติ':
+            worksheet_s.write_string(row, 5, 'x', cell_center)
+            worksheet_s.write_string(row, 6, ' ', cell_center)
+            worksheet_s.write_string(row, 7, ' ', cell_center)
+            worksheet_s.write_string(row, 8, ' ', cell_center)
+        elif data.program_ID == u'โครงการพิเศษได้ค่าตอบแทน':
+            worksheet_s.write_string(row, 5, ' ', cell_center)
+            worksheet_s.write_string(row, 6, 'x', cell_center)
+            worksheet_s.write_string(row, 7, ' ', cell_center)
+            worksheet_s.write_string(row, 8, ' ', cell_center)
+        elif data.program_ID == u'โครงการพิเศษไม่ได้ค่าตอบแทน':
+            worksheet_s.write_string(row, 5, ' ', cell_center)
+            worksheet_s.write_string(row, 6, ' ', cell_center)
+            worksheet_s.write_string(row, 7, 'x', cell_center)
+            worksheet_s.write_string(row, 8, ' ', cell_center)
+        elif data.program_ID == u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน':
+            worksheet_s.write_string(row, 5, ' ', cell_center)
+            worksheet_s.write_string(row, 6, ' ', cell_center)
+            worksheet_s.write_string(row, 7, ' ', cell_center)
+            worksheet_s.write_string(row, 8, 'x', cell_center)
+
         worksheet_s.write_number(row, 9, data.num_of_student, cell_center)
 
         comment = data.comment.replace('\r','')

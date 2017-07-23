@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% crispy TeachingForm TeachingForm.helper %}
+
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock navbar %}
+
+{% block content %} 
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header">เลือกปีที่ต้องการจะพิมพ์รายงาน</h3>
+      </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+  
+   {% csrf_token %}
+    {% crispy form %}
+
+  </div>
+</div>
+
+
+
+{% endblock content %}

@@ -13,7 +13,16 @@
 		<h3 class="page-header">รายงานของงานคุมโครงงานหรือวิทยานิพนธ์</h3>
 	</div>
 </div>
-<p>จำนวนชิ้นงานต่ออาจารย์แต่ละท่าน ปี {{year}}</p>
+<div class="row"> 
+    <div class="col-lg-6 ">
+        <p>จำนวนชิ้นงานต่ออาจารย์แต่ละท่าน ปี {{year}}</p>
+    </div>
+    <div class="col-lg-6">
+            {% csrf_token %}
+            {% crispy form %}
+    </div>
+</div>
+<br>
 
 <div class="row">
 	<div class="col-lg-12">

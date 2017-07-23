@@ -101,63 +101,148 @@ def workload_delete(request, id=None):
 	messages.success(request,"Successfully Deleted")
 	return redirect("workload:list")
 
+@login_required
+def workload_ex(request):
+	current_user = request.user
+	if request.method == "POST":
+		form = ChosenForm(request.POST or None)
+		date = request.POST.get("year")
+
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		if request.user.is_staff or request.user.is_superuser:
+			queryset = Teaching.objects.all().filter(date__year=date)
+			queryset2 = Thesis.objects.all().filter(date__year=date)
+			queryset3 = Research.objects.all().filter(date__year=date)
+			queryset4 = Document.objects.all().filter(date__year=date)
+			queryset5 = Support.objects.all().filter(date__year=date)
+			queryset6 = Position.objects.all().filter(date__year=date)
+			queryset7 = Benefit.objects.all().filter(date__year=date)
+			xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,1)
+			response.write(xlsx_data)
+		else:
+			queryset = Teaching.objects.filter(user=current_user,date__year=date)
+			queryset2 = Thesis.objects.filter(user=current_user,date__year=date)
+			queryset3 = Research.objects.filter(user=current_user,date__year=date)
+			queryset4 = Document.objects.filter(user=current_user,date__year=date)
+			queryset5 = Support.objects.filter(user=current_user,date__year=date)
+			queryset6 = Position.objects.filter(user=current_user,date__year=date)
+			queryset7 = Benefit.objects.filter(user=current_user,date__year=date)
+			xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,0)
+			response.write(xlsx_data)
+		return response
+
+	else:
+		form = ChosenForm()
+	
+	context = {
+		# "form": form,
+		"form" : form,
+		"current_user":current_user,
+	}
+	return render(request,"chosen_report.html",context)
+
 
 @login_required
-def workload_export(request):
+def workload_ex2(request):
 	current_user = request.user
-	response = HttpResponse(content_type='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
-	if request.user.is_staff or request.user.is_superuser:
-		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
-		queryset2 = Thesis.objects.all().filter(date__year=datetime.today().year)
-		queryset3 = Research.objects.all().filter(date__year=datetime.today().year)
-		queryset4 = Document.objects.all().filter(date__year=datetime.today().year)
-		queryset5 = Support.objects.all().filter(date__year=datetime.today().year)
-		queryset6 = Position.objects.all().filter(date__year=datetime.today().year)
-		queryset7 = Benefit.objects.all().filter(date__year=datetime.today().year)
-		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,1)
-		response.write(xlsx_data)
+	if request.method == "POST":
+		form = ChosenForm(request.POST or None)
+		date = request.POST.get("year")
+
+		response = HttpResponse(content_type='application/vnd.ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+		if request.user.is_staff or request.user.is_superuser:
+			queryset = Teaching.objects.all().filter(date__year=date)
+			queryset2 = Thesis.objects.all().filter(date__year=date)
+			queryset3 = Research.objects.all().filter(date__year=date)
+			queryset4 = Document.objects.all().filter(date__year=date)
+			queryset5 = Support.objects.all().filter(date__year=date)
+			queryset6 = Position.objects.all().filter(date__year=date)
+			queryset7 = Benefit.objects.all().filter(date__year=date)
+			xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,1)
+			response.write(xlsx_data)
+		else:
+			queryset = Teaching.objects.filter(user=current_user,date__year=date)
+			queryset2 = Thesis.objects.filter(user=current_user,date__year=date)
+			queryset3 = Research.objects.filter(user=current_user,date__year=date)
+			queryset4 = Document.objects.filter(user=current_user,date__year=date)
+			queryset5 = Support.objects.filter(user=current_user,date__year=date)
+			queryset6 = Position.objects.filter(user=current_user,date__year=date)
+			queryset7 = Benefit.objects.filter(user=current_user,date__year=date)
+			xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,0)
+			response.write(xlsx_data)
+
+		return response
+
 	else:
-		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset2 = Thesis.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset3 = Research.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset4 = Document.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset5 = Support.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset6 = Position.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset7 = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
-		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,0)
-		response.write(xlsx_data)
-
-	return response
+		form = ChosenForm()
+	
+	context = {
+		# "form": form,
+		"form" : form,
+		"current_user":current_user,
+	}
+	return render(request,"chosen_report.html",context)
 
 
-@login_required
-def workload_export_score(request):
-	current_user = request.user
-	response = HttpResponse(content_type='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
-	if request.user.is_staff or request.user.is_superuser:
-		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
-		queryset2 = Thesis.objects.all().filter(date__year=datetime.today().year)
-		queryset3 = Research.objects.all().filter(date__year=datetime.today().year)
-		queryset4 = Document.objects.all().filter(date__year=datetime.today().year)
-		queryset5 = Support.objects.all().filter(date__year=datetime.today().year)
-		queryset6 = Position.objects.all().filter(date__year=datetime.today().year)
-		queryset7 = Benefit.objects.all().filter(date__year=datetime.today().year)
-		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,1)
-		response.write(xlsx_data)
-	else:
-		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset2 = Thesis.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset3 = Research.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset4 = Document.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset5 = Support.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset6 = Position.objects.filter(user=current_user,date__year=datetime.today().year)
-		queryset7 = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
-		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,0)
-		response.write(xlsx_data)
 
-	return response
+# @login_required
+# def workload_export(request):
+# 	current_user = request.user
+# 	response = HttpResponse(content_type='application/vnd.ms-excel')
+# 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+# 	if request.user.is_staff or request.user.is_superuser:
+# 		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
+# 		queryset2 = Thesis.objects.all().filter(date__year=datetime.today().year)
+# 		queryset3 = Research.objects.all().filter(date__year=datetime.today().year)
+# 		queryset4 = Document.objects.all().filter(date__year=datetime.today().year)
+# 		queryset5 = Support.objects.all().filter(date__year=datetime.today().year)
+# 		queryset6 = Position.objects.all().filter(date__year=datetime.today().year)
+# 		queryset7 = Benefit.objects.all().filter(date__year=datetime.today().year)
+# 		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,1)
+# 		response.write(xlsx_data)
+# 	else:
+# 		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset2 = Thesis.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset3 = Research.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset4 = Document.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset5 = Support.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset6 = Position.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset7 = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,0,0)
+# 		response.write(xlsx_data)
+
+# 	return response
+
+
+# @login_required
+# def workload_export_score(request):
+# 	current_user = request.user
+# 	response = HttpResponse(content_type='application/vnd.ms-excel')
+# 	response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+# 	if request.user.is_staff or request.user.is_superuser:
+# 		queryset = Teaching.objects.all().filter(date__year=datetime.today().year)
+# 		queryset2 = Thesis.objects.all().filter(date__year=datetime.today().year)
+# 		queryset3 = Research.objects.all().filter(date__year=datetime.today().year)
+# 		queryset4 = Document.objects.all().filter(date__year=datetime.today().year)
+# 		queryset5 = Support.objects.all().filter(date__year=datetime.today().year)
+# 		queryset6 = Position.objects.all().filter(date__year=datetime.today().year)
+# 		queryset7 = Benefit.objects.all().filter(date__year=datetime.today().year)
+# 		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,1)
+# 		response.write(xlsx_data)
+# 	else:
+# 		queryset = Teaching.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset2 = Thesis.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset3 = Research.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset4 = Document.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset5 = Support.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset6 = Position.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		queryset7 = Benefit.objects.filter(user=current_user,date__year=datetime.today().year)
+# 		xlsx_data = WriteToExcelAll(queryset,queryset2,queryset3,queryset4,queryset5,queryset6,queryset7,current_user,1,0)
+# 		response.write(xlsx_data)
+
+# 	return response
 
 
 @login_required
@@ -178,10 +263,15 @@ def workload_report(request):
 		return redirect("404.html")
 	else:
 		queryset = Teaching.objects.filter(date__year=datetime.today().year)
+		if request.method == "POST":
+			form = ChosenForm(request.POST or None)
+			date = request.POST.get("year")
+		else:
+			form = ChosenForm()
+
 		
 	context ={
-		"year":datetime.today().year,
-		"object_list": queryset,
+		"form" : form,
 		"current_user":current_user,
 	}
 	return render(request, "workload/workload_report.html",context)
