@@ -110,7 +110,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_s.merge_range('A5:I5',ugettext(u"งานสอน"))
     worksheet_s.merge_range('A6:A9',ugettext(u"รหัสวิชา"),header)
     worksheet_s.merge_range('B6:B9',ugettext(u"ชื่อวิชา"),header)
-    worksheet_s.merge_range('C6:C9',ugettext(u"สัดส่วน\nการสอน"),header)
+    worksheet_s.merge_range('C6:C9',ugettext(u"สัดส่วนการสอน"),header)
     worksheet_s.merge_range('D6:E7',ugettext(u"จำนวนหนว่ยกิตการ"),header)
     worksheet_s.merge_range('D8:D9',ugettext(u"บรรยาย"),header)
     worksheet_s.merge_range('E8:E9',ugettext(u"ปฏิบัติการ"),header)
@@ -119,7 +119,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_s.merge_range('G7:H7',ugettext(u"พิเศษ"),header)
     worksheet_s.merge_range('G8:G9',ugettext(u"ได้ค่าตอบแทน"),header)
     worksheet_s.merge_range('H8:H9',ugettext(u"ไม่ได้ค่าตอบแทน"),header)
-    worksheet_s.merge_range('I7:I9',ugettext(u"งานสอนคณะอื่น\nใน มธ. ที่ไม่ได้\nค่าตอบแทน"),header)
+    worksheet_s.merge_range('I7:I9',ugettext(u"งานสอนคณะอื่นใน มธ. ที่ไม่ได้ค่าตอบแทน"),header)
     worksheet_s.merge_range('J6:J9',ugettext(u"จำนวนนักศึกษา"),header)
     worksheet_s.merge_range('K6:K9',ugettext(u"หมายเหตุ"),header)
     if staff and score:
@@ -149,22 +149,23 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         worksheet_s.write_number(row, 3, data.num_of_lecture, cell_center)
 
         worksheet_s.write_number(row, 4, data.num_of_lab, cell_center)
+
         if data.program_ID == u'โครงการปกติ':
             worksheet_s.write_string(row, 5, 'x', cell_center)
             worksheet_s.write_string(row, 6, ' ', cell_center)
             worksheet_s.write_string(row, 7, ' ', cell_center)
             worksheet_s.write_string(row, 8, ' ', cell_center)
-        elif data.program_ID == u'โครงการพิเศษได้ค่าตอบแทน':
+        if data.program_ID == u'โครงการพิเศษได้ค่าตอบแทน':
             worksheet_s.write_string(row, 5, ' ', cell_center)
             worksheet_s.write_string(row, 6, 'x', cell_center)
             worksheet_s.write_string(row, 7, ' ', cell_center)
             worksheet_s.write_string(row, 8, ' ', cell_center)
-        elif data.program_ID == u'โครงการพิเศษไม่ได้ค่าตอบแทน':
+        if data.program_ID == u'โครงการพิเศษไม่ได้ค่าตอบแทน':
             worksheet_s.write_string(row, 5, ' ', cell_center)
             worksheet_s.write_string(row, 6, ' ', cell_center)
             worksheet_s.write_string(row, 7, 'x', cell_center)
             worksheet_s.write_string(row, 8, ' ', cell_center)
-        elif data.program_ID == u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน':
+        if data.program_ID == u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน':
             worksheet_s.write_string(row, 5, ' ', cell_center)
             worksheet_s.write_string(row, 6, ' ', cell_center)
             worksheet_s.write_string(row, 7, ' ', cell_center)
@@ -190,7 +191,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_s.set_column('B:B', subject_col_width+7)  # subject column
     worksheet_s.set_column('C:C', 1+7)  # ratio column
     worksheet_s.set_column('D:D', 1+7)  # num_of_lecture column
-    worksheet_s.set_column('E:E', 1+7)  # num_of_lab column
+    worksheet_s.set_column('E:E', 2+7)  # num_of_lab column
     worksheet_s.set_column('F:F', 1+7)  # program column
     worksheet_s.set_column('G:G', 1+7)  # num_of_student column
     worksheet_s.set_column('H:H', 1+7)  # comment column
@@ -243,7 +244,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_t.merge_range('I3:J3',ugettext(u"พิเศษ"),header)
     worksheet_t.merge_range('I4:I5',ugettext(u"ได้ค่าตอบแทน"),header)
     worksheet_t.merge_range('J4:J5',ugettext(u"ไม่ได้ค่าตอบแทน"),header)
-    worksheet_t.merge_range('K3:K5',ugettext(u"งานสอนคณะอื่น\nใน มธ. ที่ไม่ได้\nค่าตอบแทน"),header)
+    worksheet_t.merge_range('K3:K5',ugettext(u"งานสอนคณะอื่นใน มธ. ที่ไม่ได้ค่าตอบแทน"),header)
     worksheet_t.merge_range('L2:L5',ugettext(u"หมายเหตุ"),header)
     if staff and score:
         worksheet_t.merge_range('M2:M5',ugettext(u"user"),header)
@@ -274,14 +275,48 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         worksheet_t.set_row(row,15 * student_rows)
 
         worksheet_t.write_number(row, 2, data.ratio, cell_center)
-        worksheet_t.write_string(row, 3, data.degree, cell_center)
-        worksheet_t.write_string(row, 4, data.degree, cell_center)
-        worksheet_t.write_string(row, 5, data.degree, cell_center)
-        worksheet_t.write_string(row, 6, data.degree, cell_center)
-        worksheet_t.write_string(row, 7, data.program_ID, cell_center)
-        worksheet_t.write_string(row, 8, data.program_ID, cell_center)
-        worksheet_t.write_string(row, 9, data.program_ID, cell_center)
-        worksheet_t.write_string(row, 10, data.program_ID, cell_center)
+
+        if data.degree == u'โครงงาน':
+            worksheet_t.write_string(row, 3, 'x', cell_center)
+            worksheet_t.write_string(row, 4, ' ', cell_center)
+            worksheet_t.write_string(row, 5, ' ', cell_center)
+            worksheet_t.write_string(row, 6, ' ', cell_center)
+        if data.degree == u'สาระนิพนธ์':
+            worksheet_t.write_string(row, 3, ' ', cell_center)
+            worksheet_t.write_string(row, 4, 'x', cell_center)
+            worksheet_t.write_string(row, 5, ' ', cell_center)
+            worksheet_t.write_string(row, 6, ' ', cell_center)
+        if data.degree == u'วิทยานิพนธ์ ป.โทร':
+            worksheet_t.write_string(row, 3, ' ', cell_center)
+            worksheet_t.write_string(row, 4, ' ', cell_center)
+            worksheet_t.write_string(row, 5, 'x', cell_center)
+            worksheet_t.write_string(row, 6, ' ', cell_center)
+        if data.degree == u'วิทยานิพนธ์ ป. เอก':
+            worksheet_t.write_string(row, 3, ' ', cell_center)
+            worksheet_t.write_string(row, 4, ' ', cell_center)
+            worksheet_t.write_string(row, 5, ' ', cell_center)
+            worksheet_t.write_string(row, 6, 'x', cell_center)
+
+        if data.program_ID == u'โครงการปกติ':
+            worksheet_t.write_string(row, 7, 'x', cell_center)
+            worksheet_t.write_string(row, 8, ' ', cell_center)
+            worksheet_t.write_string(row, 9, ' ', cell_center)
+            worksheet_t.write_string(row, 10, ' ', cell_center)
+        elif data.program_ID == u'โครงการพิเศษได้ค่าตอบแทน':
+            worksheet_t.write_string(row, 7, ' ', cell_center)
+            worksheet_t.write_string(row, 8, 'x', cell_center)
+            worksheet_t.write_string(row, 9, ' ', cell_center)
+            worksheet_t.write_string(row, 10, ' ', cell_center)
+        elif data.program_ID == u'โครงการพิเศษไม่ได้ค่าตอบแทน':
+            worksheet_t.write_string(row, 7, ' ', cell_center)
+            worksheet_t.write_string(row, 8, ' ', cell_center)
+            worksheet_t.write_string(row, 9, 'x', cell_center)
+            worksheet_t.write_string(row, 10, ' ', cell_center)
+        elif data.program_ID == u'งานสอนคณะอื่นภายใน มธ. ที่ไม่ได้ค่าตอบแทน':
+            worksheet_t.write_string(row, 7, ' ', cell_center)
+            worksheet_t.write_string(row, 8, ' ', cell_center)
+            worksheet_t.write_string(row, 9, ' ', cell_center)
+            worksheet_t.write_string(row, 10, 'x', cell_center)
 
         comment = data.comment.replace('\r','')
         worksheet_t.write_string(row, 11, comment, cell_center)
@@ -330,14 +365,14 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
 
     worksheet_u.merge_range('F2:J2',ugettext(u"ระดับของผลงานวิชาการ"),header)
     worksheet_u.merge_range('F3:H4',ugettext(u"วารสารที่ สกว. ยอมรับ"),header)
-    worksheet_u.merge_range('F5:F8',ugettext(u"นานาชาติ\nมี impact\nfactor"),header)
-    worksheet_u.merge_range('G5:G8',ugettext(u"นานาชาติ\nไม่มี impact\nfactor"),header)
-    worksheet_u.merge_range('H5:H8',ugettext(u"ระดับชาติ\nหรือ มธ."),header)
-    worksheet_u.merge_range('I3:I8',ugettext(u"วารสาร\nนานาชาติ\nที่อยู่\nในฐานข้อมูล\nสากล"),header)
-    worksheet_u.merge_range('J3:J8',ugettext(u"ผลงาน\nวิชาการอื่น\nตามข้อ ๖.๓.๕"),header)
+    worksheet_u.merge_range('F5:F8',ugettext(u"นานาชาติมี impactfactor"),header)
+    worksheet_u.merge_range('G5:G8',ugettext(u"นานาชาติไม่มี impactfactor"),header)
+    worksheet_u.merge_range('H5:H8',ugettext(u"ระดับชาติหรือ มธ."),header)
+    worksheet_u.merge_range('I3:I8',ugettext(u"วารสารนานาชาติที่อยู่ในฐานข้อมูลสากล"),header)
+    worksheet_u.merge_range('J3:J8',ugettext(u"ผลงานวิชาการอื่นตามข้อ ๖.๓.๕"),header)
     worksheet_u.merge_range('K2:L2',ugettext(u"สิ่งประดิษฐ์"),header)
-    worksheet_u.merge_range('K3:K8',ugettext(u"ได้รับการจด\nทะเบียน\nสิทธิบัตร/\nอนุสิทธิบัตร"),header)
-    worksheet_u.merge_range('L3:L8',ugettext(u"สิทธิบัตร/อนุ\nสิทธิบัตร ที่ถูก\nนำไปใช้เชิงพาณิชย์\nหรือ\nสาธารณประโยชน์"),header)
+    worksheet_u.merge_range('K3:K8',ugettext(u"ได้รับการจดทะเบียนสิทธิบัตร/อนุสิทธิบัตร"),header)
+    worksheet_u.merge_range('L3:L8',ugettext(u"สิทธิบัตร/อนุสิทธิบัตร ที่ถูกนำไปใช้เชิงพาณิชย์หรือสาธารณประโยชน์"),header)
     worksheet_u.merge_range('M2:M8',ugettext(u"หมายเหตุ"),header)
     if staff and score:
         worksheet_u.merge_range('N2:N8',ugettext(u"user"),header)
@@ -367,13 +402,62 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         worksheet_u.write_string(row, 2, data.journal_name, cell_center)
         worksheet_u.write_number(row, 3, data.year, cell_center)
         worksheet_u.write_number(row, 4, data.ratio, cell_center)
-        worksheet_u.write_string(row, 5, data.degree, cell_center)
-        worksheet_u.write_string(row, 6, data.degree, cell_center)
-        worksheet_u.write_string(row, 7, data.degree, cell_center)
-        worksheet_u.write_string(row, 8, data.degree, cell_center)
-        worksheet_u.write_string(row, 9, data.degree, cell_center)
-        worksheet_u.write_string(row, 10, data.degree, cell_center)
-        worksheet_u.write_string(row, 11, data.degree, cell_center)
+        if data.degree == u'นานาชาติมี impact factor':
+            worksheet_u.write_string(row, 5, 'x', cell_center)
+            worksheet_u.write_string(row, 6, ' ', cell_center)
+            worksheet_u.write_string(row, 7, ' ', cell_center)
+            worksheet_u.write_string(row, 8, ' ', cell_center)
+            worksheet_u.write_string(row, 9, ' ', cell_center)
+            worksheet_u.write_string(row, 10, ' ', cell_center)
+            worksheet_u.write_string(row, 11, ' ', cell_center)
+        if data.degree == u'นานาชาติไม่มี impact factor':
+            worksheet_u.write_string(row, 5, ' ', cell_center)
+            worksheet_u.write_string(row, 6, 'x', cell_center)
+            worksheet_u.write_string(row, 7, ' ', cell_center)
+            worksheet_u.write_string(row, 8, ' ', cell_center)
+            worksheet_u.write_string(row, 9, ' ', cell_center)
+            worksheet_u.write_string(row, 10, ' ', cell_center)
+            worksheet_u.write_string(row, 11, ' ', cell_center)
+        if data.degree == u'ระดับชาติหรือ มธ.':
+            worksheet_u.write_string(row, 5, ' ', cell_center)
+            worksheet_u.write_string(row, 6, ' ', cell_center)
+            worksheet_u.write_string(row, 7, 'x', cell_center)
+            worksheet_u.write_string(row, 8, ' ', cell_center)
+            worksheet_u.write_string(row, 9, ' ', cell_center)
+            worksheet_u.write_string(row, 10, ' ', cell_center)
+            worksheet_u.write_string(row, 11, ' ', cell_center)
+        if data.degree == u'วารสารนานาชาติที่อยู่ในข้อมูลสากร':
+            worksheet_u.write_string(row, 5, ' ', cell_center)
+            worksheet_u.write_string(row, 6, ' ', cell_center)
+            worksheet_u.write_string(row, 7, ' ', cell_center)
+            worksheet_u.write_string(row, 8, 'x', cell_center)
+            worksheet_u.write_string(row, 9, ' ', cell_center)
+            worksheet_u.write_string(row, 10, ' ', cell_center)
+            worksheet_u.write_string(row, 11, ' ', cell_center)
+        if data.degree == u'สิ่งประดิษฐ์ได้รับการจดสิทธิบัตร':
+            worksheet_u.write_string(row, 5, ' ', cell_center)
+            worksheet_u.write_string(row, 6, ' ', cell_center)
+            worksheet_u.write_string(row, 7, ' ', cell_center)
+            worksheet_u.write_string(row, 8, ' ', cell_center)
+            worksheet_u.write_string(row, 9, 'x', cell_center)
+            worksheet_u.write_string(row, 10, ' ', cell_center)
+            worksheet_u.write_string(row, 11, ' ', cell_center)
+        if data.degree == u'สิทธิบัตรที่ถูกนำไปใช้ประโยชน์':
+            worksheet_u.write_string(row, 5, ' ', cell_center)
+            worksheet_u.write_string(row, 6, ' ', cell_center)
+            worksheet_u.write_string(row, 7, ' ', cell_center)
+            worksheet_u.write_string(row, 8, ' ', cell_center)
+            worksheet_u.write_string(row, 9, ' ', cell_center)
+            worksheet_u.write_string(row, 10, 'x', cell_center)
+            worksheet_u.write_string(row, 11, ' ', cell_center)
+        if data.degree == u'ผลงานวิชาการอื่นๆ':
+            worksheet_u.write_string(row, 5, ' ', cell_center)
+            worksheet_u.write_string(row, 6, ' ', cell_center)
+            worksheet_u.write_string(row, 7, ' ', cell_center)
+            worksheet_u.write_string(row, 8, ' ', cell_center)
+            worksheet_u.write_string(row, 9, ' ', cell_center)
+            worksheet_u.write_string(row, 10, ' ', cell_center)
+            worksheet_u.write_string(row, 11, 'x', cell_center)
 
         comment = data.comment.replace('\r','')
         worksheet_u.write_string(row, 12, comment, cell)
@@ -425,11 +509,11 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     worksheet_v.merge_range('E2:E5',ugettext(u"สัดส่วนผลงาน"),header)
 
     worksheet_v.merge_range('F2:J2',ugettext(u"ประเภทผลงาน"),header)
-    worksheet_v.merge_range('F3:F5',ugettext(u"บทความ\nวิชาการ"),header)
-    worksheet_v.merge_range('G3:G5',ugettext(u"คู่มือ\nปฏิบัติการ"),header)
-    worksheet_v.merge_range('H3:H5',ugettext(u"เอกสาร\nประกอบการสอน"),header)
-    worksheet_v.merge_range('I3:I5',ugettext(u"เอกสารคำ\nสอน"),header)
-    worksheet_v.merge_range('J3:J5',ugettext(u"ตำราหรือ\nหนังสือ"),header)
+    worksheet_v.merge_range('F3:F5',ugettext(u"บทความวิชาการ"),header)
+    worksheet_v.merge_range('G3:G5',ugettext(u"คู่มือปฏิบัติการ"),header)
+    worksheet_v.merge_range('H3:H5',ugettext(u"เอกสารประกอบการสอน"),header)
+    worksheet_v.merge_range('I3:I5',ugettext(u"เอกสารคำสอน"),header)
+    worksheet_v.merge_range('J3:J5',ugettext(u"ตำราหรือหนังสือ"),header)
     worksheet_v.merge_range('K2:K5',ugettext(u"หมายเหตุ"),header)
     if staff and score:
         worksheet_v.merge_range('L2:L5',ugettext(u"user"),header)
@@ -459,11 +543,37 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         worksheet_v.write_number(row, 3, data.page, cell_center)
 
         worksheet_v.write_number(row, 4, data.ratio, cell_center)
-        worksheet_v.write_string(row, 5, data.degree, cell_center)
-        worksheet_v.write_string(row, 6, data.degree, cell_center)
-        worksheet_v.write_string(row, 7, data.degree, cell_center)
-        worksheet_v.write_string(row, 8, data.degree, cell_center)
-        worksheet_v.write_string(row, 9, data.degree, cell_center)
+
+        if data.degree == u'ผลงานวิชาการ':
+            worksheet_v.write_string(row, 5, 'x', cell_center)
+            worksheet_v.write_string(row, 6, ' ', cell_center)
+            worksheet_v.write_string(row, 7, ' ', cell_center)
+            worksheet_v.write_string(row, 8, ' ', cell_center)
+            worksheet_v.write_string(row, 9, ' ', cell_center)
+        if data.degree == u'คู่มือปฏิบัติการ':
+            worksheet_v.write_string(row, 5, ' ', cell_center)
+            worksheet_v.write_string(row, 6, 'x', cell_center)
+            worksheet_v.write_string(row, 7, ' ', cell_center)
+            worksheet_v.write_string(row, 8, ' ', cell_center)
+            worksheet_v.write_string(row, 9, ' ', cell_center)
+        if data.degree == u'เอกสารประกอบการสอน':
+            worksheet_v.write_string(row, 5, ' ', cell_center)
+            worksheet_v.write_string(row, 6, ' ', cell_center)
+            worksheet_v.write_string(row, 7, 'x', cell_center)
+            worksheet_v.write_string(row, 8, ' ', cell_center)
+            worksheet_v.write_string(row, 9, ' ', cell_center)
+        if data.degree == u'เอกสารคำสอน':
+            worksheet_v.write_string(row, 5, ' ', cell_center)
+            worksheet_v.write_string(row, 6, ' ', cell_center)
+            worksheet_v.write_string(row, 7, ' ', cell_center)
+            worksheet_v.write_string(row, 8, 'x', cell_center)
+            worksheet_v.write_string(row, 9, ' ', cell_center)
+        if data.degree == u'ตำราหรือหนังสือ':
+            worksheet_v.write_string(row, 5, ' ', cell_center)
+            worksheet_v.write_string(row, 6, ' ', cell_center)
+            worksheet_v.write_string(row, 7, ' ', cell_center)
+            worksheet_v.write_string(row, 8, ' ', cell_center)
+            worksheet_v.write_string(row, 9, 'x', cell_center)
 
         comment = data.comment.replace('\r','')
         worksheet_v.write_string(row, 10, comment, cell)
@@ -539,12 +649,48 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         support_list_rows = compute_row(support_list,support_list_col_width)
         worksheet_w.set_row(row,15 * support_list_rows)
 
-        worksheet_w.write_string(row, 1, data.degree, cell_center)
-        worksheet_w.write_string(row, 2, data.degree, cell_center)
-        worksheet_w.write_string(row, 3, data.kind, cell_center)
-        worksheet_w.write_string(row, 4, data.kind, cell_center)
-        worksheet_w.write_string(row, 5, data.degree, cell_center)
-        worksheet_w.write_string(row, 6, data.degree, cell_center)
+        if data.degree == u'ประธาน':
+            worksheet_w.write_string(row, 1, 'x', cell_center)
+            worksheet_w.write_string(row, 2, ' ', cell_center)
+            worksheet_w.write_string(row, 3, ' ', cell_center)
+            worksheet_w.write_string(row, 4, ' ', cell_center)
+            worksheet_w.write_string(row, 5, ' ', cell_center)
+            worksheet_w.write_string(row, 6, ' ', cell_center)
+        if data.degree == u'กรรมการ':
+            worksheet_w.write_string(row, 1, ' ', cell_center)
+            worksheet_w.write_string(row, 2, 'x', cell_center)
+            worksheet_w.write_string(row, 3, ' ', cell_center)
+            worksheet_w.write_string(row, 4, ' ', cell_center)
+            worksheet_w.write_string(row, 5, ' ', cell_center)
+            worksheet_w.write_string(row, 6, ' ', cell_center)
+        if data.kind == u'ในคณะ':
+            worksheet_w.write_string(row, 1, ' ', cell_center)
+            worksheet_w.write_string(row, 2, ' ', cell_center)
+            worksheet_w.write_string(row, 3, 'x', cell_center)
+            worksheet_w.write_string(row, 4, ' ', cell_center)
+            worksheet_w.write_string(row, 5, ' ', cell_center)
+            worksheet_w.write_string(row, 6, ' ', cell_center)
+        if data.kind == u'นอกคณะ':
+            worksheet_w.write_string(row, 1, ' ', cell_center)
+            worksheet_w.write_string(row, 2, ' ', cell_center)
+            worksheet_w.write_string(row, 3, ' ', cell_center)
+            worksheet_w.write_string(row, 4, 'x', cell_center)
+            worksheet_w.write_string(row, 5, ' ', cell_center)
+            worksheet_w.write_string(row, 6, ' ', cell_center)
+        if data.degree == u'เปิดซอง':
+            worksheet_w.write_string(row, 1, ' ', cell_center)
+            worksheet_w.write_string(row, 2, ' ', cell_center)
+            worksheet_w.write_string(row, 3, ' ', cell_center)
+            worksheet_w.write_string(row, 4, ' ', cell_center)
+            worksheet_w.write_string(row, 5, 'x', cell_center)
+            worksheet_w.write_string(row, 6, ' ', cell_center)
+        if data.degree == u'ตรวจรับ':
+            worksheet_w.write_string(row, 1, ' ', cell_center)
+            worksheet_w.write_string(row, 2, ' ', cell_center)
+            worksheet_w.write_string(row, 3, ' ', cell_center)
+            worksheet_w.write_string(row, 4, ' ', cell_center)
+            worksheet_w.write_string(row, 5, ' ', cell_center)
+            worksheet_w.write_string(row, 6, 'x', cell_center)
 
         comment = data.comment.replace('\r','')
         worksheet_w.write_string(row, 7, comment, cell)
@@ -603,7 +749,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
 
     # add data to the table
     for idx, data in enumerate(query_data6):
-        row = 2 + idx
+        row = 3 + idx
 
         position_name = data.position_name.replace('\r','')
         worksheet_x.write_string(row, 0, position_name, cell_center)
@@ -670,25 +816,109 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     description_col_width = 10
     comment_col_width = 25
 
+    worksheet_y.write_string(3, 1, ' ', cell_center)
+    worksheet_y.write_string(4, 1, ' ', cell_center)
+    worksheet_y.write_string(5, 1, ' ', cell_center)
+    worksheet_y.write_string(6, 1, ' ', cell_center)
+    worksheet_y.write_string(7, 1, ' ', cell_center)
+
+    worksheet_y.write_string(3, 2, ' ', cell_center)
+    worksheet_y.write_string(4, 2, ' ', cell_center)
+    worksheet_y.write_string(5, 2, ' ', cell_center)
+    worksheet_y.write_string(6, 2, ' ', cell_center)
+    worksheet_y.write_string(7, 2, ' ', cell_center)
+
+    worksheet_y.write_string(3, 3, ' ', cell_center)
+    worksheet_y.write_string(4, 3, ' ', cell_center)
+    worksheet_y.write_string(5, 3, ' ', cell_center)
+    worksheet_y.write_string(6, 3, ' ', cell_center)
+    worksheet_y.write_string(7, 3, ' ', cell_center)
+    
     # add data to the table
     for idx, data in enumerate(query_data7):
         row = 3 + idx
         # worksheet_y.write_string(row, 0, data.benefit_list, cell_center)
 
-        benefit_name = data.benefit_name.replace('\r','')
-        worksheet_y.write_string(row, 1, benefit_name, cell_center)
-        benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
-        worksheet_y.set_row(row,15 * benefit_name_rows)
+        if data.benefit_list == u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับหน่วยงานภายนอกมหาวิทยาลัย':
+            benefit_name = data.benefit_name.replace('\r','')
+            worksheet_y.write_string(3, 1, benefit_name, cell_center)
+            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * benefit_name_rows)
 
-        person_name = data.person_name.replace('\r','')
-        worksheet_y.write_string(row, 2, person_name, cell_center)
-        person_name_rows = compute_row(person_name,benefit_name_col_width)
-        worksheet_y.set_row(row,15 * person_name_rows)
+            person_name = data.person_name.replace('\r','')
+            worksheet_y.write_string(3, 2, person_name, cell_center)
+            person_name_rows = compute_row(person_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * person_name_rows)
 
-        comment = data.comment.replace('\r','')
-        worksheet_y.write_string(row, 3, comment, cell)
-        comment_rows = compute_row(comment,comment_col_width)
-        worksheet_y.set_row(row,15 * comment_rows)
+            comment = data.comment.replace('\r','')
+            worksheet_y.write_string(3, 3, comment, cell)
+            comment_rows = compute_row(comment,comment_col_width)
+            worksheet_y.set_row(row,15 * comment_rows)
+
+        if data.benefit_list == u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับชาติ/นานาชาติ':
+            benefit_name = data.benefit_name.replace('\r','')
+            worksheet_y.write_string(4, 1, benefit_name, cell_center)
+            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * benefit_name_rows)
+
+            person_name = data.person_name.replace('\r','')
+            worksheet_y.write_string(4, 2, person_name, cell_center)
+            person_name_rows = compute_row(person_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * person_name_rows)
+
+            comment = data.comment.replace('\r','')
+            worksheet_y.write_string(4, 3, comment, cell)
+            comment_rows = compute_row(comment,comment_col_width)
+            worksheet_y.set_row(row,15 * comment_rows)
+
+        if data.benefit_list == u'อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับหน่วยงาน':
+            benefit_name = data.benefit_name.replace('\r','')
+            worksheet_y.write_string(5, 1, benefit_name, cell_center)
+            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * benefit_name_rows)
+
+            person_name = data.person_name.replace('\r','')
+            worksheet_y.write_string(5, 2, person_name, cell_center)
+            person_name_rows = compute_row(person_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * person_name_rows)
+
+            comment = data.comment.replace('\r','')
+            worksheet_y.write_string(5, 3, comment, cell)
+            comment_rows = compute_row(comment,comment_col_width)
+            worksheet_y.set_row(row,15 * comment_rows)
+
+        if data.benefit_list == u'อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับชาติ/นานาชาติ':
+            benefit_name = data.benefit_name.replace('\r','')
+            worksheet_y.write_string(6, 1, benefit_name, cell_center)
+            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * benefit_name_rows)
+
+            person_name = data.person_name.replace('\r','')
+            worksheet_y.write_string(6, 2, person_name, cell_center)
+            person_name_rows = compute_row(person_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * person_name_rows)
+
+            comment = data.comment.replace('\r','')
+            worksheet_y.write_string(6, 3, comment, cell)
+            comment_rows = compute_row(comment,comment_col_width)
+            worksheet_y.set_row(row,15 * comment_rows)
+
+        if data.benefit_list == u'อาจารย์ที่ให้ความร่วมมือในการจัดประชุมวิชาการของคณะ':
+            benefit_name = data.benefit_name.replace('\r','')
+            worksheet_y.write_string(7, 1, benefit_name, cell_center)
+            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * benefit_name_rows)
+
+            person_name = data.person_name.replace('\r','')
+            worksheet_y.write_string(7, 2, person_name, cell_center)
+            person_name_rows = compute_row(person_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * person_name_rows)
+
+            comment = data.comment.replace('\r','')
+            worksheet_y.write_string(7, 3, comment, cell)
+            comment_rows = compute_row(comment,comment_col_width)
+            worksheet_y.set_row(row,15 * comment_rows)
+
 
         if staff and score:
             worksheet_y.write_string(row, 4, data.user.username, cell_center)
