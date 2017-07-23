@@ -789,168 +789,261 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
     elif staff:
         worksheet_x.set_column('F:F', 10+7)  # comment column
 
+    # sheet7  staff ----------------------------------------------------------------------
+
+    if staff:
+        worksheet_y.merge_range('A1:C1',ugettext(u"รางวัลต่างๆ"))
+        worksheet_y.write(2, 0, ugettext(u"รายการ"), header)
+        worksheet_y.write(2, 1, ugettext(u"ชื่อผลงาน"), header)
+        worksheet_y.write(2, 2, ugettext(u"ชื่อผู้เข้าร่วมแข่งขัน"), header)
+        worksheet_y.write(2, 3, ugettext(u"หมายเหตุ"), header)
+        if staff and score:
+            worksheet_y.write(2, 4, ugettext(u"user"),header)
+            worksheet_y.write(2, 5, ugettext(u"คะแนน"), header)
+        elif score:
+            worksheet_y.write(2, 4, ugettext(u"คะแนน"), header)
+        elif staff:
+            worksheet_y.write(2, 4, ugettext(u"user"),header)
+
+        # column widths
+        benefit_name_col_width = 40
+        description_col_width = 10
+        comment_col_width = 25
+
+        for idx, data in enumerate(query_data7):
+            row = 3 + idx
+
+            worksheet_y.write_string(row, 0, data.benefit_list, cell_center)
+
+            benefit_name = data.benefit_name.replace('\r','')
+            worksheet_y.write_string(row, 1, benefit_name, cell_center)
+            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * benefit_name_rows)
+
+            person_name = data.person_name.replace('\r','')
+            worksheet_y.write_string(row, 2, person_name, cell_center)
+            person_name_rows = compute_row(person_name,benefit_name_col_width)
+            worksheet_y.set_row(row,15 * person_name_rows)
+
+            comment = data.comment.replace('\r','')
+            worksheet_y.write_string(row, 3, comment, cell)
+            comment_rows = compute_row(comment,comment_col_width)
+            worksheet_y.set_row(row,15 * comment_rows)
+
+            if staff and score:
+                worksheet_y.write_string(row, 4, data.user.username, cell_center)
+                worksheet_y.write_string(row, 5, " ", cell_center)
+            elif score:
+                worksheet_y.write_string(row, 4, " ", cell_center)
+            elif staff:
+                worksheet_y.write_string(row, 4, data.user.username, cell_center)
+
+        worksheet_y.set_column('A:A', benefit_name_col_width+7)  # benefit_name column
+        worksheet_y.set_column('B:B', benefit_name_col_width+7)  # benefit_name column
+        worksheet_y.set_column('C:C', benefit_name_col_width+7)  # benefit_name column
+        worksheet_y.set_column('D:D', comment_col_width+7)  # ratio column
+        if staff and score:
+            worksheet_y.set_column('E:E',10+7) #user column
+            worksheet_y.set_column('F:F', 10+7)  # comment column
+        elif score:
+            worksheet_y.set_column('E:E', 10+7)  # comment column
+        elif staff:
+            worksheet_y.set_column('E:E', 10+7)  # comment column
+
+
+
+
     # sheet7 -----------------------------------------------------------------------------
+    else:
+        # write header
+        worksheet_y.merge_range('A1:C1',ugettext(u"รางวัลต่างๆ"))
+        worksheet_y.write(2, 0, ugettext(u"รายการ"), header)
+        worksheet_y.write(3, 0, ugettext(u"อาจารย์ได้รับรางวัลทางวิชาการ หรือวิชาชีพระดับหน่วยงานภายนอกมหาวิทยาลัย"), cell_center)
+        worksheet_y.write(4, 0, ugettext(u"อาจารย์ได้รับรางวัลทางวิชาการ หรือวิชาชีพระดับชาติ/นานาชาติ"), cell_center)
+        worksheet_y.write(5, 0, ugettext(u"อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับหน่วยงาน"), cell_center)
+        worksheet_y.write(6, 0, ugettext(u"อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับชาติ/นานาชาติ"), cell_center)
+        worksheet_y.write(7, 0, ugettext(u"อาจารย์ที่ให้ความร่วมมือในการจัดประชุมวิชาการของคณะฯ"), cell_center)
+        worksheet_y.write(2, 1, ugettext(u"ชื่อผลงาน"), header)
+        worksheet_y.write(2, 2, ugettext(u"ชื่อผู้เข้าร่วมแข่งขัน"), header)
+        worksheet_y.write(2, 3, ugettext(u"หมายเหตุ"), header)
+        if staff and score:
+            worksheet_y.write(2, 4, ugettext(u"user"),header)
+            worksheet_y.write(2, 5, ugettext(u"คะแนน"), header)
+        elif score:
+            worksheet_y.write(2, 4, ugettext(u"คะแนน"), header)
+        elif staff:
+            worksheet_y.write(2, 4, ugettext(u"user"),header)
+        
 
-    # write header
-    worksheet_y.merge_range('A1:C1',ugettext(u"รางวัลต่างๆ"))
-    worksheet_y.write(2, 0, ugettext(u"รายการ"), header)
-    worksheet_y.write(3, 0, ugettext(u"อาจารย์ได้รับรางวัลทางวิชาการ หรือวิชาชีพระดับหน่วยงานภายนอกมหาวิทยาลัย"), cell_center)
-    worksheet_y.write(4, 0, ugettext(u"อาจารย์ได้รับรางวัลทางวิชาการ หรือวิชาชีพระดับชาติ/นานาชาติ"), cell_center)
-    worksheet_y.write(5, 0, ugettext(u"อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับหน่วยงาน"), cell_center)
-    worksheet_y.write(6, 0, ugettext(u"อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับชาติ/นานาชาติ"), cell_center)
-    worksheet_y.write(7, 0, ugettext(u"อาจารย์ที่ให้ความร่วมมือในการจัดประชุมวิชาการของคณะฯ"), cell_center)
-    worksheet_y.write(2, 1, ugettext(u"ชื่อผลงาน"), header)
-    worksheet_y.write(2, 2, ugettext(u"ชื่อผู้เข้าร่วมแข่งขัน"), header)
-    worksheet_y.write(2, 3, ugettext(u"หมายเหตุ"), header)
-    if staff and score:
-        worksheet_y.write(2, 4, ugettext(u"user"),header)
-        worksheet_y.write(2, 5, ugettext(u"คะแนน"), header)
-    elif score:
-        worksheet_y.write(2, 4, ugettext(u"คะแนน"), header)
-    elif staff:
-        worksheet_y.write(2, 4, ugettext(u"user"),header)
-    
+        # column widths
+        benefit_name_col_width = 40
+        description_col_width = 10
+        comment_col_width = 25
 
-    # column widths
-    benefit_name_col_width = 40
-    description_col_width = 10
-    comment_col_width = 25
+        worksheet_y.write_string(3, 1, ' ', cell_center)
+        worksheet_y.write_string(4, 1, ' ', cell_center)
+        worksheet_y.write_string(5, 1, ' ', cell_center)
+        worksheet_y.write_string(6, 1, ' ', cell_center)
+        worksheet_y.write_string(7, 1, ' ', cell_center)
 
-    worksheet_y.write_string(3, 1, ' ', cell_center)
-    worksheet_y.write_string(4, 1, ' ', cell_center)
-    worksheet_y.write_string(5, 1, ' ', cell_center)
-    worksheet_y.write_string(6, 1, ' ', cell_center)
-    worksheet_y.write_string(7, 1, ' ', cell_center)
+        worksheet_y.write_string(3, 2, ' ', cell_center)
+        worksheet_y.write_string(4, 2, ' ', cell_center)
+        worksheet_y.write_string(5, 2, ' ', cell_center)
+        worksheet_y.write_string(6, 2, ' ', cell_center)
+        worksheet_y.write_string(7, 2, ' ', cell_center)
 
-    worksheet_y.write_string(3, 2, ' ', cell_center)
-    worksheet_y.write_string(4, 2, ' ', cell_center)
-    worksheet_y.write_string(5, 2, ' ', cell_center)
-    worksheet_y.write_string(6, 2, ' ', cell_center)
-    worksheet_y.write_string(7, 2, ' ', cell_center)
-
-    worksheet_y.write_string(3, 3, ' ', cell_center)
-    worksheet_y.write_string(4, 3, ' ', cell_center)
-    worksheet_y.write_string(5, 3, ' ', cell_center)
-    worksheet_y.write_string(6, 3, ' ', cell_center)
-    worksheet_y.write_string(7, 3, ' ', cell_center)
-    
-    # add data to the table
-    for idx, data in enumerate(query_data7):
-        row = 3 + idx
-        # worksheet_y.write_string(row, 0, data.benefit_list, cell_center)
-
-        if data.benefit_list == u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับหน่วยงานภายนอกมหาวิทยาลัย':
-            benefit_name = data.benefit_name.replace('\r','')
-            worksheet_y.write_string(3, 1, benefit_name, cell_center)
-            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * benefit_name_rows)
-
-            person_name = data.person_name.replace('\r','')
-            worksheet_y.write_string(3, 2, person_name, cell_center)
-            person_name_rows = compute_row(person_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * person_name_rows)
-
-            comment = data.comment.replace('\r','')
-            worksheet_y.write_string(3, 3, comment, cell)
-            comment_rows = compute_row(comment,comment_col_width)
-            worksheet_y.set_row(row,15 * comment_rows)
-
-        if data.benefit_list == u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับชาติ/นานาชาติ':
-            benefit_name = data.benefit_name.replace('\r','')
-            worksheet_y.write_string(4, 1, benefit_name, cell_center)
-            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * benefit_name_rows)
-
-            person_name = data.person_name.replace('\r','')
-            worksheet_y.write_string(4, 2, person_name, cell_center)
-            person_name_rows = compute_row(person_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * person_name_rows)
-
-            comment = data.comment.replace('\r','')
-            worksheet_y.write_string(4, 3, comment, cell)
-            comment_rows = compute_row(comment,comment_col_width)
-            worksheet_y.set_row(row,15 * comment_rows)
-
-        if data.benefit_list == u'อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับหน่วยงาน':
-            benefit_name = data.benefit_name.replace('\r','')
-            worksheet_y.write_string(5, 1, benefit_name, cell_center)
-            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * benefit_name_rows)
-
-            person_name = data.person_name.replace('\r','')
-            worksheet_y.write_string(5, 2, person_name, cell_center)
-            person_name_rows = compute_row(person_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * person_name_rows)
-
-            comment = data.comment.replace('\r','')
-            worksheet_y.write_string(5, 3, comment, cell)
-            comment_rows = compute_row(comment,comment_col_width)
-            worksheet_y.set_row(row,15 * comment_rows)
-
-        if data.benefit_list == u'อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับชาติ/นานาชาติ':
-            benefit_name = data.benefit_name.replace('\r','')
-            worksheet_y.write_string(6, 1, benefit_name, cell_center)
-            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * benefit_name_rows)
-
-            person_name = data.person_name.replace('\r','')
-            worksheet_y.write_string(6, 2, person_name, cell_center)
-            person_name_rows = compute_row(person_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * person_name_rows)
-
-            comment = data.comment.replace('\r','')
-            worksheet_y.write_string(6, 3, comment, cell)
-            comment_rows = compute_row(comment,comment_col_width)
-            worksheet_y.set_row(row,15 * comment_rows)
-
-        if data.benefit_list == u'อาจารย์ที่ให้ความร่วมมือในการจัดประชุมวิชาการของคณะ':
-            benefit_name = data.benefit_name.replace('\r','')
-            worksheet_y.write_string(7, 1, benefit_name, cell_center)
-            benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * benefit_name_rows)
-
-            person_name = data.person_name.replace('\r','')
-            worksheet_y.write_string(7, 2, person_name, cell_center)
-            person_name_rows = compute_row(person_name,benefit_name_col_width)
-            worksheet_y.set_row(row,15 * person_name_rows)
-
-            comment = data.comment.replace('\r','')
-            worksheet_y.write_string(7, 3, comment, cell)
-            comment_rows = compute_row(comment,comment_col_width)
-            worksheet_y.set_row(row,15 * comment_rows)
-
+        worksheet_y.write_string(3, 3, ' ', cell_center)
+        worksheet_y.write_string(4, 3, ' ', cell_center)
+        worksheet_y.write_string(5, 3, ' ', cell_center)
+        worksheet_y.write_string(6, 3, ' ', cell_center)
+        worksheet_y.write_string(7, 3, ' ', cell_center)
 
         if staff and score:
-            worksheet_y.write_string(row, 4, data.user.username, cell_center)
-            worksheet_y.write_string(row, 5, " ", cell_center)
+            worksheet_y.write_string(3, 4, ' ', cell_center)
+            worksheet_y.write_string(4, 4, ' ', cell_center)
+            worksheet_y.write_string(5, 4, ' ', cell_center)
+            worksheet_y.write_string(6, 4, ' ', cell_center)
+            worksheet_y.write_string(7, 4, ' ', cell_center)
+
+            worksheet_y.write_string(3, 5, ' ', cell_center)
+            worksheet_y.write_string(4, 5, ' ', cell_center)
+            worksheet_y.write_string(5, 5, ' ', cell_center)
+            worksheet_y.write_string(6, 5, ' ', cell_center)
+            worksheet_y.write_string(7, 5, ' ', cell_center)
         elif score:
-            worksheet_y.write_string(row, 4, " ", cell_center)
+            worksheet_y.write_string(3, 4, ' ', cell_center)
+            worksheet_y.write_string(4, 4, ' ', cell_center)
+            worksheet_y.write_string(5, 4, ' ', cell_center)
+            worksheet_y.write_string(6, 4, ' ', cell_center)
+            worksheet_y.write_string(7, 4, ' ', cell_center)
         elif staff:
-            worksheet_y.write_string(row, 4, data.user.username, cell_center)
+            worksheet_y.write_string(3, 4, ' ', cell_center)
+            worksheet_y.write_string(4, 4, ' ', cell_center)
+            worksheet_y.write_string(5, 4, ' ', cell_center)
+            worksheet_y.write_string(6, 4, ' ', cell_center)
+            worksheet_y.write_string(7, 4, ' ', cell_center)
 
 
-    worksheet_y.write(13, 1, ugettext(u"ลงนาม"), header)
-    worksheet_y.write(13, 2, ugettext(u" "), header)
-    worksheet_y.write(13, 3, ugettext(u"ประธานกรรมการระดับภาค"), header)
-    worksheet_y.write(14, 1, ugettext(u"ลงนาม"), header)
-    worksheet_y.write(14, 2, ugettext(u" "), header)
-    worksheet_y.write(14, 3, ugettext(u"กรรมการระดับภาค"), header)
-    worksheet_y.write(15, 1, ugettext(u"ลงนาม"), header)
-    worksheet_y.write(15, 2, ugettext(u" "), header)
-    worksheet_y.write(15, 3, ugettext(u"กรรมการระดับภาค"), header)
-        
-    # change column widths
-    worksheet_y.set_column('A:A', benefit_name_col_width+7)  # benefit_name column
-    worksheet_y.set_column('B:B', benefit_name_col_width+7)  # benefit_name column
-    worksheet_y.set_column('C:C', benefit_name_col_width+7)  # benefit_name column
-    worksheet_y.set_column('D:D', comment_col_width+7)  # ratio column
-    if staff and score:
-        worksheet_y.set_column('E:E',10+7) #user column
-        worksheet_y.set_column('F:F', 10+7)  # comment column
-    elif score:
-        worksheet_y.set_column('E:E', 10+7)  # comment column
-    elif staff:
-        worksheet_y.set_column('E:E', 10+7)  # comment column
+        # add data to the table
+        for idx, data in enumerate(query_data7):
+            row = 3 + idx
+            # worksheet_y.write_string(row, 0, data.benefit_list, cell_center)
+
+            if data.benefit_list == u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับหน่วยงานภายนอกมหาวิทยาลัย':
+                benefit_name = data.benefit_name.replace('\r','')
+                worksheet_y.write_string(3, 1, benefit_name, cell_center)
+                benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * benefit_name_rows)
+
+                person_name = data.person_name.replace('\r','')
+                worksheet_y.write_string(3, 2, person_name, cell_center)
+                person_name_rows = compute_row(person_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * person_name_rows)
+
+                comment = data.comment.replace('\r','')
+                worksheet_y.write_string(3, 3, comment, cell)
+                comment_rows = compute_row(comment,comment_col_width)
+                worksheet_y.set_row(row,15 * comment_rows)
+
+            if data.benefit_list == u'อาจารย์ได้รับรางวัลทางวิชาการหรือวิชาชีพระดับชาติ/นานาชาติ':
+                benefit_name = data.benefit_name.replace('\r','')
+                worksheet_y.write_string(4, 1, benefit_name, cell_center)
+                benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * benefit_name_rows)
+
+                person_name = data.person_name.replace('\r','')
+                worksheet_y.write_string(4, 2, person_name, cell_center)
+                person_name_rows = compute_row(person_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * person_name_rows)
+
+                comment = data.comment.replace('\r','')
+                worksheet_y.write_string(4, 3, comment, cell)
+                comment_rows = compute_row(comment,comment_col_width)
+                worksheet_y.set_row(row,15 * comment_rows)
+
+            if data.benefit_list == u'อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับหน่วยงาน':
+                benefit_name = data.benefit_name.replace('\r','')
+                worksheet_y.write_string(5, 1, benefit_name, cell_center)
+                benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * benefit_name_rows)
+
+                person_name = data.person_name.replace('\r','')
+                worksheet_y.write_string(5, 2, person_name, cell_center)
+                person_name_rows = compute_row(person_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * person_name_rows)
+
+                comment = data.comment.replace('\r','')
+                worksheet_y.write_string(5, 3, comment, cell)
+                comment_rows = compute_row(comment,comment_col_width)
+                worksheet_y.set_row(row,15 * comment_rows)
+
+            if data.benefit_list == u'อาจารย์ที่ปรึกษากิจกรรมการแข่งขันทางวิชาการของนักศึกษาที่ได้รับรางวัลระดับชาติ/นานาชาติ':
+                benefit_name = data.benefit_name.replace('\r','')
+                worksheet_y.write_string(6, 1, benefit_name, cell_center)
+                benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * benefit_name_rows)
+
+                person_name = data.person_name.replace('\r','')
+                worksheet_y.write_string(6, 2, person_name, cell_center)
+                person_name_rows = compute_row(person_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * person_name_rows)
+
+                comment = data.comment.replace('\r','')
+                worksheet_y.write_string(6, 3, comment, cell)
+                comment_rows = compute_row(comment,comment_col_width)
+                worksheet_y.set_row(row,15 * comment_rows)
+
+            if data.benefit_list == u'อาจารย์ที่ให้ความร่วมมือในการจัดประชุมวิชาการของคณะ':
+                benefit_name = data.benefit_name.replace('\r','')
+                worksheet_y.write_string(7, 1, benefit_name, cell_center)
+                benefit_name_rows = compute_row(benefit_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * benefit_name_rows)
+
+                person_name = data.person_name.replace('\r','')
+                worksheet_y.write_string(7, 2, person_name, cell_center)
+                person_name_rows = compute_row(person_name,benefit_name_col_width)
+                worksheet_y.set_row(row,15 * person_name_rows)
+
+                comment = data.comment.replace('\r','')
+                worksheet_y.write_string(7, 3, comment, cell)
+                comment_rows = compute_row(comment,comment_col_width)
+                worksheet_y.set_row(row,15 * comment_rows)
+
+
+            if staff and score:
+                worksheet_y.write_string(row, 4, data.user.username, cell_center)
+                worksheet_y.write_string(row, 5, " ", cell_center)
+            elif score:
+                worksheet_y.write_string(row, 4, " ", cell_center)
+            elif staff:
+                worksheet_y.write_string(row, 4, data.user.username, cell_center)
+
+
+        worksheet_y.write(13, 1, ugettext(u"ลงนาม"), header)
+        worksheet_y.write(13, 2, ugettext(u" "), header)
+        worksheet_y.write(13, 3, ugettext(u"ประธานกรรมการระดับภาค"), header)
+        worksheet_y.write(14, 1, ugettext(u"ลงนาม"), header)
+        worksheet_y.write(14, 2, ugettext(u" "), header)
+        worksheet_y.write(14, 3, ugettext(u"กรรมการระดับภาค"), header)
+        worksheet_y.write(15, 1, ugettext(u"ลงนาม"), header)
+        worksheet_y.write(15, 2, ugettext(u" "), header)
+        worksheet_y.write(15, 3, ugettext(u"กรรมการระดับภาค"), header)
+            
+        # change column widths
+        worksheet_y.set_column('A:A', benefit_name_col_width+7)  # benefit_name column
+        worksheet_y.set_column('B:B', benefit_name_col_width+7)  # benefit_name column
+        worksheet_y.set_column('C:C', benefit_name_col_width+7)  # benefit_name column
+        worksheet_y.set_column('D:D', comment_col_width+7)  # ratio column
+        if staff and score:
+            worksheet_y.set_column('E:E',10+7) #user column
+            worksheet_y.set_column('F:F', 10+7)  # comment column
+        elif score:
+            worksheet_y.set_column('E:E', 10+7)  # comment column
+        elif staff:
+            worksheet_y.set_column('E:E', 10+7)  # comment column
+
+
+
 
     workbook.close()
     xlsx_data = output.getvalue()
