@@ -61,6 +61,7 @@ def WriteToExcelAll(query_data,query_data2,query_data3,query_data4,query_data5,q
         'align': 'center',
         'valign': 'vcenter',
         'border': 1,
+        'text_wrap': True,
     })
     cell = workbook.add_format({
         'align': 'left',
